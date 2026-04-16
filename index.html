@@ -6,14 +6,18 @@
 <title>CS427 Study</title>
 <link rel="stylesheet" href="css/study-index.css">
 <script src="js/study-weeks-config.js"></script>
+<script src="js/study-lang.js"></script>
 <script src="js/study-sidebar.js"></script>
 <script src="js/study-index.js" defer></script>
 </head>
 <body>
 <div class="index-app">
-  <aside class="study-nav" aria-label="周次导航">
-    <div class="study-nav-title">CS 427: Software Engineering</div>
+  <aside class="study-nav" aria-label="Course weeks">
+    <div class="study-nav-header">
+      <div class="study-nav-title">CS 427: Software Engineering</div>
+    </div>
     <nav class="study-nav-list" id="study-nav-list"></nav>
+    <div id="study-lang-switch-root" aria-label="Language"></div>
   </aside>
   <main class="index-main">
     <iframe id="study-frame" title="当前周学习内容"></iframe>

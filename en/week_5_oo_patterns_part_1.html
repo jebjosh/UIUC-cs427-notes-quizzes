@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Week 5 · OO Patterns — Part 1 &amp; Quiz</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<link href="../css/quiz-pane.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--border2:#d4d1ca;
+  --text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-border:#16a34a;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-border:#dc2626;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-border:#2563eb;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{
+  display:grid;
+  grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));
+  min-height:100vh;
+  max-width:1600px;
+  width:100%;
+  margin:0;
+}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane{background:var(--bg);border:none;}
+.quiz-pane{background:var(--bg);}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){
+  .page-split{grid-template-columns:1fr;}
+  .pane{max-height:none;}
+  .notes-pane{border:none;}
+}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card:hover{border:none;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.kw.red{background:var(--red-light);color:var(--red);}
+.card-body{font-size:0.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.card-body:last-child{margin-bottom:0;}
+.card-body code,.blue-box code,.green-box code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--tag-bg);padding:1px 6px;border-radius:3px;color:var(--text);}
+code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--tag-bg);padding:1px 6px;border-radius:3px;color:var(--text);}
+.hl{color:var(--text);font-weight:600;}
+.hl-green{color:var(--accent);font-weight:600;}
+.hl-blue{color:var(--blue);font-weight:600;}
+.hl-amber{color:var(--accent2);font-weight:600;}
+.hl-red{color:var(--red);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist:last-child{margin-bottom:0;}
+.blist li{font-size:0.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border2);font-size:0.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+.tbl-wrap:last-child{margin-bottom:0;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.divider{border:none;margin:20px 0;height:0;clear:both;}
+.note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent2);margin-bottom:4px;}
+.green-box{background:var(--accent-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.green-box .note-label{color:var(--accent);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.blue-box{background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.blue-box .note-label{color:var(--blue);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:4px;}
+.summary-cell{background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px;}
+.summary-cell .sc-val{font-size:0.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+
+/* Mind map tab — embed mindmap_design_patterns_html.html via iframe */
+#tab-mindmap{padding-top:0;}
+.mm-iframe-wrap{
+  margin:0 -8px 0 -8px;
+  width:calc(100% + 16px);
+  height:min(85vh,1100px);
+  min-height:420px;
+  overflow:hidden;
+  border-radius:var(--radius);
+  background:var(--surface2);
+}
+.mm-iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  border:none;
+  vertical-align:top;
+  background:transparent;
+}
+
+.red-box{background:var(--red-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.red-box .note-label{color:var(--red);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.diamond-row{display:flex;gap:24px;margin:14px 0;flex-wrap:wrap;}
+.diamond-item{display:flex;align-items:center;gap:12px;flex:1;min-width:200px;background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.diamond-sym{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.diamond-info .di-label{font-family:'Source Code Pro',monospace;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:2px;}
+.diamond-info .di-val{font-size:0.88rem;font-weight:600;color:var(--text);}
+.diamond-info .di-desc{font-size:0.82rem;color:var(--text2);margin-top:2px;}
+
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="week-5">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="page-split">
+<div class="notes-pane pane">
+<div class="container">
+<header>
+<h1>Week 5 · OO Patterns — Part 1</h1>
+</header>
+<nav class="tab-nav">
+<button class="tab-btn active" onclick="switchTab('mindmap',this)" type="button">Mind map</button>
+<button class="tab-btn" onclick="switchTab('relationships',this)" type="button">Relationship types</button>
+<button class="tab-btn" onclick="switchTab('multiplicity',this)" type="button">Multiplicity</button>
+<button class="tab-btn" onclick="switchTab('classdiagram',this)" type="button">Class diagram</button>
+<button class="tab-btn" onclick="switchTab('sequence',this)" type="button">Sequence diagram</button>
+<button class="tab-btn" onclick="switchTab('oo',this)" type="button">OO modeling</button>
+<button class="tab-btn" onclick="switchTab('tips',this)" type="button">Exam focus</button>
+</nav>
+<!-- Tab 0: Mind map -->
+<div class="tab-panel active" id="tab-mindmap">
+<div class="mm-iframe-wrap">
+<iframe class="mm-iframe" loading="lazy" src="../mindmap/week_5_oo_patterns_part_1_mindmap.html" title="UML mind map"></iframe>
+</div>
+</div>
+<!-- Tab 1: Relationship types -->
+<div class="tab-panel" id="tab-relationships">
+<div class="card">
+<div class="card-title">Four UML relationship kinds</div>
+<div class="keywords">
+<span class="kw green">Generalization</span>
+<span class="kw blue">Association</span>
+<span class="kw amber">Aggregation</span>
+<span class="kw red">Composition</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Relationship</th><th>Notation</th><th>Meaning</th><th>Strength</th></tr></thead>
+<tbody>
+<tr>
+<td>Generalization (inheritance)</td>
+<td>Open triangle toward the <strong>superclass</strong></td>
+<td>Subclass <strong>is-a</strong> superclass; inherits structure and behavior</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Association</td>
+<td>Plain solid line</td>
+<td>Some meaningful link between instances; the loosest connector</td>
+<td>Weak</td>
+</tr>
+<tr>
+<td>Aggregation</td>
+<td>Hollow diamond on the <strong>whole</strong> end (◇—)</td>
+<td>Part–whole; the part <strong>can</strong> exist outside the whole</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Composition</td>
+<td>Filled diamond on the <strong>whole</strong> end (◆—)</td>
+<td>Part–whole; the part <strong>cannot</strong> outlive the whole</td>
+<td>Strong</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Where to draw the diamond</div>
+Place the diamond on the <strong>whole</strong> side of the association. If there is an arrow, it points toward the <strong>part</strong>.</div>
+</div>
+<div class="card">
+<div class="card-title">Aggregation vs. composition</div>
+<div class="keywords">
+<span class="kw amber">Aggregation ◇</span>
+<span class="kw red">Composition ◆</span>
+<span class="kw">Part–whole</span>
+<span class="kw">Lifecycle</span>
+</div>
+<div class="diamond-row">
+<div class="diamond-item">
+<div class="diamond-sym" style="color:#8a8780;">◇</div>
+<div class="diamond-info">
+<div class="di-label">Aggregation</div>
+<div class="di-val">Hollow diamond</div>
+<div class="di-desc">The part can exist on its own;<br/>lifetimes are independent</div>
+</div>
+</div>
+<div class="diamond-item">
+<div class="diamond-sym" style="color:#1c1b18;">◆</div>
+<div class="diamond-info">
+<div class="di-label">Composition</div>
+<div class="di-val">Filled diamond</div>
+<div class="di-desc">The part cannot exist without the whole;<br/>destroying the whole destroys the part</div>
+</div>
+</div>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Example</th><th>Whole</th><th>Part</th><th>Kind</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>University &amp; department</td><td>University</td><td>Department</td><td>Composition ◆</td><td>A department does not exist without its university</td></tr>
+<tr><td>School class &amp; students</td><td>Class</td><td>Student</td><td>Aggregation ◇</td><td>If the class group disbands, students still exist</td></tr>
+<tr><td>Queue &amp; array</td><td>Queue</td><td>Array</td><td>Composition ◆</td><td>The array is internal storage; it dies with the queue</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="card-title">Generalization — inheritance and abstract classes</div>
+<div class="keywords">
+<span class="kw green">Generalization</span>
+<span class="kw">Abstract class</span>
+<span class="kw">Concrete class</span>
+<span class="kw">Italics</span>
+<span class="kw">is-a</span>
+</div>
+<div class="card-body">The generalization arrow runs from <span class="hl-green">subclass</span> to <span class="hl-green">superclass</span> (open triangle on the superclass side), meaning the subclass <strong>is-a</strong> superclass.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th></th><th>Abstract class</th><th>Concrete class</th></tr></thead>
+<tbody>
+<tr><td>Instantiable?</td><td>❌ No direct <code>new</code></td><td>✅ May instantiate</td></tr>
+<tr><td>Methods</td><td>May declare abstract operations without bodies</td><td>Every operation has an implementation</td></tr>
+<tr><td>In UML</td><td>Class name in <em>italics</em></td><td>Ordinary (roman) name</td></tr>
+<tr><td>Role</td><td>Shared template for subclasses</td><td>Used to create objects directly</td></tr>
+</tbody>
+</table>
+</div>
+<div class="blue-box">
+<div class="note-label">Example</div>
+<code>Publication</code> in italics is abstract — you do not instantiate “a publication” by itself. <code>Article</code> and <code>Book</code> are concrete and may be instantiated.</div>
+</div>
+</div>
+<!-- Tab 2: Multiplicity -->
+<div class="tab-panel" id="tab-multiplicity">
+<div class="card">
+<div class="card-title">Multiplicity — how to read the numbers</div>
+<div class="keywords">
+<span class="kw blue">Multiplicity</span>
+<span class="kw">0..1</span>
+<span class="kw">1..*</span>
+<span class="kw">0..*</span>
+<span class="kw">1..4</span>
+</div>
+<div class="card-body">Multiplicity is written on the <span class="hl">far end</span> of the association from the element you are reasoning about: a number on end A answers “<span class="hl-blue">for one B, how many A’s?</span>”</div>
+<div class="green-box">
+<div class="note-label">Rule of thumb</div>
+<strong>Whichever end shows the multiplicity, that multiplicity constrains that end.</strong><br/>
+Equivalently: a label on A’s side counts how many A instances relate to one B.</div>
+<hr class="divider"/>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Notation</th><th>Meaning</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td><code>1</code></td><td>Exactly one (often omitted as the default)</td><td>Each city belongs to exactly one state</td></tr>
+<tr><td><code>0..1</code></td><td>Zero or one (optional)</td><td>An employee has zero or one direct manager</td></tr>
+<tr><td><code>0..*</code></td><td>Zero or more</td><td>An author may have no books</td></tr>
+<tr><td><code>1..*</code></td><td>One or more</td><td>An order line item appears at least once</td></tr>
+<tr><td><code>1..4</code></td><td>Between one and four inclusive</td><td>Each article lists one to four authors</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="card-title">Reading the Week 5 quiz diagram</div>
+<div class="keywords">
+<span class="kw">Article</span>
+<span class="kw">Author</span>
+<span class="kw">Book</span>
+<span class="kw green">Publication</span>
+</div>
+<div class="card-body">Read each end of an association on its own — the two multiplicities are independent constraints.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Association</th><th>Where the label sits</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Article–Author</td><td>On the Author end: <code>1..4</code></td><td>Each article has one to four authors</td></tr>
+<tr><td>Article–Author</td><td>On the Article end: <code>0..*</code></td><td>An author may write zero or more articles</td></tr>
+<tr><td>Book–Author</td><td>On the Author end: <code>0..*</code></td><td>Each book may list zero or more authors</td></tr>
+<tr><td>Book–Author</td><td>On the Book end: <code>0..*</code></td><td>An author may write zero or more books</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">What follows</div>
+Author end <code>0..*</code> ⇒ “An author may have written nothing” is <strong>true</strong>.<br/>
+Book end <code>0..*</code> ⇒ “Not every book has an author” can be <strong>true</strong>.<br/>
+So “Every publication has an author” is <strong>false</strong> in general.</div>
+</div>
+</div>
+<!-- Tab 3: Class diagram -->
+<div class="tab-panel" id="tab-classdiagram">
+<div class="card">
+<div class="card-title">Class diagrams — structure and role</div>
+<div class="keywords">
+<span class="kw green">Class diagram</span>
+<span class="kw">Attribute</span>
+<span class="kw">Operation</span>
+<span class="kw">Static structure</span>
+</div>
+<div class="card-body">A class diagram is UML’s view of <span class="hl">static structure</span>: classes, attributes, operations, and the relationships between them.</div>
+<div class="summary-grid">
+<div class="summary-cell">
+<div class="sc-label">Class</div>
+<div class="sc-val">A classifier for things in the problem domain; drawn as a rectangle</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Attribute</div>
+<div class="sc-val">Structural data of the type — e.g. name, age</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Operation</div>
+<div class="sc-val">Behavior or services — e.g. <code>order()</code>, <code>calculate()</code></div>
+</div>
+</div>
+<div class="red-box">
+<div class="note-label">What class diagrams do not show</div>
+They capture <strong>static structure</strong> only. They do <strong>not</strong> show:
+<ul class="blist" style="margin-top:6px;">
+<li>Algorithmic or control-flow detail</li>
+<li>Timing or real-time ordering</li>
+<li>Step-by-step object interaction</li>
+</ul>
+</div>
+</div>
+<div class="card">
+<div class="card-title">Telling class, attribute, and operation apart</div>
+<div class="keywords">
+<span class="kw blue">Class</span>
+<span class="kw amber">Attribute</span>
+<span class="kw green">Operation</span>
+</div>
+<div class="card-body">When you parse requirements into a model, use these cues:</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Construct</th><th>What it is</th><th>How to spot it</th></tr></thead>
+<tbody>
+<tr><td>Class</td><td>A stable concept you instantiate</td><td>Noun; has identity and its own features</td></tr>
+<tr><td>Attribute</td><td>Data owned by one class</td><td>Noun scoped to a class; describes state</td></tr>
+<tr><td>Operation</td><td>Behavior the class performs</td><td>Verb or verb phrase; “does something”</td></tr>
+</tbody>
+</table>
+</div>
+<div class="blue-box">
+<div class="note-label">Pizza shop sketch</div>
+Requirement: customers order pizza or drinks; pizza has size, sauce, and crust/base choices.
+<ul class="blist" style="margin-top:8px;">
+<li><span class="hl-blue">Classes</span>: Pizza, Customer, Drink, Sauce (for example)</li>
+<li><span class="hl-amber">Attributes</span>: size, base type</li>
+<li><span class="hl-green">Operation</span>: <code>order()</code> — the act of ordering, not a stored entity</li>
+</ul>
+<strong>Order</strong> is the <strong>least</strong> likely to be modeled as its own class here; it fits an operation better.</div>
+</div>
+</div>
+<!-- Tab 4: Sequence diagram -->
+<div class="tab-panel" id="tab-sequence">
+<div class="card">
+<div class="card-title">Sequence diagrams</div>
+<div class="keywords">
+<span class="kw green">Sequence diagram</span>
+<span class="kw blue">Lifeline</span>
+<span class="kw">Message</span>
+<span class="kw amber">Time</span>
+<span class="kw">Trigger order</span>
+</div>
+<div class="card-body">A sequence diagram shows <span class="hl-green">how objects interact over time</span>. It is a UML <strong>behavior</strong> diagram.</div>
+<div class="summary-grid">
+<div class="summary-cell">
+<div class="sc-label">Horizontal</div>
+<div class="sc-val">Participants at the top; each has a lifeline</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Vertical</div>
+<div class="sc-val">Time advances downward</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Arrows</div>
+<div class="sc-val">Messages — calls, returns, or signals between lifelines</div>
+</div>
+</div>
+<div class="note-box">
+<div class="note-label">Ordering</div>
+Message order follows <strong>trigger time</strong>: what happens first appears higher on the diagram.</div>
+</div>
+<div class="card">
+<div class="card-title">Class diagram vs. sequence diagram</div>
+<div class="keywords">
+<span class="kw">Static</span>
+<span class="kw green">Dynamic</span>
+<span class="kw blue">Structure</span>
+<span class="kw amber">Behavior</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th></th><th>Class diagram</th><th>Sequence diagram</th></tr></thead>
+<tbody>
+<tr><td>Nature</td><td>Static</td><td>Dynamic</td></tr>
+<tr><td>Shows</td><td>Types and relationships</td><td>Interactions and ordering</td></tr>
+<tr><td>Time</td><td>❌ Not shown</td><td>✅ Vertical axis is time</td></tr>
+<tr><td>Control flow</td><td>❌ Not shown</td><td>✅ Call order is visible</td></tr>
+<tr><td>UML group</td><td>Structure diagram</td><td>Behavior diagram</td></tr>
+</tbody>
+</table>
+</div>
+<div class="green-box">
+<div class="note-label">Mnemonic</div>
+“Class diagram = blueprint; sequence diagram = movie.” Structure vs. process.</div>
+</div>
+</div>
+<!-- Tab 5: OO modeling -->
+<div class="tab-panel" id="tab-oo">
+<div class="card">
+<div class="card-title">Object-oriented modeling — core ideas</div>
+<div class="keywords">
+<span class="kw green">Object-oriented</span>
+<span class="kw">Class</span>
+<span class="kw">Object</span>
+<span class="kw blue">Encapsulation</span>
+<span class="kw amber">Inheritance</span>
+</div>
+<div class="card-body">OO modeling maps real-world things to <span class="hl">classes</span>; a runtime instance of a class is an <span class="hl">object</span>. UML is the usual graphical notation for those models.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>OO idea</th><th>Meaning</th><th>Where it shows up in UML</th></tr></thead>
+<tbody>
+<tr><td>Class</td><td>Blueprint for objects</td><td>Rectangle in a class diagram</td></tr>
+<tr><td>Object</td><td>One instance of a class</td><td>Lifelines in a sequence diagram</td></tr>
+<tr><td>Inheritance</td><td>Subclass reuses superclass members</td><td>Generalization arrow</td></tr>
+<tr><td>Encapsulation</td><td>Hide internals; expose an interface</td><td>Visibility (<code>+</code> / <code>-</code>) on features</td></tr>
+<tr><td>Association</td><td>Structural link between classes</td><td>Association, aggregation, or composition</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="tab-panel" id="tab-tips">
+<div class="card">
+<div class="card-title">Week 5 — exam quick reference</div>
+<div class="keywords">
+<span class="kw red">Common pitfalls</span>
+</div>
+<ul class="blist">
+<li><strong>Part–whole</strong> links use aggregation or composition, not generalization.</li>
+<li><strong>Generalization</strong> is inheritance (is-a): arrow from subclass to superclass, hollow triangle on the parent side.</li>
+<li><strong>Abstract classes</strong> show their names in <em>italics</em> and are not instantiated directly.</li>
+<li><strong>Multiplicity</strong> sits on the end it constrains (the “opposite” end from how you read the sentence).</li>
+<li>A <strong>class diagram</strong> does not show timing or algorithms; use a <strong>sequence diagram</strong> (or activity, etc.).</li>
+<li>On a <strong>sequence diagram</strong>, time runs down the page; participants sit across the top.</li>
+<li><strong>Event order</strong> follows trigger time, not “importance” or duration.</li>
+<li>In the pizza scenario, <strong>order</strong> behaves like an <strong>operation</strong>, not a class.</li>
+<li><strong>Composition</strong> (filled diamond): part lifetime is tied to the whole; queue holding an internal array is the stock example.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="quiz-pane pane">
+<div class="qz-wrap">
+<div class="qz-toolbar">
+<h2 class="qz-heading">Week 5 — quiz</h2>
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 13</span></div>
+</div>
+</div>
+<div id="questions-container"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const IMGS = {
+  q2: 'assets/week5-quiz-q2.png',
+  q5: 'assets/week5-quiz-q5.png'
+};
+
+const questions = [
+  {
+    num:1, text:"In Class Diagrams, relationship between part and whole can be represented by which of the following?",
+    options:["Generalization","Aggregation","Division","None of the above"], correct:1,
+    explanations:[
+"❌ Generalization — Indicates an inheritance relationship (is-a). The subclass is a specialization of the parent class, not a part-whole relationship.",
+      "✅ Aggregation — Aggregation models part-whole: parts can exist outside the whole; this is the correct answer.",
+"❌ Division — is not a standard relationship type in UML.",
+      "❌ None of the above — Wrong; Aggregation is correct."
+    ]
+  },
+  {
+    num:2, text:"Consider the above Class Diagram when answering the following question:\nWhich of the following statements is True about Author?",
+    diagram:"q2",
+    options:["An author may have written nothing.","Every author has contributed up to four articles.","Every author has contributed at least one article and at least one book.","Every book has up to one author."], correct:0,
+    explanations:[
+"✅ An author may have written nothing. — Article side multiplicity is 0..*, Book side is also 0..*, Author can not have any Article or Book, that is, it can write nothing.",
+"❌ Every author has contributed up to four articles. — The Author side of the Article-Author connection is 1..4, which means that each article requires 1~4 authors, not that each author can write up to 4 articles.",
+"❌ Every author has contributed at least one article and at least one book. — Multiplicity is 0..*, zero is fine.",
+"❌ Every book has up to one author. — Book-Author multiplicity is 0..*, a book can have multiple authors."
+    ]
+  },
+  {
+    num:3, text:"Consider the Class diagram in Question 2\nWhich relationship best describes the relationship between Publication and Article?",
+    diagram:"q2",
+    options:["Composition","Generalization","Aggregation","None of the above"], correct:1,
+    explanations:[
+"❌ Composition — Composition is a strong part-whole relationship. Parts cannot exist without the whole. Publication and Article do not have this relationship.",
+"✅ Generalization — The arrows pointing to Publication from Article and Book in the figure are hollow triangles, indicating inheritance (Generalization), and Article is-a Publication.",
+"❌ Aggregation — Aggregation is a part-whole relationship, and the diagram uses inheritance arrows.",
+"❌ None of the above — Wrong, Generalization correct."
+    ]
+  },
+  {
+    num:4, text:"Consider the class diagram from Question 2\nWhich of the following statements is NOT True about the Class Diagram?",
+    diagram:"q2",
+    options:["Every publication has an Author.","Every Article has at least one Author","Not every Book has an Author","None of the above"], correct:0,
+    explanations:[
+"✅ Every publication has an Author. — This is NOT True. Book-Author multiplicity 0..*, that is, a book can have no author; therefore not every Publication must have an Author.",
+"❌ Every Article has at least one Author — The Author side of the Article-Author connection is 1..4, and every Article has at least one author, which is True.",
+"❌ Not every Book has an Author — Book-Author multiplicity 0..*, a Book can have no Author, this is True.",
+"❌ None of the above — False, the first item is indeed Not True."
+    ]
+  },
+  {
+    num:5, text:"Based on this Class diagram, which of the following statements about the City and State classes is correct?",
+    diagram:"q5",
+    options:["No two cities can have the same name","Each city can be in zero or one state","Each city is in exactly one state","No two states can have the same name"], correct:2,
+    explanations:[
+"❌ No two cities can have the same name — The class diagram has no uniqueness constraint and Name is just a normal attribute, so this conclusion cannot be reached.",
+"❌ Each city can be in zero or one state — There is no multiplicity annotation on the City side (default 1), and each City belongs to exactly one State, not zero or one.",
+"✅ Each city is in exactly one state — There is a composition diamond on the State side, and the default multiplicity on the City side is 1, which means that each City belongs to exactly one State.",
+"❌ No two states can have the same name — The class diagram does not impose a uniqueness constraint to conclude this."
+    ]
+  },
+  {
+    num:6, text:"P restaurant wants to automate ordering of pizzas for customers.\n1. Two sizes: large, small\n2. Each pizza can have two different sauces and two different bases\n3. A customer can order a pizza or a drink\n\nWhich of the following is LEAST likely to be a class or attribute?",
+    options:["Pizza","Order","Customer","Sauce","Drink","Size"], correct:1,
+    explanations:[
+"❌ Pizza — obviously the core entity, should be a class.",
+"✅ Order — In this scenario, Order is more likely to be an operation (method) than a persistent data entity; the requirement describes the action of placing an order.",
+"❌ Customer — The customer is directly mentioned in the requirement and is an entity class.",
+"❌ Sauce — A different Sauce is mentioned in the requirement, which can be a class or a property.",
+"❌ Drink — The requirement clearly treats Drink as an orderable item and an entity.",
+"❌ Size — The requirement mentions two sizes: large/small, which can be used as attributes or classes."
+    ]
+  },
+  {
+    num:7, text:"From the requirements stated in Question 6, which of the following is MOST likely to be an operation?",
+    options:["Base","Order","Sauce","None of the above"], correct:1,
+    explanations:[
+"❌ Base — is a component of pizza and is a property or class, not an operation.",
+"✅ Order — Order describes the action/behavior of placing an order, and is more suitable as a method (operation) in OO design, such as customer.order(pizza).",
+"❌ Sauce — is a component of pizza and is a property or class.",
+"❌ None of the above — Error, Order is the most appropriate action."
+    ]
+  },
+  {
+    num:8, text:"In UML diagrams, how are abstract classes distinguished from concrete classes?",
+    options:["They are shown in the same way","Class names for abstract classes are shown in italics","Class names for concrete classes are shown in italics","Abstract classes are shown as boxes with bold outlines"], correct:1,
+    explanations:[
+"❌ They are shown in the same way — Wrong, UML has a special way of representing abstract classes.",
+"✅ Class names for abstract classes are shown in italics — The UML specification stipulates that class names for abstract classes are shown in italics to distinguish them from concrete classes.",
+"❌ Class names for concrete classes are shown in italics — Just the opposite, italics are used for abstract classes and normal fonts are used for concrete classes.",
+"❌ Abstract classes are shown as boxes with bold outlines — This is not a UML standard specification."
+    ]
+  },
+  {
+    num:9, text:"Which of the following terms best describes the case where a Queue class is implemented using an internal instance of Array for storing the elements in the queue?",
+    options:["Creation","Composition","Generalization","Singularity"], correct:1,
+    explanations:[
+"❌ Creation — Not a standard term for describing relationships between classes.",
+"✅ Composition — Composition is a strong part-whole relationship: Array is an internal component of Queue, and its life cycle follows Queue, conforming to the definition of Composition.",
+"❌ Generalization — inheritance relationship, Queue does not inherit Array.",
+"❌ Singularity — is not a relationship type in UML."
+    ]
+  },
+  {
+    num:10, text:"Is the following statement True or False?\nUML class diagrams are a good way to represent the algorithmic nature of the interactions between classes.",
+    options:["True","False"], correct:1,
+    explanations:[
+"❌ True — False, class diagrams are not suitable for representing algorithms or interaction logic.",
+"✅ False — UML class diagrams are used to show the structure of a class (properties, methods, relationships) and do not represent algorithms or interaction sequences. To represent interactions, use Sequence Diagram or Activity Diagram."
+    ]
+  },
+  {
+    num:11, text:"The vertical dimension of a sequence diagram represents which of the following?",
+    options:["Message","Time","Objects","Replies"], correct:1,
+    explanations:[
+"❌ Message — A message is a horizontal arrow representing calls between objects, not a vertical dimension.",
+"✅ Time — The vertical axis of a Sequence Diagram represents the passage of time, with time increasing from top to bottom.",
+"❌ Objects — Objects are arranged along the top horizontal axis, with the vertical lifeline of each object.",
+"❌ Replies — Replies are specific types of messages that are still horizontally dimensional."
+    ]
+  },
+  {
+    num:12, text:"Is the following statement True or False?\nClass Diagrams can show timing-related information.",
+    options:["True","False"], correct:1,
+    explanations:[
+"❌ True — Error, the class diagram is a static structural view and does not contain timing or execution order information.",
+"✅ False — Class Diagram is a static diagram that only describes the system structure (classes, attributes, methods, relationships), and timing information is represented by Sequence Diagram or Timing Diagram."
+    ]
+  },
+  {
+    num:13, text:"Which of the following determines the order of events in a Sequence Diagram?",
+    options:["The order of events based on their object-creation time","The order of events based on their triggering time","The order of events based on their importance","The order of events based on their duration time"], correct:1,
+    explanations:[
+"❌ The order of events based on their object-creation time — The order of object creation does not determine the order of messages.",
+"✅ The order of events based on their triggering time — The events in the sequence diagram are arranged from top to bottom according to their triggering time, reflecting the actual execution/interaction sequence.",
+"❌ The order of events based on their importance — importance is not a ranking basis.",
+"❌ The order of events based on their duration time — duration does not determine order."
+    ]
+  }
+];
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+QuizPane.mount({ questions: questions, diagramMap: IMGS });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

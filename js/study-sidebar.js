@@ -59,6 +59,7 @@
       var a = document.createElement('a');
       a.setAttribute('data-week-id', w.id);
       a.textContent = fmt(w);
+      var hrefFile = window.getWeekNavHref ? window.getWeekNavHref(w) : (window.getWeekFile ? window.getWeekFile(w) : w.file);
       if (useHash) {
         a.href = '#' + w.id;
         if (onWeekClick) {
@@ -68,7 +69,7 @@
           });
         }
       } else {
-        a.href = w.file;
+        a.href = hrefFile;
       }
       if (w.id === currentId) {
         a.classList.add('current');
@@ -87,15 +88,25 @@
     root.innerHTML = '';
     var aside = document.createElement('aside');
     aside.className = 'study-nav';
-    aside.setAttribute('aria-label', '周次导航');
+    aside.setAttribute('aria-label', 'Course weeks');
+    var header = document.createElement('div');
+    header.className = 'study-nav-header';
     var title = document.createElement('div');
     title.className = 'study-nav-title';
     title.textContent = 'CS 427: Software Engineering';
+    header.appendChild(title);
     var nav = document.createElement('nav');
     nav.className = 'study-nav-list';
-    aside.appendChild(title);
+    aside.appendChild(header);
     aside.appendChild(nav);
+    var langRoot = document.createElement('div');
+    langRoot.className = 'study-lang-switch-root';
+    langRoot.setAttribute('aria-label', 'Language');
+    aside.appendChild(langRoot);
     root.appendChild(aside);
+    if (typeof window.mountStudyLangSwitch === 'function') {
+      window.mountStudyLangSwitch(langRoot, { inIndex: false });
+    }
     renderStudyNavList(nav, { currentId: currentId, useHash: false });
     syncNotesTitleWithSidebar(currentId);
   }

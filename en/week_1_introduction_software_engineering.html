@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 1 · Introduction to Software Engineering &amp; Quiz</title>
+<link rel="stylesheet" href="../css/study-sidebar.css">
+<link rel="stylesheet" href="../css/quiz-pane.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--border2:#d4d1ca;
+  --text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--wrong-bg:#fee2e2;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{
+  display:grid;
+  grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));
+  min-height:100vh;
+  max-width:1600px;
+  width:100%;
+  margin:0;
+}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane{background:var(--bg);border:none;}
+.quiz-pane{background:var(--bg);}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){
+  .page-split{grid-template-columns:1fr;}
+  .pane{max-height:none;}
+}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.card-body{font-size:0.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.card-body:last-child{margin-bottom:0;}
+.hl{color:var(--text);font-weight:600;}
+.hl-green{color:var(--accent);font-weight:600;}
+.hl-blue{color:var(--blue);font-weight:600;}
+.hl-amber{color:var(--accent2);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist:last-child{margin-bottom:0;}
+.blist li{font-size:0.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border2);font-size:0.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+.tbl-wrap:last-child{margin-bottom:0;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.divider{border:none;margin:20px 0;height:0;clear:both;}
+.note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent2);margin-bottom:4px;}
+.green-box{background:var(--accent-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.green-box .note-label{color:var(--accent);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.blue-box{background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.blue-box .note-label{color:var(--blue);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:4px;}
+.summary-cell{background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px;}
+.summary-cell .sc-val{font-size:0.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+#tab-mindmap{padding-top:0;}
+.mm-iframe-wrap{margin:0 -8px;width:calc(100% + 16px);height:min(85vh,1100px);min-height:420px;overflow:hidden;border-radius:var(--radius);background:var(--surface2);}
+.mm-iframe{display:block;width:100%;height:100%;border:none;vertical-align:top;background:transparent;}
+</style>
+<link rel="stylesheet" href="../css/study-week-tabs.css">
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="intro">
+<div class="app-shell">
+  <div id="study-sidebar-root"></div>
+<div class="page-split">
+  <div class="notes-pane pane">
+    <div class="container">
+  <header>
+    <h1>Week 1 · Introduction to Software Engineering</h1>
+  </header>
+
+  <nav class="tab-nav">
+    <button type="button" class="tab-btn active" onclick="switchTab('mindmap',this)">Mindmap</button>
+    <button type="button" class="tab-btn" onclick="switchTab('sdlc',this)">SDLC</button>
+    <button type="button" class="tab-btn" onclick="switchTab('trinity',this)">Trinity</button>
+    <button type="button" class="tab-btn" onclick="switchTab('concepts',this)">Core concepts</button>
+    <button type="button" class="tab-btn" onclick="switchTab('stakeholders',this)">Stakeholders</button>
+    <button type="button" class="tab-btn" onclick="switchTab('se',this)">SE vs. programming</button>
+    <button type="button" class="tab-btn" onclick="switchTab('goals',this)">Competing goals</button>
+  </nav>
+
+  <!-- Tab: Mind map -->
+  <div id="tab-mindmap" class="tab-panel active">
+    <div class="mm-iframe-wrap">
+      <iframe class="mm-iframe" src="../mindmap/week_1_introduction_software_engineering_mindmap.html" title="Week 1 mind map" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <!-- Tab: SDLC -->
+  <div id="tab-sdlc" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Software Development Life Cycle (SDLC)</div>
+      <div class="keywords">
+        <span class="kw green">SDLC</span>
+        <span class="kw">Requirements</span>
+        <span class="kw">Design</span>
+        <span class="kw">Implementation</span>
+        <span class="kw">Testing</span>
+        <span class="kw">Maintenance</span>
+      </div>
+      <div class="card-body">
+        The software development life cycle (SDLC) is the end-to-end framework from inception through release and maintenance, with tasks and deliverables for each phase.
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>Phase</th><th>Main activities</th><th>Typical artifacts</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Requirements</td><td>Elicit, analyze, and document needs</td><td>Software Requirements Specification (SRS)</td></tr>
+            <tr><td>Design</td><td>Architecture, modules, interfaces</td><td>Design documents, UML diagrams</td></tr>
+            <tr><td>Implementation</td><td>Coding and unit integration</td><td>Source code</td></tr>
+            <tr><td>Testing</td><td>Verify behavior and quality</td><td>Test plans, reports, defect logs</td></tr>
+            <tr><td>Maintenance</td><td>Fix defects, adapt to change</td><td>Patches, releases</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">
+        <div class="note-label">Exam tip</div>
+        <strong>“Evaluation phase” is not a standard SDLC phase.</strong> It is a common distractor; the usual list is requirements, design, implementation, testing, and maintenance.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Trinity -->
+  <div id="tab-trinity" class="tab-panel">
+    <div class="card">
+      <div class="card-title">The trinity of a software project</div>
+      <div class="keywords">
+        <span class="kw green">Software system</span>
+        <span class="kw green">Software users</span>
+        <span class="kw green">Software development process</span>
+        <span class="kw">Trinity</span>
+      </div>
+      <div class="card-body">
+        A software project rests on three pillars—omit one and the picture is incomplete. They interact and together shape success or failure.
+      </div>
+      <div class="summary-grid">
+        <div class="summary-cell">
+          <div class="sc-label">Software system</div>
+          <div class="sc-val">The product you deliver</div>
+        </div>
+        <div class="summary-cell">
+          <div class="sc-label">Software users</div>
+          <div class="sc-val">People who rely on the system</div>
+        </div>
+        <div class="summary-cell">
+          <div class="sc-label">Software development process</div>
+          <div class="sc-val">How the team builds and evolves the product</div>
+        </div>
+      </div>
+      <div class="note-box">
+        <div class="note-label">Exam tip</div>
+        <strong>Software Design is not part of the trinity.</strong> Design is a phase of development, not a separate pillar.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Core concepts -->
+  <div id="tab-concepts" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Information Hiding</div>
+      <div class="keywords">
+        <span class="kw blue">Information Hiding</span>
+        <span class="kw">Encapsulation</span>
+        <span class="kw">Interface</span>
+        <span class="kw">Modularity</span>
+      </div>
+      <div class="card-body">
+        Hide a component’s <span class="hl">internal implementation</span> and expose only its <span class="hl-blue">interface</span>. When internals change, external code does not need to change.
+      </div>
+      <ul class="blist">
+        <li>Change internals → external code stays unaffected</li>
+        <li>Improves modularity and lowers coupling</li>
+        <li>Core idea behind encapsulation in OOP</li>
+      </ul>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Concept</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td>Information Hiding</td><td>Hide internals; expose the interface</td></tr>
+            <tr><td>Divide and Conquer</td><td>Split big problems into smaller ones</td></tr>
+            <tr><td>Inheritance</td><td>Subclass reuses parent fields/methods (OOP)</td></tr>
+            <tr><td>Project Management</td><td>Plan, organize, and control execution</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Key software trait (exam): malleability</div>
+      <div class="keywords">
+        <span class="kw green">Malleable</span>
+        <span class="kw">Complex</span>
+        <span class="kw">Evolving</span>
+        <span class="kw">Team-based</span>
+      </div>
+      <div class="card-body">
+        Software’s hallmark is <span class="hl-green">malleability</span>—it can be changed, extended, and refactored far more easily than hardware.
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Claim</th><th>Meaning</th><th>Exam answer</th></tr></thead>
+          <tbody>
+            <tr><td>Malleable</td><td>Easy to change</td><td style="color:var(--accent);font-weight:600;">✓ True</td></tr>
+            <tr><td>Simple</td><td>Real software is highly complex</td><td style="color:var(--red);font-weight:600;">✗ False</td></tr>
+            <tr><td>Constant</td><td>Software evolves; it is not fixed</td><td style="color:var(--red);font-weight:600;">✗ False</td></tr>
+            <tr><td>Single-person</td><td>Real software usually needs teams</td><td style="color:var(--red);font-weight:600;">✗ False</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Brooks’s Law: adding people can slow you down</div>
+      <div class="keywords">
+        <span class="kw amber">Brooks&rsquo;s Law</span>
+        <span class="kw">Software Crisis</span>
+        <span class="kw">Communication Overhead</span>
+        <span class="kw">Onboarding</span>
+      </div>
+      <div class="card-body">
+        <span class="hl-amber">“Adding manpower to a late software project makes it later.”</span> — Fred Brooks, <cite>The Mythical Man-Month</cite>
+      </div>
+      <ul class="blist">
+        <li>New hires need <strong>onboarding</strong> time and produce little at first</li>
+        <li>More people → communication paths grow → <strong>communication overhead</strong> spikes</li>
+        <li>Veterans mentor newcomers → overall throughput drops</li>
+      </ul>
+      <div class="note-box">
+        <div class="note-label">In short</div>
+        Adding people does not fix the software crisis; it often makes things worse.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Stakeholders -->
+  <div id="tab-stakeholders" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Project Stakeholders</div>
+      <div class="keywords">
+        <span class="kw blue">Stakeholder</span>
+        <span class="kw">Customer</span>
+        <span class="kw">User</span>
+        <span class="kw">Developer</span>
+        <span class="kw">Tester</span>
+        <span class="kw">Designer</span>
+      </div>
+      <div class="card-body">
+        A <span class="hl-blue">stakeholder</span> is anyone with an interest in or impact on the project—not only developers.
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Role</th><th>Typical part in the project</th></tr></thead>
+          <tbody>
+            <tr><td>Customer</td><td>Pays for or commissions the work</td></tr>
+            <tr><td>User</td><td>Uses the software day to day (may differ from the customer)</td></tr>
+            <tr><td>Designer</td><td>System and UI/UX design</td></tr>
+            <tr><td>Tester</td><td>Validates quality and correctness</td></tr>
+            <tr><td>Support engineer</td><td>Deployment, operations, user support</td></tr>
+            <tr><td>Project manager</td><td>Schedule, resources, risk</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <hr class="divider">
+      <div class="card-body">
+        <span class="hl">Users are not always customers</span>
+      </div>
+      <ul class="blist">
+        <li><strong>Customer</strong>: who pays (e.g., procurement or IT)</li>
+        <li><strong>User</strong>: who operates the software (e.g., staff)</li>
+        <li>Often different in B2B; sometimes the same in consumer apps</li>
+      </ul>
+      <div class="blue-box">
+        <div class="note-label">Example</div>
+        The IT department buys a CRM (customer); the sales team uses it (users).
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Software engineering vs. programming -->
+  <div id="tab-se" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Software Engineering vs. Programming</div>
+      <div class="keywords">
+        <span class="kw green">Software Engineering</span>
+        <span class="kw">Programming</span>
+        <span class="kw">Multi-person</span>
+        <span class="kw">Multi-version</span>
+        <span class="kw">Long-lived Systems</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Dimension</th><th>Programming</th><th>Software engineering</th></tr></thead>
+          <tbody>
+            <tr><td>Scale</td><td>Individual or small scripts</td><td>Team-based development</td></tr>
+            <tr><td>Versions</td><td>Often one-off or single release</td><td>Many releases; evolution over time</td></tr>
+            <tr><td>Lifetime</td><td>Short-term, ad hoc</td><td>Long-term maintenance and change</td></tr>
+            <tr><td>Focus</td><td>Getting code to run</td><td>Process, design, quality, collaboration</td></tr>
+            <tr><td>Outcome</td><td>A working program</td><td>A sustainable, maintainable system</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="blist">
+        <li>Software engineering includes coding plus requirements, design, testing, maintenance, and more.</li>
+        <li>The hard part is keeping quality and consistency under <strong>teamwork and long-term change</strong>.</li>
+        <li>It is “how to build software well at scale,” not only “how to write code.”</li>
+      </ul>
+      <div class="green-box">
+        <div class="note-label">Key trait of software engineers</div>
+        Beyond technical skill, you need <strong>the ability to collaborate effectively in a team</strong>—that is what distinguishes engineers from programmers who only write code in isolation.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Competing goals -->
+  <div id="tab-goals" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Competing goals of a software project</div>
+      <div class="keywords">
+        <span class="kw amber">Time</span>
+        <span class="kw amber">Cost</span>
+        <span class="kw amber">Quality</span>
+        <span class="kw">Iron Triangle</span>
+        <span class="kw">Trade-off</span>
+      </div>
+      <div class="card-body">
+        Time, cost, and quality trade off—you rarely optimize all three. This is the <span class="hl-amber">Iron Triangle</span>.
+      </div>
+      <div class="summary-grid">
+        <div class="summary-cell">
+          <div class="sc-label">Time</div>
+          <div class="sc-val">Schedule and calendar time for development</div>
+        </div>
+        <div class="summary-cell">
+          <div class="sc-label">Cost</div>
+          <div class="sc-val">What the customer pays the team</div>
+        </div>
+        <div class="summary-cell">
+          <div class="sc-label">Quality</div>
+          <div class="sc-val">Functional completeness and reliability</div>
+        </div>
+      </div>
+      <ul class="blist" style="margin-top:16px;">
+        <li>Faster delivery → spend more or cut quality</li>
+        <li>Lower cost → take longer or cut quality</li>
+        <li>Higher quality → more time or more money</li>
+      </ul>
+      <hr class="divider">
+      <div class="card-body">Options that <span class="hl">do not</span> belong among competing goals:</div>
+      <div class="note-box">
+        <div class="note-label">Exam tip</div>
+        <strong>Market share</strong> is a business metric, <strong>not</strong> one of the three classical project trade-offs. In this course, the iron triangle is <strong>time</strong>, <strong>cost</strong>, and <strong>quality</strong>.
+      </div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+
+  <div class="quiz-pane pane">
+    <div class="qz-wrap">
+      <div class="qz-toolbar">
+        <h2 class="qz-heading">Week 1 — quiz</h2>
+        <div class="qz-actions">
+          <button type="button" class="qz-reset" onclick="resetQuiz()">Reset</button>
+          <div class="score-bar">Score: <span class="score-pill" id="score-display">— / 10</span></div>
+        </div>
+      </div>
+      <div id="questions-container"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const questions = [
+  {
+    num: 1,
+    text: "Which of the following is NOT a part of Software Development Life Cycle?",
+    options: ["Requirements Phase", "Design Phase", "Implementation Phase", "Evaluation Phase"],
+    correct: 3,
+    explanations: [
+      "❌ Requirements Phase — This IS part of SDLC; it defines what the system should do.",
+      "❌ Design Phase — This IS part of SDLC; it plans the architecture and system structure.",
+      "❌ Implementation Phase — This IS part of SDLC; it covers actual coding and development.",
+      "✅ Evaluation Phase — This is NOT a standard SDLC phase. The typical phases are Requirements, Design, Implementation, Testing, and Maintenance."
+    ]
+  },
+  {
+    num: 2,
+    text: "The trinity of a software project does NOT include which of the following?",
+    options: ["Software System", "Software Design", "Software Users", "Software Development Process"],
+    correct: 1,
+    explanations: [
+      "❌ Software System — This IS part of the trinity; it represents the product itself.",
+      "✅ Software Design — This is NOT part of the trinity. The trinity consists of Software System, Software Users, and Software Development Process.",
+      "❌ Software Users — This IS part of the trinity; users are a key stakeholder element.",
+      "❌ Software Development Process — This IS part of the trinity; it defines how the system is built."
+    ]
+  },
+  {
+    num: 3,
+    text: "______ provides flexibility for changing a component's internal design decisions without impacting the external code using this component's interface.",
+    options: ["Project Management", "Divide and Conquer", "Inheritance", "Information Hiding"],
+    correct: 3,
+    explanations: [
+      "❌ Project Management — Relates to planning and organizing, not design flexibility.",
+      "❌ Divide and Conquer — Refers to breaking problems into smaller subproblems; not specifically about hiding internals.",
+      "❌ Inheritance — An OOP mechanism for code reuse, not about hiding internal design from external code.",
+      "✅ Information Hiding — Allows a component's internal implementation to change without affecting external users of its interface, improving modularity and maintainability."
+    ]
+  },
+  {
+    num: 4,
+    text: "Which of the following is a characteristic of Software?",
+    options: ["Malleable", "Simple", "Constant", "Requiring a single person to develop"],
+    correct: 0,
+    explanations: [
+      "✅ Malleable — Software is highly malleable; it can be easily modified and adapted compared to physical products.",
+      "❌ Simple — Software systems are typically complex, not simple.",
+      "❌ Constant — Software evolves continuously; it is not constant.",
+      "❌ Requiring a single person to develop — Most real-world software requires teams, making this false."
+    ]
+  },
+  {
+    num: 5,
+    text: "Which of the following roles is/are project stakeholders of a software project? Select the best answer.",
+    options: ["Support Engineer", "Designer", "Tester", "All of the above"],
+    correct: 3,
+    explanations: [
+      "❌ Support Engineer — A stakeholder, but selecting only this is incomplete.",
+      "❌ Designer — A stakeholder, but selecting only this is incomplete.",
+      "❌ Tester — A stakeholder, but selecting only this is incomplete.",
+      "✅ All of the above — Support engineer, designer, and tester are all stakeholders."
+    ]
+  },
+  {
+    num: 6,
+    text: "Is the following statement TRUE?\nIn the context of a software project, users are different from customers.",
+    options: ["True", "False"],
+    correct: 0,
+    explanations: [
+      "✅ True — Users are the people who use the software, while customers are those who pay for it. They can be different people (e.g., a company buys software for its employees).",
+      "❌ False — This is incorrect; users and customers are indeed distinct roles in a software project context."
+    ]
+  },
+  {
+    num: 7,
+    text: "True or false?\nAdding more team members helps solve the software crisis.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ True — This is incorrect. Adding more people to a late project makes it later (Brooks' Law).",
+      "✅ False — Adding more team members does NOT solve a software crisis. New members need onboarding time and increase communication overhead, often making things worse (Brooks' Law from 'The Mythical Man-Month')."
+    ]
+  },
+  {
+    num: 8,
+    text: "John is an efficient programmer and eager to learn, but he has never worked on a team. Which attribute does he most need to become a successful software engineer?",
+    options: ["Working alone", "Being defensive about his work", "Ability to interact and collaborate effectively in a team", "None—John already has what he needs"],
+    correct: 2,
+    explanations: [
+      "❌ Working alone — Software engineering is a team-based discipline; working alone is not the key attribute needed.",
+      "❌ Being defensive about his work — Being defensive hinders collaboration and growth; it is a negative attribute.",
+      "✅ Ability to interact and collaborate effectively in a team — Software engineering is collaborative; this is what John most needs to build.",
+      "❌ None—John already has what he needs — Incorrect; he lacks team experience, which matters for software engineering."
+    ]
+  },
+  {
+    num: 9,
+    text: "Which of the following statements is NOT true?",
+    options: [
+      "Software engineering is primarily concerned with multi-person development",
+      "Software engineering is primarily concerned with writing a single version of a program",
+      "Software engineering and programming are two different concepts"
+    ],
+    correct: 1,
+    explanations: [
+      "❌ Software engineering is primarily concerned with multi-person development — True; SE is inherently team-oriented.",
+      "✅ Software engineering is primarily concerned with writing a single version of a program — False. SE targets evolving, multi-release systems, not a one-off program.",
+      "❌ Software engineering and programming are two different concepts — This IS true; SE is broader, encompassing processes, design, teamwork, and maintenance beyond just coding."
+    ]
+  },
+  {
+    num: 10,
+    text: "Which of the following is NOT among the competing goals of a software project (in the usual “iron triangle” sense)?",
+    options: [
+      "Time used by developers to develop the software",
+      "Cost for the customers to pay the software project team to develop the software",
+      "Quality of the developed software",
+      "Market share occupied by the developed software"
+    ],
+    correct: 3,
+    explanations: [
+      "❌ Time used by developers to develop the software — Time IS a competing goal (schedule/time constraint).",
+      "❌ Cost for the customers to pay the software project team to develop the software — Cost IS a competing goal.",
+      "❌ Quality of the developed software — Quality IS a competing goal.",
+      "✅ Market share occupied by the developed software — Market share is a business metric, NOT one of the classical competing goals (Time, Cost, Quality) of a software project."
+    ]
+  }
+];
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+QuizPane.mount({ questions: questions });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

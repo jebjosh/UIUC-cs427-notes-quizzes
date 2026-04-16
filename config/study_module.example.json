@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$comment": "Prototype: Week 6 Design Patterns. Copy to config/week_N_*.json per module.",
   "moduleId": "week_6",
-  "mergePageFilename": "week_6_design_patterns.html",
+  "mergePageFilename": "zh/week_6_design_patterns.html",
   "titles": {
     "documentTitle": "Week 6 · OO Paterns Part 2 & Quiz",
     "notesH1": "Week 6 - OO Paterns - Part 2",

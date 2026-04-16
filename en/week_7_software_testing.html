@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Week 7 · Software Testing &amp; Quiz</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<link href="../css/quiz-pane.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--border2:#d4d1ca;
+  --text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-border:#16a34a;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-border:#dc2626;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-border:#2563eb;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{
+  display:grid;
+  grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));
+  min-height:100vh;
+  max-width:1600px;
+  width:100%;
+  margin:0;
+}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane{background:var(--bg);border:none;}
+.quiz-pane{background:var(--bg);}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){
+  .page-split{grid-template-columns:1fr;}
+  .pane{max-height:none;}
+  .notes-pane{border:none;}
+}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card:hover{border:none;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.kw.red{background:var(--red-light);color:var(--red);}
+.card-body{font-size:0.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.card-body:last-child{margin-bottom:0;}
+.card-body code,.blue-box code,.green-box code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--tag-bg);padding:1px 6px;border-radius:3px;color:var(--text);}
+.hl{color:var(--text);font-weight:600;}
+.hl-green{color:var(--accent);font-weight:600;}
+.hl-blue{color:var(--blue);font-weight:600;}
+.hl-amber{color:var(--accent2);font-weight:600;}
+.hl-red{color:var(--red);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist:last-child{margin-bottom:0;}
+.blist li{font-size:0.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border2);font-size:0.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+.tbl-wrap:last-child{margin-bottom:0;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.divider{border:none;margin:20px 0;height:0;clear:both;}
+.note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent2);margin-bottom:4px;}
+.green-box{background:var(--accent-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.green-box .note-label{color:var(--accent);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.blue-box{background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.blue-box .note-label{color:var(--blue);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.red-box{background:var(--red-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.red-box .note-label{color:var(--red);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:4px;}
+.summary-cell{background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px;}
+.summary-cell .sc-val{font-size:0.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+#tab-mindmap{padding-top:0;}
+.mm-iframe-wrap{
+  margin:0 -8px 0 -8px;
+  width:calc(100% + 16px);
+  height:min(85vh,1100px);
+  min-height:420px;
+  overflow:hidden;
+  border-radius:var(--radius);
+  background:var(--surface2);
+}
+.mm-iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  border:none;
+  background:transparent;
+}
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="week-7">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="page-split">
+<div class="notes-pane pane">
+<div class="container">
+<header>
+<h1>Week 7 — Software Testing</h1>
+</header>
+<nav class="tab-nav">
+<button class="tab-btn" onclick="switchTab('mindmap',this)" type="button">Mindmap</button>
+<button class="tab-btn active" onclick="switchTab('overview',this)" type="button">Testing Overview</button>
+<button class="tab-btn" onclick="switchTab('activities',this)" type="button">Test Activities</button>
+<button class="tab-btn" onclick="switchTab('blackwhite',this)" type="button">Black vs White Box</button>
+<button class="tab-btn" onclick="switchTab('pie',this)" type="button">PIE Model</button>
+<button class="tab-btn" onclick="switchTab('coverage',this)" type="button">Code Coverage</button>
+</nav>
+<div class="tab-panel" id="tab-mindmap">
+<div class="mm-iframe-wrap">
+<iframe class="mm-iframe" loading="lazy" src="../mindmap/week_7_software_testing_mindmap.html" title="Software Testing mind map"></iframe>
+</div>
+</div>
+<div class="tab-panel active" id="tab-overview">
+<div class="card">
+<div class="card-title">What testing can and cannot do</div>
+<div class="keywords">
+<span class="kw green">Testing</span>
+<span class="kw">Code Quality</span>
+<span class="kw">Fault Detection</span>
+<span class="kw red">Limitation</span>
+</div>
+<div class="card-body">Testing helps you <span class="hl-green">find defects, improve quality, and document behavior</span>, but it has a hard limit: <span class="hl-red">it cannot prove the program is fully correct</span>.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Claim about testing</th><th>What it means</th><th>Valid?</th></tr></thead>
+<tbody>
+<tr><td>Improve code quality</td><td>Find and fix defects so quality rises.</td><td style="color:var(--accent);font-weight:600">✓</td></tr>
+<tr><td>Spot code faults</td><td>Reveal bugs and wrong logic.</td><td style="color:var(--accent);font-weight:600">✓</td></tr>
+<tr><td>Document code</td><td>Test cases act as executable specs of system behavior.</td><td style="color:var(--accent);font-weight:600">✓</td></tr>
+<tr><td>Guarantee fully correct behavior</td><td>The input space is huge; you cannot exhaust every case.</td><td style="color:var(--red);font-weight:600">✗</td></tr>
+</tbody>
+</table>
+</div>
+<div class="red-box">
+<div class="note-label">Exam tip</div>
+<strong>Testing does not guarantee the code is “fully correct.”</strong> That line is a classic distractor. Passing every test still leaves room for untested paths.</div>
+</div>
+<div class="card">
+<div class="card-title">When to test and how much test code</div>
+<div class="keywords">
+<span class="kw green">TDD</span>
+<span class="kw">Test-first</span>
+<span class="kw">Test Code Volume</span>
+<span class="kw blue">UI Testing</span>
+</div>
+<div class="card-body">You can write tests at <span class="hl">any point</span> in the lifecycle, and the test codebase can be larger than the production codebase.</div>
+<ul class="blist">
+<li><strong>Before</strong> — Write tests first (TDD/BDD) to drive design.</li>
+<li><strong>During</strong> — Add tests alongside features so new code stays covered.</li>
+<li><strong>After</strong> — Backfill tests for regression fixes and legacy code.</li>
+<li>In mature projects, <strong>test code can outgrow source code</strong>; that is normal.</li>
+<li>UIs are testable too; automate UI checks once layouts and flows stabilize.</li>
+</ul>
+<div class="green-box">
+<div class="note-label">Who writes tests</div>Testing is not QA-only. Developers, domain experts, and users can all author test cases—more perspectives means fewer blind spots.</div>
+</div>
+<div class="card">
+<div class="card-title">Developer bias</div>
+<div class="keywords">
+<span class="kw amber">Developer Bias</span>
+<span class="kw">QA</span>
+<span class="kw">Independent Testing</span>
+</div>
+<div class="card-body">Developers who test their own code often show <span class="hl-amber">cognitive bias</span>: they exercise paths they “know” work and miss edge cases.</div>
+<ul class="blist">
+<li>Deep understanding of the code does <strong>not</strong> mean you will find every fault.</li>
+<li>It is easy to assume your implementation is right and skip adversarial cases.</li>
+<li>Independent reviewers and diverse authors catch what the original author misses.</li>
+<li>QA engineers specialize in testing, but they are not the only people who should write cases.</li>
+</ul>
+</div>
+</div>
+<!-- Tab 2: Test Activities -->
+<div class="tab-panel" id="tab-activities">
+<div class="card">
+<div class="card-title">The four test activities</div>
+<div class="keywords">
+<span class="kw green">Test Design</span>
+<span class="kw green">Test Automation</span>
+<span class="kw green">Test Execution</span>
+<span class="kw green">Test Evaluation</span>
+<span class="kw red">Test Implementation ✗</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Activity</th><th>Main job</th><th>Skills you need</th></tr></thead>
+<tbody>
+<tr><td>Test Design</td><td>Define cases, inputs, and expected results.</td><td>Domain knowledge and understanding of the system.</td></tr>
+<tr><td>Test Automation</td><td>Turn those values into runnable scripts.</td><td>Programming and familiarity with test frameworks.</td></tr>
+<tr><td>Test Execution</td><td>Run tests and collect outcomes.</td><td>Environment setup and tooling.</td></tr>
+<tr><td>Test Evaluation</td><td>Interpret results, pass/fail, coverage.</td><td>Analysis and reporting.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+<strong>“Test Implementation” is not a named activity in this model.</strong> It is a common distractor. Memorize: Design → Automation → Execution → Evaluation.</div>
+</div>
+<div class="card">
+<div class="card-title">Manual vs automated testing</div>
+<div class="keywords">
+<span class="kw blue">Automated Testing</span>
+<span class="kw">Manual Testing</span>
+<span class="kw amber">Regression Testing</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Topic</th><th>Manual testing</th><th>Automated testing</th></tr></thead>
+<tbody>
+<tr><td>Typical use</td><td>Exploration, one-off checks, early UI mockups.</td><td>Regression suites and anything run on every build.</td></tr>
+<tr><td>Finding bugs</td><td>Strong for creative exploration and edge cases.</td><td>Does <strong>not</strong> automatically beat manual testing in bug count.</td></tr>
+<tr><td>Maintenance</td><td>Low—no scripts to update.</td><td>Higher—tests must track production changes.</td></tr>
+<tr><td>UI timing</td><td>Manual checks work while designs churn.</td><td>Automate after the UI stabilizes.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="red-box">
+<div class="note-label">Reality check</div>
+<strong>Automation is not “more bugs by default.”</strong> One-off or rarely repeated checks are often cheaper to run manually; scripting them can waste effort.</div>
+<div class="blue-box">
+<div class="note-label">Regression</div>When the same regression battery must run <strong>often</strong>, automation pays off—that is where it earns its keep.</div>
+</div>
+<div class="card">
+<div class="card-title">Test cases as living documentation</div>
+<div class="keywords">
+<span class="kw green">Test Cases</span>
+<span class="kw">Living Documentation</span>
+<span class="kw">Requirements Understanding</span>
+</div>
+<div class="card-body">Authoring tests forces you to <span class="hl-green">clarify requirements</span>. Those cases also document how the system is supposed to behave.</div>
+<ul class="blist">
+<li>Tests are not an afterthought—they <strong>state expected behavior</strong>.</li>
+<li>Choosing inputs, outputs, and boundaries is requirements work in disguise.</li>
+<li>Teammates can read tests as specs.</li>
+<li>Tests need not be code; manual plans still count.</li>
+</ul>
+</div>
+</div>
+<!-- Tab 3: Black vs White Box -->
+<div class="tab-panel" id="tab-blackwhite">
+<div class="card">
+<div class="card-title">Black-box vs white-box testing</div>
+<div class="keywords">
+<span class="kw blue">Black-box</span>
+<span class="kw green">White-box</span>
+<span class="kw">Structural Testing</span>
+<span class="kw">Functional Testing</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Dimension</th><th>Black-box</th><th>White-box</th></tr></thead>
+<tbody>
+<tr><td>Viewpoint</td><td>External behavior; implementation hidden.</td><td>Internal structure, control and data flow visible.</td></tr>
+<tr><td>Also called</td><td>Functional / specification-based.</td><td>Structural / code-based.</td></tr>
+<tr><td>Based on</td><td>Requirements, specs, interface contracts.</td><td>Source code paths and program logic.</td></tr>
+<tr><td>Strong at finding</td><td>Wrong or missing functionality.</td><td>Unreachable code, extra branches, path defects.</td></tr>
+<tr><td>Weakness</td><td>Cannot explore internal redundant logic.</td><td>Tests cost more to maintain when code churns.</td></tr>
+<tr><td>Knowledge</td><td>Domain and requirements.</td><td>Programming and implementation detail.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+White-box work is <strong>not</strong> “easy”—it demands solid coding skill. Black-box testing is comparatively weak on <strong>extra-logic faults</strong> because you never inspect the implementation.</div>
+</div>
+<div class="card">
+<div class="card-title">Why black-box testing cannot be exhaustive</div>
+<div class="keywords">
+<span class="kw red">Exhaustive Testing</span>
+<span class="kw">Input Space</span>
+<span class="kw amber">Infeasible</span>
+</div>
+<div class="card-body">The practical obstacle is <span class="hl-red">an enormous input space</span>: you cannot run every possible input, so you sample intelligently.</div>
+<ul class="blist">
+<li>Even tiny routines can admit astronomical combinations.</li>
+<li>Use <strong>equivalence class partitioning</strong> and <strong>boundary value analysis</strong> to shrink the suite.</li>
+<li>This is the same reason testing cannot “prove full correctness.”</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">Black-box techniques: ECP vs BVA</div>
+<div class="keywords">
+<span class="kw blue">Equivalence Class Partitioning</span>
+<span class="kw green">Boundary Value Analysis</span>
+<span class="kw">Decision Table Testing</span>
+<span class="kw">Use Case Testing</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Technique</th><th>Idea</th><th>Mnemonic</th></tr></thead>
+<tbody>
+<tr><td>Equivalence class partitioning</td><td>Split inputs into classes that should behave alike; pick one representative per class.</td><td>Partition, representative.</td></tr>
+<tr><td>Boundary value analysis</td><td>Stress min, max, and neighbors (e.g. ±1) at class edges.</td><td>Edges, ±1.</td></tr>
+<tr><td>Decision table testing</td><td>Tabulate condition combinations and expected actions.</td><td>Matrix of rules.</td></tr>
+<tr><td>Use-case testing</td><td>Derive scenarios from real user workflows.</td><td>End-to-end stories.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="blue-box">
+<div class="note-label">How ECP and BVA pair</div>
+<strong>ECP</strong> answers “which <em>groups</em> of inputs matter?” <strong>BVA</strong> asks “what happens right at the <em>edges</em> of those groups?” Use ECP to choose classes, then BVA to harden boundaries.</div>
+</div>
+<div class="card">
+<div class="card-title">White-box cost and reusable design tactics</div>
+<div class="keywords">
+<span class="kw amber">Maintenance Cost</span>
+<span class="kw">Equivalence Class</span>
+<span class="kw">Boundary Value</span>
+</div>
+<div class="card-body">White-box suites track implementation detail, so <span class="hl-amber">frequent refactors inflate maintenance cost</span>.</div>
+<div class="green-box">
+<div class="note-label">Cross-over</div>
+<strong>Equivalence class partitioning</strong> and <strong>boundary value analysis</strong> are not black-box–only—they are general design tactics you can apply in white-box testing too.</div>
+</div>
+</div>
+<!-- Tab 4: PIE Model -->
+<div class="tab-panel" id="tab-pie">
+<div class="card">
+<div class="card-title">PIE model: fault → failure chain</div>
+<div class="keywords">
+<span class="kw amber">Execution</span>
+<span class="kw amber">Infection</span>
+<span class="kw amber">Propagation</span>
+<span class="kw">Failure Observation</span>
+</div>
+<div class="card-body">PIE lists three <strong>necessary</strong> conditions for an observed <span class="hl-amber">failure</span>. Drop any one, and users never see the symptom.</div>
+<div class="summary-grid">
+<div class="summary-cell">
+<div class="sc-label">P — Execution</div>
+<div class="sc-val">The faulty statement actually runs.</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">I — Infection</div>
+<div class="sc-val">Program state becomes incorrect.</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">E — Propagation</div>
+<div class="sc-val">That bad state reaches an observable output.</div>
+</div>
+</div>
+<div class="red-box">
+<div class="note-label">Exam tip</div>All three are <strong>necessary</strong>. Wording like “the infected state must <strong>not</strong> propagate” is wrong—without propagation, there is no visible failure.</div>
+</div>
+<div class="card">
+<div class="card-title">Error, fault, and failure</div>
+<div class="keywords">
+<span class="kw red">Error</span>
+<span class="kw amber">Fault</span>
+<span class="kw blue">Failure</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Term</th><th>Meaning</th><th>Level</th></tr></thead>
+<tbody>
+<tr><td>Error</td><td>A human mistake while designing or coding.</td><td>People / process</td></tr>
+<tr><td>Fault</td><td>The defect frozen into the artifact—buggy code or design.</td><td>Static artifact</td></tr>
+<tr><td>Failure</td><td>Wrong external behavior you can observe at runtime.</td><td>Dynamic / observable</td></tr>
+</tbody>
+</table>
+</div>
+<div class="blue-box">
+<div class="note-label">Walk-through</div>You meant to call <code>Math.log(5)</code> but coded <code>Math.pow(5, 3)</code>, returning 125. The slip while typing is an <strong>error</strong>; the bad expression in source is the <strong>fault</strong>; returning 125 instead of ln(5) at run time is the <strong>failure</strong>.</div>
+</div>
+</div>
+<!-- Tab 5: Code Coverage -->
+<div class="tab-panel" id="tab-coverage">
+<div class="card">
+<div class="card-title">Code coverage metrics</div>
+<div class="keywords">
+<span class="kw green">Statement Coverage</span>
+<span class="kw green">Branch Coverage</span>
+<span class="kw green">Method Coverage</span>
+<span class="kw red">Parameter Coverage ✗</span>
+</div>
+<div class="card-body">Coverage shows how much of the program structure your tests exercise—useful, but not a proof of correctness.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Metric</th><th>What it checks</th><th>Standard?</th></tr></thead>
+<tbody>
+<tr><td>Statement coverage</td><td>Each executable statement ran at least once.</td><td style="color:var(--accent);font-weight:600">✓ Yes</td></tr>
+<tr><td>Branch coverage</td><td>Each decision’s true/false outcomes.</td><td style="color:var(--accent);font-weight:600">✓ Yes</td></tr>
+<tr><td>Method coverage</td><td>Each method or function invoked.</td><td style="color:var(--accent);font-weight:600">✓ Yes</td></tr>
+<tr><td>Condition coverage</td><td>Each boolean sub-condition in compound predicates.</td><td style="color:var(--accent);font-weight:600">✓ Yes</td></tr>
+<tr><td>“Parameter coverage”</td><td>Not defined in the usual taxonomy.</td><td style="color:var(--red);font-weight:600">✗ No</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+<strong>Parameter coverage</strong> is not a mainstream coverage dimension. Recognized metrics tie to executable structure—statements, branches, methods, conditions—not to parameters by themselves.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quiz-pane pane">
+<div class="qz-wrap">
+<div class="qz-toolbar">
+<h2 class="qz-heading">Week 7 — quiz</h2>
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 15</span></div>
+</div>
+</div>
+<div id="questions-container"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const rawQuestions = [
+  {
+    q: "Which of the following is NOT a purpose of testing?",
+    opts: ["To improve code quality","To spot code faults","To document code","To guarantee code is fully correct"],
+    ans: 3,
+    exp: "Testing can improve quality, find faults, and serve as documentation — but it cannot guarantee code is fully correct. No finite test suite can cover all possible inputs and states."
+  },
+  {
+    q: "Which of the following do NOT belong to the types of test activities?",
+    opts: ["Test Design","Test Automation","Test Implementation","Test Evaluation"],
+    ans: 2,
+    exp: "The main test activity types are Test Design, Test Automation, Test Execution, and Test Evaluation. 'Test Implementation' is not a standard category — implementation details are part of Test Automation."
+  },
+  {
+    q: "Which of the following test activities embeds test values into executable scripts?",
+    opts: ["Test Design","Test Automation","Test Implementation","Test Execution"],
+    ans: 1,
+    exp: "Test Automation is the activity that takes test values and embeds them into executable scripts so they can be run automatically. Test Design creates the test cases, and Test Execution runs them."
+  },
+  {
+    q: "Which of the following statements about testing activities is correct?",
+    opts: [
+      "Designing tests requires relatively little knowledge about the domain and programs.",
+      "In order to embed test values into executable scripts, one needs to understand the theory very well.",
+      "It is always efficient to assign the same person for all testing activities.",
+      "Test automation is useful to have but could also be boring to construct."
+    ],
+    ans: 3,
+    exp: "Test automation is genuinely useful (especially for regression testing) but the work of scripting and maintaining automated tests can be repetitive and tedious. The other options are incorrect: test design requires deep domain knowledge, scripting doesn't demand heavy theory, and splitting roles is often more efficient."
+  },
+  {
+    q: "Which of the following statements about test cases is correct?",
+    opts: [
+      "Test cases cannot be used as documents as they are considered as two very different categories.",
+      "Only developers can construct test cases for their programs.",
+      "The process of developing test cases can also help developers to understand the requirements."
+    ],
+    ans: 2,
+    exp: "Writing test cases forces developers to think through requirements carefully, which deepens understanding. Test cases can also serve as living documentation. Many people beyond developers (QA engineers, stakeholders) can and should write tests."
+  },
+  {
+    q: "When should we write test cases?",
+    opts: ["Before code is written","While writing code","After code is written","All of above"],
+    ans: 3,
+    exp: "Tests can be written at any stage. Before (TDD/BDD), during (as features are added), or after (regression tests, bug fixes). Each timing has its own advantages, and all are valid in practice."
+  },
+  {
+    q: "Which statement about manual testing and automated testing is NOT correct?",
+    opts: [
+      "When regression tests are conducted very often, we should prefer doing automated testing.",
+      "To test a Graphics Interface, we should build automated tests after the interface design is stable.",
+      "Tests that don't require re-execution should be done manually.",
+      "Automated tests always find more bugs than manual tests."
+    ],
+    ans: 3,
+    exp: "Automated tests do not always find more bugs. Exploratory manual testing can uncover issues that rigid automated scripts miss. Automation excels at repetitive regression testing, not at creative bug discovery."
+  },
+  {
+    q: "Which of the following statements is true about tests?",
+    opts: [
+      "Tests must be written in the form of code",
+      "User interfaces cannot be tested",
+      "Projects can have more test code than source code",
+      "Tests can always spot bugs"
+    ],
+    ans: 2,
+    exp: "It is entirely normal — especially in well-tested projects — for the test codebase to exceed the production codebase in size. Tests are not limited to code form (manual tests exist), UIs can be tested, and tests cannot guarantee finding all bugs."
+  },
+  {
+    q: "Which of the following statements about writing tests as a developer is NOT correct?",
+    opts: [
+      "Developers cannot always detect all faults even if they fully understand their implementations.",
+      "More people are encouraged to engage in writing tests in addition to developers.",
+      "When developers construct test suites, they may have a bias on software code or functions.",
+      "Only QA developers should develop test cases since they are experts in testing area."
+    ],
+    ans: 3,
+    exp: "It is not true that only QA developers should write tests. Developers, domain experts, and even end users can contribute valuable test cases. Broader involvement leads to better coverage and reduces blind spots."
+  },
+  {
+    q: "Which of the following is true about Black-box testing?",
+    opts: [
+      "It is not feasible to thoroughly exercise all potential test inputs.",
+      "Tests are written with knowledge of the internal workings to thoroughly test what is happening on the inside of the code.",
+      "Black-box testing is good at finding faults of extra logic.",
+      "Black-box testing is better for finding crashes, out of bounds failures, and file not closed failures."
+    ],
+    ans: 0,
+    exp: "The input space is effectively infinite for most programs, making exhaustive black-box testing infeasible. The second option describes white-box testing. Black-box testing is actually weak at finding extra logic faults (since you can't see the internals), and white-box testing is generally better for low-level faults like out-of-bounds errors."
+  },
+  {
+    q: "Which of the following statements about White-box testing is NOT correct?",
+    opts: [
+      "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White-box testing.",
+      "Maintaining White-box test scripts could be very difficult if implementation details keep changing frequently.",
+      "White-box testing is usually very simple, so it does not require knowledge of programming and implementation."
+    ],
+    ans: 2,
+    exp: "White-box testing requires detailed knowledge of the internal code structure, logic, and implementation. It is not simple — testers must understand control flow, data flow, and program internals to design effective structural tests."
+  },
+  {
+    q: "A developer called Math.log(5) which was supposed to return the natural logarithm of the input, but returns 125 instead. This is an example of:",
+    opts: ["Error","Failure","Fault"],
+    ans: 0,
+    exp: "An Error is a human mistake in the code — here the developer wrote incorrect logic (perhaps computing 5³ instead of ln(5)). A Fault is the defect in the code itself. A Failure is the observable incorrect behavior at runtime. According to the PIE model, the incorrect source action is the Error."
+  },
+  {
+    q: "According to the PIE model, which of the following conditions is NOT correct for a failure to be observed?",
+    opts: [
+      "The location or locations in the program that contain the fault must be reached.",
+      "The state of the program must be incorrect.",
+      "The infected state must NOT propagate to cause some output of the program to be incorrect."
+    ],
+    ans: 2,
+    exp: "The PIE model requires: (1) the faulty location is Executed, (2) the state becomes Infected (incorrect), and (3) the infected state Propagates to an observable output. The third option states the opposite — propagation IS required for a failure to be observed."
+  },
+  {
+    q: "Which of the following is NOT a metric for code coverage?",
+    opts: ["Method coverage","Branch coverage","Statement coverage","Parameter coverage"],
+    ans: 3,
+    exp: "Standard code coverage metrics include Statement, Branch, Method/Function, Line, and Condition coverage. 'Parameter coverage' is not a recognized standard coverage metric — parameters are not independently tracked as an execution structure."
+  },
+  {
+    q: "\"Dividing input conditions into groups and testing each group of inputs\" describes which technique for Black-box testing?",
+    opts: ["Boundary Value Analysis","Equivalence Class Partitioning","Decision Table Testing","Use case testing"],
+    ans: 1,
+    exp: "Equivalence Class Partitioning divides inputs into classes where all members are expected to behave the same way, then tests one representative from each class. Boundary Value Analysis focuses specifically on the edges between classes, not the partitioning itself."
+  }
+];
+
+const questions = rawQuestions.map(function (rq, idx) {
+  return {
+    num: idx + 1,
+    text: rq.q,
+    options: rq.opts,
+    correct: rq.ans,
+    exp: rq.exp
+  };
+});
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+QuizPane.mount({ questions: questions, expandExplanationToOptions: true });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

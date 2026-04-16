@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Week 2 · Development Models &amp; Project Management</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<link href="../css/quiz-pane.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--border2:#d4d1ca;
+  --text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-border:#16a34a;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-border:#dc2626;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-border:#2563eb;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{
+  display:grid;
+  grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));
+  min-height:100vh;
+  max-width:1600px;
+  width:100%;
+  margin:0;
+}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane{background:var(--bg);border:none;}
+.quiz-pane{background:var(--bg);}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){
+  .page-split{grid-template-columns:1fr;}
+  .pane{max-height:none;}
+  .notes-pane{border:none;}
+}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s,border-color .15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.kw.red{background:var(--red-light);color:var(--red);}
+.card-body{font-size:.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.card-body:last-child{margin-bottom:0;}
+.hl{color:var(--text);font-weight:600;}
+.hl-green{color:var(--accent);font-weight:600;}
+.hl-blue{color:var(--blue);font-weight:600;}
+.hl-amber{color:var(--accent2);font-weight:600;}
+.hl-red{color:var(--red);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist li{font-size:.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border2);font-size:.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:4px;}
+.summary-cell{background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px;}
+.summary-cell .sc-val{font-size:.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+.note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box .note-label{font-family:'Source Code Pro',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--accent2);margin-bottom:4px;}
+.green-box{background:var(--accent-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.green-box .note-label{color:var(--accent);font-family:'Source Code Pro',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.blue-box{background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.blue-box .note-label{color:var(--blue);font-family:'Source Code Pro',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="week-2">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="page-split">
+<div class="notes-pane pane">
+<div class="container">
+<header>
+<h1>Week 2 · Development Models &amp; Project Management</h1>
+</header>
+<nav class="tab-nav">
+<button class="tab-btn active" onclick="switchTab('models',this)" type="button">Development models</button>
+<button class="tab-btn" onclick="switchTab('agile',this)" type="button">Agile / XP / Scrum</button>
+<button class="tab-btn" onclick="switchTab('risk',this)" type="button">Risk management</button>
+<button class="tab-btn" onclick="switchTab('gantt',this)" type="button">Gantt</button>
+<button class="tab-btn" onclick="switchTab('pert',this)" type="button">PERT</button>
+</nav>
+<!-- Tab: Development models -->
+<div class="tab-panel active" id="tab-models">
+<div class="card">
+<div class="card-title">Software development models (overview)</div>
+<div class="keywords">
+<span class="kw green">Waterfall</span>
+<span class="kw green">Spiral</span>
+<span class="kw green">Scrum</span>
+<span class="kw blue">Plan-driven</span>
+<span class="kw blue">Agile</span>
+<span class="kw amber">RUP</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead>
+<tr><th>Model</th><th>Good fit</th><th>Core idea</th><th>Poor fit</th></tr>
+</thead>
+<tbody>
+<tr><td>Waterfall</td><td>Stable requirements; regulated or highly supervised systems</td><td>Strict phases; documentation-heavy</td><td>Frequent requirement changes</td></tr>
+<tr><td>Spiral</td><td>High uncertainty and risk</td><td>Iterations with explicit risk analysis</td><td>Small, low-risk projects</td></tr>
+<tr><td>Scrum</td><td>Changing scope; small, co-located teams</td><td>Time-boxed sprints; inspect and adapt</td><td>Heavy process compliance without room for agility</td></tr>
+<tr><td>XP</td><td>On-site customer; emphasis on quality practices</td><td>TDD, pair programming, continuous integration</td><td>Customer cannot stay engaged</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Choosing a style</div>
+<strong>Plan-driven</strong> methods suit mission-, safety-, or financially critical systems that need heavy documentation and control. Prefer <strong>agile</strong> when requirements change often, the team is small, and rapid feedback matters.</div>
+</div>
+<div class="card">
+<div class="card-title">RUP: four phases</div>
+<div class="keywords">
+<span class="kw amber">RUP</span>
+<span class="kw">Iterative</span>
+<span class="kw">Architecture-centric</span>
+<span class="kw">Use-case Driven</span>
+</div>
+<div class="card-body">
+<span class="hl-amber">RUP (Rational Unified Process)</span> is an <span class="hl">iterative, incremental</span> software process framework: <span class="hl">use cases drive requirements</span>, <span class="hl">architecture is central</span> to controlling technical risk, and each iteration produces verifiable increments.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Phase</th><th>Main goal</th><th>Typical activities</th><th>Key outputs / milestones</th></tr></thead>
+<tbody>
+<tr><td>Inception</td><td>Decide <em>whether</em> to build and <em>what</em> to build</td><td>Scope, main features, business case, high-level risks</td><td>Vision, initial requirements, plans</td></tr>
+<tr><td>Elaboration</td><td>Prove the <em>architecture</em> can work</td><td>Refine core use cases; resolve major technical risks; <span class="hl-amber">establish and validate the architecture baseline (often including a first runnable build)</span></td><td>Architecture baseline, reduced risk, iteration plan</td></tr>
+<tr><td>Construction</td><td>Complete the system on that architecture</td><td>Iterative implementation, integration, and testing</td><td>Working increments (toward beta / release candidate)</td></tr>
+<tr><td>Transition</td><td>Ship and stabilize in production</td><td>Final testing, deployment, migration, training, defect fixes</td><td>Production release / go-live</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam focus</div>
+<strong>Inception</strong> nails down <span class="hl">scope</span>; <strong>Elaboration</strong> stabilizes <span class="hl">architecture</span> and risk; <strong>Construction</strong> delivers <span class="hl">features</span>; <strong>Transition</strong> covers <span class="hl">release and rollout</span>. Students often mix up Elaboration (architecture and risk) with Construction (full feature delivery on a stable architecture).</div>
+</div>
+</div>
+<!-- Tab: Agile / XP / Scrum -->
+<div class="tab-panel" id="tab-agile">
+<div class="card">
+<div class="card-title">Agile, XP, and Scrum (exam highlights)</div>
+<div class="keywords">
+<span class="kw green">Agile</span>
+<span class="kw blue">XP</span>
+<span class="kw amber">Scrum</span>
+</div>
+<ul class="blist">
+<li>Agile fits changing requirements, small teams, and highly skilled engineers.</li>
+<li>A preference for a rigid, plan-driven culture is <em>not</em> a reason to choose agile.</li>
+<li>XP stresses continuous customer involvement, plus practices such as TDD and pair programming.</li>
+<li>Scrum uses time-boxed sprints, a Daily Scrum, backlog prioritization, a product increment each sprint, plus Sprint Review and Sprint Retrospective (not on a quarterly cadence).</li>
+</ul>
+<div class="note-box">
+<div class="note-label">Common trap</div>
+Scrum has no “quarterly team reflection”; feedback loops run every sprint (e.g., Sprint Retrospective).</div>
+</div>
+<div class="card">
+<div class="card-title">Pair programming vs. parallel work</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Approach</th><th>Total person-hours (typical)</th><th>Trade-off</th></tr></thead>
+<tbody>
+<tr><td>Two developers working in parallel on separate parts</td><td style="color:var(--accent);font-weight:600;">Lower</td><td>Faster wall-clock delivery; less built-in review</td></tr>
+<tr><td>Two developers pair-programming the same work sequentially</td><td style="color:var(--red);font-weight:600;">Higher</td><td>Better quality and knowledge spread; more person-hours</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Tab: Risk -->
+<div class="tab-panel" id="tab-risk">
+<div class="card">
+<div class="card-title">Software risks and risk exposure</div>
+<div class="summary-grid">
+<div class="summary-cell"><div class="sc-label">Schedule</div><div class="sc-val">Late delivery</div></div>
+<div class="summary-cell"><div class="sc-label">Requirements</div><div class="sc-val">Wrong feature requirement</div></div>
+<div class="summary-cell"><div class="sc-label">People</div><div class="sc-val">Team dissolution</div></div>
+</div>
+<div class="blue-box">
+<div class="note-label">Formula</div>
+Risk exposure = probability × loss. Example: 2% × $50,000 = <strong>$1,000</strong>.</div>
+</div>
+<div class="card">
+<div class="card-title">Risk response strategies</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Strategy</th><th>Meaning</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Risk avoidance</td><td>Remove the source of the risk</td><td>Do not adopt a high-risk option</td></tr>
+<tr><td>Risk protection (mitigation)</td><td>Lower probability or impact</td><td>Off-site backup</td></tr>
+<tr><td>Risk acceptance</td><td>Live with the risk as-is</td><td>Accept a minor, cheap failure mode</td></tr>
+<tr><td>Risk monitoring</td><td>Watch indicators over time</td><td>Health checks and dashboards</td></tr>
+</tbody>
+</table>
+</div>
+<div class="green-box">
+<div class="note-label">Typical exam mapping</div>
+Jane’s off-site backup is <strong>risk protection</strong> (mitigation).</div>
+</div>
+</div>
+<!-- Tab: Gantt -->
+<div class="tab-panel" id="tab-gantt">
+<div class="card">
+<div class="card-title">Gantt: dependency types (quick reference)</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Constraint</th><th>Meaning</th><th>How to read it</th></tr></thead>
+<tbody>
+<tr><td>Start-to-start (SS)</td><td>B cannot start until A starts</td><td>Align start times</td></tr>
+<tr><td>Finish-to-start (FS)</td><td>B cannot start until A finishes</td><td>Compare A’s end to B’s start</td></tr>
+<tr><td>Finish-to-finish (FF)</td><td>B cannot finish until A finishes</td><td>Align finish times</td></tr>
+</tbody>
+</table>
+</div>
+<ul class="blist">
+<li>Tasks 1 and 2: start-to-start.</li>
+<li>Tasks 2 and 3: finish-to-start.</li>
+<li>Tasks 3 and 4: finish-to-finish.</li>
+<li>Claiming tasks 1 and 4 are finish-to-start is the usual wrong option on the quiz.</li>
+</ul>
+</div>
+</div>
+<!-- Tab: PERT -->
+<div class="tab-panel" id="tab-pert">
+<div class="card">
+<div class="card-title">PERT and the critical path</div>
+<div class="card-body">A PERT chart is a <span class="hl-blue">DAG (directed acyclic graph)</span>; edge labels are durations. The <strong>critical path</strong> is the longest path by total duration (not necessarily the most edges).</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Path</th><th>Sum</th><th>Total duration</th></tr></thead>
+<tbody>
+<tr><td>A → B → C → E</td><td>6 + 3 + 7</td><td>16</td></tr>
+<tr><td>A → B → D → E</td><td>6 + 10 + 5</td><td style="color:var(--red);font-weight:700;">21 (critical path)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Slack</div>
+On the critical path, slack is 0. Activities off that path can have positive slack.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quiz-pane pane">
+<div class="qz-wrap">
+<div class="qz-toolbar">
+<h2 class="qz-heading">Week 2 — quiz</h2>
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 15</span></div>
+</div>
+</div>
+<div id="questions-container"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const questions = [
+  {
+    num: 1,
+    text: "Which of the following is a situation under which using a waterfall model may be undesirable?",
+    options: ["Frequently changing requirements", "Mission-critical use case", "Customer with clear objective", "Large development team"],
+    correct: 0,
+    explanations: [
+      "✅ Frequently changing requirements — Waterfall is linear and does not accommodate changes well once a phase is complete.",
+      "❌ Mission-critical use case — Waterfall is often suitable for mission-critical systems requiring strict process control.",
+      "❌ Customer with clear objective — Clear and stable objectives are favorable to Waterfall.",
+      "❌ Large development team — Structured process can help large-team coordination."
+    ]
+  },
+  {
+    num: 2,
+    text: "The Elaboration stage in the Rational Unified Process includes which of the following activities:",
+    options: ["Implement further improvement from initial version", "Implement initial version", "Determining features", "Testing/using the software"],
+    correct: 1,
+    explanations: [
+      "❌ Implement further improvement from initial version — More aligned with Construction.",
+      "✅ Implement initial version — Elaboration builds the initial architecture baseline.",
+      "❌ Determining features — Mainly Inception activity.",
+      "❌ Testing/using the software — Mainly Transition activity."
+    ]
+  },
+  {
+    num: 3,
+    text: "A team of six developers builds a web app with frequently changing requirements in a low-stakes context. Which model fits best?",
+    options: ["Waterfall Model", "Spiral Model", "Scrum Model", "Chaos Model"],
+    correct: 2,
+    explanations: [
+      "❌ Waterfall Model — Poor fit for frequent requirement changes.",
+      "❌ Spiral Model — Heavyweight for small non-critical project.",
+      "✅ Scrum Model — Good for changing requirements and small teams.",
+      "❌ Chaos Model — Not a standard software methodology."
+    ]
+  },
+  {
+    num: 4,
+    text: "Extreme Programming (XP) has which of the following advantages?",
+    options: [
+      "Comprehensive documentation is prepared throughout the process.",
+      "Customers stay closely engaged throughout the process, not only at the beginning.",
+      "All features are released at once",
+      "The resulting software has high fault tolerance."
+    ],
+    correct: 1,
+    explanations: [
+      "❌ XP does not prioritize comprehensive documentation.",
+      "✅ Continuous customer engagement is a key XP strength.",
+      "❌ XP delivers incrementally, not all at once.",
+      "❌ Fault tolerance is a design property, not a direct XP guarantee."
+    ]
+  },
+  {
+    num: 5,
+    text: "Which of the following is not part of Scrum?",
+    options: ["Daily Scrum Meeting", "Quarterly Team Reflection", "Prioritizing Product-Backlog Tasks", "Delivering Product Increment After a Sprint"],
+    correct: 1,
+    explanations: [
+      "❌ Daily Scrum is a core ceremony.",
+      "✅ Quarterly reflection is not Scrum standard; retrospectives happen each Sprint.",
+      "❌ Product backlog prioritization is part of Scrum work.",
+      "❌ Delivering increment after Sprint is fundamental to Scrum."
+    ]
+  },
+  {
+    num: 6,
+    text: "Which of the following projects prefers plan-driven methodology over agile methodology?",
+    options: ["Chatting-room website", "Video-game simulator", "Phone calculator", "Software for rockets"],
+    correct: 3,
+    explanations: [
+      "❌ Chatroom website usually benefits from agile iteration.",
+      "❌ Game projects often iterate quickly and fit agile styles.",
+      "❌ Simple calculator app does not require heavyweight plan-driven method.",
+      "✅ Rocket software is mission-critical and strongly favors plan-driven processes."
+    ]
+  },
+  {
+    num: 7,
+    text: "Which situation belongs to risks in software development?",
+    options: ["Late delivery", "Wrong feature requirement", "Team dissolution", "All of the above"],
+    correct: 3,
+    explanations: [
+      "❌ Late delivery is a risk, but not the full set.",
+      "❌ Wrong requirement is a risk, but not the full set.",
+      "❌ Team dissolution is a risk, but not the full set.",
+      "✅ All listed options are recognized software risks."
+    ]
+  },
+  {
+    num: 8,
+    text: "For the Gantt chart (Task1 Day1-2, Task2 Day1.5-3, Task3 Day3-5, Task4 Day2-4), which statement is wrong?",
+    options: [
+      "The relationship between tasks 1 and 2 satisfies the Start-To-Start constraint",
+      "The relationship between tasks 2 and 3 satisfies the Finish-To-Start constraint",
+      "The relationship between tasks 3 and 4 satisfies the Finish-To-Finish constraint",
+      "The relationship between tasks 1 and 4 satisfies the Finish-To-Start constraint"
+    ],
+    correct: 3,
+    explanations: [
+      "❌ This statement is valid for Task 1 and 2.",
+      "❌ This statement is valid for Task 2 and 3.",
+      "❌ This statement is valid for Task 3 and 4.",
+      "✅ This is the wrong statement in the question set."
+    ]
+  },
+  {
+    num: 9,
+    text: "For the PERT chart (A→B:6, B→C:3, B→D:10, C→E:7, D→E:5), what is the critical path?",
+    options: ["B→C→E", "B→D→E", "A→B→C→E", "A→B→D→E"],
+    correct: 3,
+    explanations: [
+      "❌ Incomplete path and not longest.",
+      "❌ Incomplete path and not longest.",
+      "❌ Complete path but total is 16.",
+      "✅ Complete longest path with total 21."
+    ]
+  },
+  {
+    num: 10,
+    text: "In a PERT chart, which statement is correct?",
+    options: [
+      "An arrow edge between two events indicates data flow",
+      "The label on the arrow edge represents event importance",
+      "The graph for the PERT chart is a directed acyclic graph",
+      "Events on the critical paths have slack time"
+    ],
+    correct: 2,
+    explanations: [
+      "❌ Edge means dependency/duration, not data flow.",
+      "❌ Label means duration, not importance.",
+      "✅ PERT is modeled as a directed acyclic graph.",
+      "❌ Critical-path events/tasks have zero slack."
+    ]
+  },
+  {
+    num: 11,
+    text: "Jane values data at $50,000 on a hard drive with 2% failure probability. What is risk exposure?",
+    options: ["$50,000", "$1,000", "$49,000", "$2"],
+    correct: 1,
+    explanations: [
+      "❌ This is total asset value, not risk exposure.",
+      "✅ 2% × 50,000 = 1,000.",
+      "❌ Not defined by risk exposure formula.",
+      "❌ Incorrect unit conversion."
+    ]
+  },
+  {
+    num: 12,
+    text: "Jane purchases an off-site backup plan. Which risk mitigation strategy is this?",
+    options: ["Risk avoidance", "Risk protection", "Risk acceptance", "Risk monitoring"],
+    correct: 1,
+    explanations: [
+      "❌ She does not eliminate the risk source.",
+      "✅ She proactively reduces impact of possible loss.",
+      "❌ She is not passively accepting the risk.",
+      "❌ Monitoring alone does not add mitigation measure."
+    ]
+  },
+  {
+    num: 13,
+    text: "Which of the following is not an XP practice?",
+    options: ["Test-driven development", "Planning game", "Pair programming", "Sequential design"],
+    correct: 3,
+    explanations: [
+      "❌ TDD is core XP practice.",
+      "❌ Planning game is XP practice.",
+      "❌ Pair programming is XP practice.",
+      "✅ Sequential upfront design aligns with Waterfall, not XP."
+    ]
+  },
+  {
+    num: 14,
+    text: "A team chooses Agile. Which is not a justifying reason?",
+    options: [
+      "Customers constantly anticipate new features",
+      "Start-up with small team",
+      "Engineers prefer an ordered culture",
+      "Majority of engineers have high skill levels"
+    ],
+    correct: 2,
+    explanations: [
+      "❌ Frequently changing requirements support Agile.",
+      "❌ Small teams are often a good fit for Agile.",
+      "✅ Ordered-culture preference points more to plan-driven methods.",
+      "❌ High-skill teams usually fit Agile's self-management model."
+    ]
+  },
+  {
+    num: 15,
+    text: "For two components, which practice usually costs fewer man-hours?",
+    options: ["Two developers working in parallel", "Two developers pair-programming sequentially"],
+    correct: 0,
+    explanations: [
+      "✅ Parallel development generally uses fewer man-hours for this case.",
+      "❌ Sequential pair programming typically increases total man-hours."
+    ]
+  }
+];
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+QuizPane.mount({ questions: questions });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

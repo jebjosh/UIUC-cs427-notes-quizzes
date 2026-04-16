@@ -1,5 +1,6 @@
 /**
  * 课程周次唯一数据源 — study-sidebar.js / study-index.js 共用
+ * 中文页面在 zh/，英文页面在 en/，file 仅为文件名。
  */
 window.STUDY_WEEKS = [
   { id: 'intro', num: 1, file: 'week_1_introduction_software_engineering.html', label: 'Intro to Software Engineering' },

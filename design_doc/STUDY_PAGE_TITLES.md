@@ -8,7 +8,7 @@
 
 | 项 | 值 |
 |----|-----|
-| 合并页 | [`week_6_design_patterns.html`](week_6_design_patterns.html) |
+| 合并页 | [`zh/week_6_design_patterns.html`](../zh/week_6_design_patterns.html) |
 | 导图（独立 HTML，iframe 嵌入） | [`mindmap_design_patterns_html.html`](mindmap_design_patterns_html.html) |
 | 原始拆分文件（仅对照，可不参与合并页） | [`notes_6_design_patterns.html`](notes_6_design_patterns.html)、[`quiz_6_design_patterns.html`](quiz_6_design_patterns.html) |
 | 导图备用静态图（可选） | [`assets/week6-mindmap.png`](assets/week6-mindmap.png) |
@@ -92,13 +92,13 @@
 4) switchTab 仅作用于 .notes-pane。
 5) 分栏、Behavioral 与模式详解合并方式、副标题省略规则，与文档 §4、§2 一致。
 
-当前 prototype 参考：week_6_design_patterns.html + mindmap_design_patterns_html.html + config/study_module.example.json。
+当前 prototype 参考：`zh/week_6_design_patterns.html` + mindmap_design_patterns_html.html + config/study_module.example.json。
 ```
 
 ---
 
 ## 7. 变更记录（摘要）
 
-- 合并页文件名由早期 `study_6_design_patterns.html` 调整为当前 **`week_6_design_patterns.html`**（以仓库内实际文件为准）。
+- 合并页文件名由早期 `study_6_design_patterns.html` 调整为当前 **`zh/week_6_design_patterns.html`**（以仓库内实际文件为准）。
 - 导图由静态图改为 **iframe** 引用 **`mindmap_design_patterns_html.html`**。
-- 表格与分栏、Tab 区已按 **§3.1** 收紧为 **无边框**（与历史版本可能略有差异，以本文档与 `week_6_design_patterns.html` 为准）。
+- 表格与分栏、Tab 区已按 **§3.1** 收紧为 **无边框**（与历史版本可能略有差异，以本文档与 `zh/week_6_design_patterns.html` 为准）。

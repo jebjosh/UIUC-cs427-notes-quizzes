@@ -31,7 +31,8 @@
     if (!week || !week.file) return;
     var frame = $('#study-frame');
     if (!frame) return;
-    frame.src = week.file + '?embed=1';
+    var f = window.getWeekFile ? window.getWeekFile(week) : week.file;
+    frame.src = f + '?embed=1';
     setCurrentNav(week.id);
     try {
       history.replaceState(null, '', '#' + week.id);
@@ -67,8 +68,21 @@
     }
     if (initial) loadWeek(initial);
 
+    var langRoot = document.getElementById('study-lang-switch-root');
+    if (langRoot && typeof window.mountStudyLangSwitch === 'function') {
+      window.mountStudyLangSwitch(langRoot, { inIndex: true });
+    }
+
     window.addEventListener('hashchange', function () {
       var w = findWeekById(hashToWeekId());
+      if (w && w.file) loadWeek(w);
+    });
+
+    window.addEventListener('study-lang-change', function () {
+      var w = findWeekById(hashToWeekId());
+      if (!w || !w.file) {
+        w = pickInitialWeek();
+      }
       if (w && w.file) loadWeek(w);
     });
   }

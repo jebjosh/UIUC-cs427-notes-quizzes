@@ -6,7 +6,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 #study-frame{flex:1;width:100%;min-height:100vh;border:none;background:var(--bg);display:block;}
 @media (max-width:960px){
   .index-app{grid-template-columns:1fr;}
-  .study-nav{position:relative;max-height:none;padding:16px 14px 14px;border-right:none;border-bottom:1px solid var(--border);}
+  .study-nav{position:relative;min-height:auto;max-height:none;padding:16px 14px 14px;border-right:none;border-bottom:1px solid var(--border);}
   .study-nav-list{flex-direction:row;flex-wrap:wrap;gap:0;}
   .study-nav-list > * + *{border-top:none;}
   .study-nav-list > a,.study-nav-list > span.study-nav-soon,.study-nav-list > .study-nav-group{border:1px solid var(--border);border-radius:6px;margin:4px;}

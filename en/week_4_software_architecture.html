@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Week 4 · Software Design and Architecture &amp; Quiz</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<link href="../css/quiz-pane.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--border2:#d4d1ca;
+  --text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{
+  display:grid;
+  grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));
+  min-height:100vh;
+  max-width:1600px;
+  width:100%;
+  margin:0;
+}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane{background:var(--bg);border:none;}
+.quiz-pane{background:var(--bg);}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){
+  .page-split{grid-template-columns:1fr;}
+  .pane{max-height:none;}
+}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.card-body{font-size:0.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.card-body:last-child{margin-bottom:0;}
+code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--tag-bg);padding:1px 6px;border-radius:3px;color:var(--text);}
+.hl{color:var(--text);font-weight:600;}
+.hl-green{color:var(--accent);font-weight:600;}
+.hl-blue{color:var(--blue);font-weight:600;}
+.hl-amber{color:var(--accent2);font-weight:600;}
+.hl-red{color:var(--red);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist:last-child{margin-bottom:0;}
+.blist li{font-size:0.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border2);font-size:0.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+.tbl-wrap:last-child{margin-bottom:0;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.divider{border:none;margin:20px 0;height:0;clear:both;}
+.note-box,.green-box,.blue-box{border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box{background:var(--accent2-light);}
+.green-box{background:var(--accent-light);}
+.blue-box{background:var(--blue-light);}
+.note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.note-box .note-label{color:var(--accent2);}
+.green-box .note-label{color:var(--accent);}
+.blue-box .note-label{color:var(--blue);}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:4px;}
+.summary-cell{background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px;}
+.summary-cell .sc-val{font-size:0.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+.rank-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.rank-label{font-family:'Source Code Pro',monospace;font-size:0.78rem;width:160px;flex-shrink:0;color:var(--text2);}
+.rank-bar-bg{flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.rank-bar-fill{height:100%;border-radius:4px;}
+.rank-score{font-family:'Source Code Pro',monospace;font-size:0.74rem;color:var(--muted);width:36px;text-align:right;}
+.cohesion-rank-caption{font-family:'Source Code Pro',monospace;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:10px;}
+#tab-mindmap{padding-top:0;}
+.mm-iframe-wrap{
+  margin:0 -8px 0 -8px;
+  width:calc(100% + 16px);
+  height:min(92vh,1600px);
+  min-height:min(70vh,900px);
+  overflow:auto;
+  border-radius:var(--radius);
+  background:var(--surface2);
+  border:none;
+  outline:none;
+  box-shadow:none;
+}
+.mm-iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  border:none;
+  outline:none;
+  vertical-align:top;
+  background:transparent;
+}
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="week-4">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="page-split">
+<div class="notes-pane pane">
+<div class="container">
+<header>
+<h1>Week 4 · Software Design and Architecture</h1>
+</header>
+<nav class="tab-nav">
+<button class="tab-btn active" onclick="switchTab('mindmap',this)" type="button">Mind map</button>
+<button class="tab-btn" onclick="switchTab('abstraction',this)" type="button">Abstraction</button>
+<button class="tab-btn" onclick="switchTab('cohesion',this)" type="button">Cohesion</button>
+<button class="tab-btn" onclick="switchTab('architecture',this)" type="button">Architecture Styles</button>
+<button class="tab-btn" onclick="switchTab('connectors',this)" type="button">Components &amp; Connectors</button>
+<button class="tab-btn" onclick="switchTab('mvc',this)" type="button">MVC</button>
+<button class="tab-btn" onclick="switchTab('modularity',this)" type="button">Modularity</button>
+<button class="tab-btn" onclick="switchTab('conway',this)" type="button">Conway's Law</button>
+</nav>
+<!-- Tab 0: Mind map -->
+<div class="tab-panel active" id="tab-mindmap">
+<div class="mm-iframe-wrap">
+<iframe class="mm-iframe" loading="lazy" src="../mindmap/week_4_software_architecture_mindmap.html" title="Software Design and Architecture mind map"></iframe>
+</div>
+</div>
+<!-- Tab: Abstraction -->
+<div class="tab-panel" id="tab-abstraction">
+<div class="card">
+<div class="card-title">Abstraction — Unix file descriptors</div>
+<div class="keywords">
+<span class="kw blue">Abstraction</span>
+<span class="kw">File descriptor</span>
+<span class="kw">Unix</span>
+<span class="kw">Interface</span>
+</div>
+<div class="card-body">
+<span class="hl-blue">Abstraction</span> means exposing a small <span class="hl">interface</span> while hiding how things work underneath.<br/><br/>
+In Unix, a <span class="hl">file descriptor</span> is the uniform handle for I/O: a process reads and writes using that integer <span class="hl-green">without knowing the file’s real path or storage location</span>.</div>
+<ul class="blist">
+<li>Once a process holds a file descriptor (an integer handle), it can read and write through it.</li>
+<li>Whether the backing resource is a regular file, socket, or pipe is <strong>transparent</strong> to the process.</li>
+<li>That is the point: <strong>callers stay unaware of implementation details</strong>.</li>
+</ul>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+<strong>False.</strong> The claim that a process must know a file’s <em>actual name</em> to use it is wrong under the file-descriptor abstraction: access goes through the descriptor, not the string path.</div>
+</div>
+</div>
+<!-- Tab: Cohesion -->
+<div class="tab-panel" id="tab-cohesion">
+<div class="card">
+<div class="card-title">Module cohesion</div>
+<div class="keywords">
+<span class="kw green">Cohesion</span>
+<span class="kw amber">Coincidental</span>
+<span class="kw">Logical</span>
+<span class="kw">Temporal</span>
+<span class="kw">Communicational</span>
+<span class="kw blue">Functional</span>
+</div>
+<div class="card-body">
+<span class="hl-green">Cohesion</span> measures how tightly the parts of a module relate — the <span class="hl">strength of that internal fit</span>. Higher cohesion usually means clearer responsibility and easier maintenance.</div>
+<div style="margin-bottom:16px;">
+<div class="cohesion-rank-caption">From weakest to strongest (illustrative)</div>
+<div class="rank-row">
+<span class="rank-label">Coincidental ⚠️</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:8%;background:#dc2626;"></div></div>
+<span class="rank-score">Worst</span>
+</div>
+<div class="rank-row">
+<span class="rank-label">Logical</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:20%;background:#ef8c41;"></div></div>
+<span class="rank-score">Weak</span>
+</div>
+<div class="rank-row">
+<span class="rank-label">Temporal</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:32%;background:#f0b429;"></div></div>
+<span class="rank-score">Fair</span>
+</div>
+<div class="rank-row">
+<span class="rank-label">Procedural</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:48%;background:#84cc16;"></div></div>
+<span class="rank-score">Better</span>
+</div>
+<div class="rank-row">
+<span class="rank-label">Communicational</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:65%;background:#22c55e;"></div></div>
+<span class="rank-score">Good</span>
+</div>
+<div class="rank-row">
+<span class="rank-label">Sequential</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:82%;background:#16a34a;"></div></div>
+<span class="rank-score">Strong</span>
+</div>
+<div class="rank-row">
+<span class="rank-label">Functional ✅</span>
+<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:100%;background:#166534;"></div></div>
+<span class="rank-score">Best</span>
+</div>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Type</th><th>Definition</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Coincidental</td><td>Parts lumped together with no real relationship</td><td>Dumping unrelated helpers into <code>utils.c</code></td></tr>
+<tr><td>Logical</td><td>Operations are <strong>similar in kind</strong> but do different jobs (often selected by a flag or mode)</td><td>One module that handles every kind of I/O</td></tr>
+<tr><td>Temporal</td><td>Things run in the same phase (e.g. startup)</td><td><code>startup()</code> initializes unrelated subsystems together</td></tr>
+<tr><td>Communicational</td><td>Operations touch the <strong>same data</strong></td><td>Read, update, and delete on one record</td></tr>
+<tr><td>Functional</td><td>Everything in the module serves <strong>one well-defined task</strong></td><td><code>calculateTax()</code> only computes tax</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+Similar responsibilities, different concrete tasks → <strong>logical cohesion</strong> (not coincidental). The <strong>weakest</strong> cohesion in the usual ordering is <strong>coincidental</strong>.</div>
+</div>
+</div>
+<!-- Tab: Architecture styles -->
+<div class="tab-panel" id="tab-architecture">
+<div class="card">
+<div class="card-title">Pipe-and-filter architecture</div>
+<div class="keywords">
+<span class="kw green">Pipe-and-filter</span>
+<span class="kw">Filter</span>
+<span class="kw">Pipe</span>
+<span class="kw">Data flow</span>
+<span class="kw">Unix</span>
+</div>
+<div class="card-body">Data moves through a chain of <span class="hl-green">filters</span>. Each filter transforms the stream and hands it to the next stage via a <span class="hl">pipe</span>, until a final output is produced.</div>
+<ul class="blist">
+<li>Each filter is an <strong>independent</strong> stage and does not depend on knowing <strong>how other filters work</strong>.</li>
+<li>Filters do <strong>not share mutable state</strong> (they are effectively stateless with respect to each other).</li>
+<li>Data flows in <strong>one direction</strong>.</li>
+<li>Filters may be implemented <strong>in parallel</strong> where the model allows.</li>
+<li>Processing can be <strong>incremental</strong> — work as data arrives.</li>
+</ul>
+<div class="blue-box">
+<div class="note-label">Classic example</div>
+Unix shell: <code>cat file.txt | grep "error" | sort | uniq</code><br/>
+Each command acts as a filter; <code>|</code> is the pipe between stages.</div>
+<div class="note-box">
+<div class="note-label">Exam tip (Q5)</div>
+<strong>Not true:</strong> “Filters know each other and share state.” In pipe-and-filter, stages stay <strong>loosely coupled</strong> and <strong>do not share state</strong> the way collaborating objects in a layer might.</div>
+</div>
+<div class="card">
+<div class="card-title">Common architecture styles</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Style</th><th>Core idea</th><th>Typical uses</th></tr></thead>
+<tbody>
+<tr><td>Pipe-and-filter</td><td>Sequential transforms on a stream; each stage is independent</td><td>Compilers, ETL, Unix pipelines</td></tr>
+<tr><td>Layered / tiered</td><td>Levels talk mostly to neighbors; policy vs. mechanism separation</td><td>TCP/IP stacks, n-tier enterprise apps</td></tr>
+<tr><td>MVC</td><td>Separate model, view, and controller concerns</td><td>Web apps, desktop GUI frameworks</td></tr>
+<tr><td>Client–server</td><td>Clients issue requests; servers respond</td><td>Web APIs, database clients</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam tip (Q3)</div>
+Sensor data passes through a pipeline of transforms ending in visualization — that is <strong>sequential dataflow with independent stages</strong>, i.e. <strong>pipe-and-filter</strong>, not primarily a layered style.</div>
+</div>
+</div>
+<!-- Tab: Components & connectors -->
+<div class="tab-panel" id="tab-connectors">
+<div class="card">
+<div class="card-title">Components vs. connectors</div>
+<div class="keywords">
+<span class="kw blue">Component</span>
+<span class="kw green">Connector</span>
+<span class="kw">Interaction</span>
+<span class="kw">Rules</span>
+<span class="kw">Encapsulation</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th></th><th>Component</th><th>Connector</th></tr></thead>
+<tbody>
+<tr><td>What it is</td><td>A unit that encapsulates computation and/or data</td><td>The mechanism that mediates interaction between components</td></tr>
+<tr><td>Role</td><td>Implements behavior and may hold state</td><td>Defines how components communicate and the rules of those exchanges</td></tr>
+<tr><td>Examples</td><td>Service, module, filter, layer</td><td>Pipe, event bus, RPC, protocol stack</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card-body" style="margin-top:14px;">Connectors cover:</div>
+<ul class="blist">
+<li><strong>Interactions among components</strong></li>
+<li><strong>Rules that govern those interactions</strong></li>
+<li><span class="hl-red">Not</span> “encapsulates computation and/or data” — that is a <strong>component</strong> concern.</li>
+</ul>
+<div class="note-box">
+<div class="note-label">Exam tip (Q6)</div>
+<strong>“Encapsulates computation and/or data”</strong> describes a <strong>component</strong>, not a connector. Connectors coordinate communication; they do not replace component encapsulation.</div>
+</div>
+</div>
+<!-- Tab: MVC -->
+<div class="tab-panel" id="tab-mvc">
+<div class="card">
+<div class="card-title">MVC — model, view, controller</div>
+<div class="keywords">
+<span class="kw amber">Model</span>
+<span class="kw blue">View</span>
+<span class="kw green">Controller</span>
+<span class="kw">Separation of concerns</span>
+<span class="kw">Multiple views</span>
+</div>
+<div class="summary-grid" style="margin-bottom:16px;">
+<div class="summary-cell">
+<div class="sc-label">Model</div>
+<div class="sc-val">Domain data and rules; no UI detail</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">View</div>
+<div class="sc-val">Presentation — what the user sees</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Controller</div>
+<div class="sc-val">Handles input (e.g. gestures and commands) and coordinates model and view</div>
+</div>
+</div>
+<ul class="blist">
+<li>The <strong>controller</strong> receives user-gesture and input events (clicks, typing, taps).</li>
+<li>The <strong>model</strong> does not depend on a specific view; you can change views without rewriting core logic.</li>
+<li>One <strong>model</strong> can drive <strong>multiple views</strong> — the same data as a line chart, pie chart, or table.</li>
+</ul>
+<div class="blue-box">
+<div class="note-label">Exam tip (Q8)</div>
+Different charts over the same data illustrate MVC’s <strong>multiple views</strong>: views stay pluggable because they render from a shared model without duplicating business rules.</div>
+<div class="note-box">
+<div class="note-label">Exam tip (Q7)</div>
+User-gesture events go to the <strong>controller</strong>, not the view (the view renders output).</div>
+</div>
+</div>
+<!-- Tab: Modularity -->
+<div class="tab-panel" id="tab-modularity">
+<div class="card">
+<div class="card-title">Software modularity</div>
+<div class="keywords">
+<span class="kw green">Modularity</span>
+<span class="kw">Independence</span>
+<span class="kw">Reusability</span>
+<span class="kw">Robustness</span>
+<span class="kw">Compilation</span>
+</div>
+<div class="card-body">Decompose the system into <span class="hl-green">separate modules</span>, each with a clear boundary; modules interact through explicit interfaces.</div>
+<div class="card-body">Why modularity helps:</div>
+<ul class="blist">
+<li>Faults tend to stay <strong>localized</strong> — modules can be more <strong>robust</strong> to change.</li>
+<li>Modules can <strong>reuse</strong> one another (one module may call or compose others).</li>
+<li>Modules can be <strong>compiled separately</strong> and shipped in libraries.</li>
+<li>Designs aim for <span class="hl-red">loose coupling</span>: modules are <strong>mostly independent</strong>, not tightly dependent on everything else.</li>
+</ul>
+<div class="note-box">
+<div class="note-label">Exam tip (Q9)</div>
+<strong>Incorrect</strong> claim: “Modules are mostly dependent.” Modularity seeks <strong>independence</strong> and manageable coupling — not pervasive mutual dependence.</div>
+</div>
+</div>
+<!-- Tab: Conway's Law -->
+<div class="tab-panel" id="tab-conway">
+<div class="card">
+<div class="card-title">Conway’s law</div>
+<div class="keywords">
+<span class="kw amber">Conway's Law</span>
+<span class="kw">Team structure</span>
+<span class="kw">System architecture</span>
+<span class="kw">Communication</span>
+</div>
+<div class="card-body">
+<span class="hl-amber">“Organizations which design systems are constrained to produce designs which are copies of the communication structures of those organizations.”</span>
+<br/><br/>
+<span class="hl">In practice: the system’s structure often mirrors how teams talk and coordinate.</span>
+</div>
+<ul class="blist">
+<li>Compiler front-end team → owns the front-end subsystem</li>
+<li>Compiler back-end team → owns the back-end subsystem</li>
+<li>Team boundaries tend to line up with module boundaries</li>
+</ul>
+<hr class="divider"/>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Law</th><th>Idea</th><th>Typical context</th></tr></thead>
+<tbody>
+<tr><td>Conway’s law</td><td>Software structure reflects org communication paths</td><td>Software engineering / org design</td></tr>
+<tr><td>Brooks’ law</td><td>Adding people to a late project can slow it further</td><td>Project management</td></tr>
+<tr><td>Moore’s law</td><td>Transistor density on chips rises roughly on a two-year cadence</td><td>Hardware / semiconductors</td></tr>
+<tr><td>Bell’s law</td><td>New classes of computers appear about each decade</td><td>Computer history</td></tr>
+</tbody>
+</table>
+</div>
+<div class="green-box">
+<div class="note-label">Exam tip (Q4)</div>
+Separate teams owning compiler front end vs. back end — matching org splits to architectural splits — is a textbook illustration of <strong>Conway’s law</strong>.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quiz-pane pane">
+<div class="qz-wrap">
+<div class="qz-toolbar">
+<h2 class="qz-heading">Week 4 — quiz</h2>
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 10</span></div>
+</div>
+</div>
+<div id="questions-container"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+var rawQuestions = [
+  { q: "True or False: Under the abstraction of using a Unix file descriptor, a process needs to know a file's actual name in order to get access to it.", opts: ["True", "False"], ans: 1, expl: ["True — Incorrect. The whole point of the file descriptor abstraction is that a process does NOT need to know the actual file name.", "False — Correct. A Unix file descriptor is an abstraction: the process can read/write using only that descriptor, without knowing the file's actual name or location."] },
+  { q: "If functions in a module have similar functionalities, then this module has ________", opts: ["Coincidental cohesion", "Communicational cohesion", "Logical cohesion", "Temporal cohesion"], ans: 2, expl: ["Coincidental cohesion — Incorrect. Functions are grouped arbitrarily with no meaningful relationship.", "Communicational cohesion — Incorrect. Functions operate on the same data, not merely similar functionalities.", "Logical cohesion — Correct. Functions perform similar or related operations (e.g., all I/O), selected via a control flag.", "Temporal cohesion — Incorrect. Temporal cohesion groups functions that execute at the same time, not because of similar functionalities."] },
+  { q: "Assume that you are an architect for a data-processing project. You have designed an application in such a way that the front-end component receives sensor data from devices, and the data flow from one component to the next component. Each component subsequently transforms the data and passes the transformed data to the next component. The final component passes the finally transformed data to a modelling and visualization unit that renders the data to the end-users. The architecture style that you are using in this application is ______", opts: ["Layered/tiered style", "Architectural style", "Pipe-and-filter style"], ans: 2, expl: ["Layered/tiered style — Incorrect. Layers communicate adjacently; this scenario is sequential data transformation.", "Architectural style — Incorrect. Too generic; not a specific style name.", "Pipe-and-filter style — Correct. Data flows through independent components (filters), each transforming and passing data along."] },
+  { q: "A product group in a large company is working on developing a compiler for a platform. Within this product group, each of multiple teams is formed for reflecting the component maintained by the team, such as the compiler front-end team and the compiler back-end team. The reflection of such team organization is known as ______", opts: ["Brooks' Law", "Conway's Law", "Moore's Law", "Bell's Law"], ans: 1, expl: ["Brooks' Law — Incorrect. About adding manpower to late projects.", "Conway's Law — Correct. Systems mirror the organization's communication structure.", "Moore's Law — Incorrect. Hardware scaling trend.", "Bell's Law — Incorrect. New computer classes over decades."] },
+  { q: "In the UNIX pipe-and-filter architecture, which of the following is NOT true?", opts: ["The data get processed as soon as they arrive", "Filters know each other and share state", "Data can be passed in only one direction", "Filters can be implemented in parallel"], ans: 1, expl: ["Processed as soon as they arrive — True (incremental processing).", "Filters know each other and share state — NOT true. Filters are independent and do not share state.", "One direction — True for standard Unix pipes.", "Parallel implementation — True."] },
+  { q: "Which of following is NOT a function of connectors?", opts: ["Interactions among components", "Encapsulates computation and/or data in the system", "Rules that govern those interactions"], ans: 1, expl: ["Interactions among components — IS a connector function.", "Encapsulates computation and/or data — NOT a connector function; that is the role of Components.", "Rules that govern interactions — IS a connector function."] },
+  { q: "The component in the MVC pattern for receiving user-gesture events is named ______", opts: ["Model", "Controller", "View"], ans: 1, expl: ["Model — Incorrect. Holds data and business logic.", "Controller — Correct. Handles user-gesture events.", "View — Incorrect. Renders output; does not own input handling."] },
+  { q: "A chart, a pie chart, and a bar chart can show the same information from the database, due to which feature of MVC?", opts: ["Ability to provide multiple views", "Support for asynchronous technique", "The modification not affecting the entire model"], ans: 0, expl: ["Ability to provide multiple views — Correct. Same model, multiple views.", "Asynchronous technique — Incorrect. Not the defining reason.", "Modification not affecting entire model — Incorrect. Describes isolation, not multiple visualizations."] },
+  { q: "Which of the statement about software modularity is NOT correct with respect to benefits of software modularity?", opts: ["Modules are robust", "A module can use other modules", "Modules can be separately compiled and stored in a library", "Modules are mostly dependent"], ans: 3, expl: ["Robust — correct benefit.", "A module can use other modules — correct benefit.", "Separately compiled in a library — correct benefit.", "Mostly dependent — NOT correct; modules should be mostly independent."] },
+  { q: "Which of the following is the worst type of module cohesion among the following options?", opts: ["Logical Cohesion", "Temporal Cohesion", "Functional Cohesion", "Coincidental Cohesion"], ans: 3, expl: ["Logical — not the worst.", "Temporal — not the worst.", "Functional — best cohesion, not worst.", "Coincidental Cohesion — worst; no meaningful relationship between grouped functions."] }
+];
+
+var questions = rawQuestions.map(function (rq, idx) {
+  return { num: idx + 1, text: rq.q, options: rq.opts, correct: rq.ans, expItems: rq.expl };
+});
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+QuizPane.mount({ questions: questions });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

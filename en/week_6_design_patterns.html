@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Week 6 · OO Design Patterns — Part 2 &amp; Quiz</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<link href="../css/quiz-pane.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--border2:#d4d1ca;
+  --text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-border:#16a34a;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-border:#dc2626;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-border:#2563eb;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{
+  display:grid;
+  grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));
+  min-height:100vh;
+  max-width:1600px;
+  width:100%;
+  margin:0;
+}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane{background:var(--bg);border:none;}
+.quiz-pane{background:var(--bg);}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){
+  .page-split{grid-template-columns:1fr;}
+  .pane{max-height:none;}
+  .notes-pane{border:none;}
+}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card:hover{border:none;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.kw.red{background:var(--red-light);color:var(--red);}
+.card-body{font-size:0.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.card-body:last-child{margin-bottom:0;}
+.hl{color:var(--text);font-weight:600;}
+.hl-green{color:var(--accent);font-weight:600;}
+.hl-blue{color:var(--blue);font-weight:600;}
+.hl-amber{color:var(--accent2);font-weight:600;}
+.hl-red{color:var(--red);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist:last-child{margin-bottom:0;}
+.blist li{font-size:0.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border2);font-size:0.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+.tbl-wrap:last-child{margin-bottom:0;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.divider{border:none;margin:20px 0;height:0;clear:both;}
+.note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent2);margin-bottom:4px;}
+.green-box{background:var(--accent-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.green-box .note-label{color:var(--accent);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.blue-box{background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.blue-box .note-label{color:var(--blue);font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:4px;}
+.summary-cell{background:var(--surface2);border:none;border-radius:6px;padding:12px 14px;}
+.summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px;}
+.summary-cell .sc-val{font-size:0.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+
+/* Mind map tab — embed mindmap_design_patterns_html.html via iframe */
+#tab-mindmap{padding-top:0;}
+.mm-iframe-wrap{
+  margin:0 -8px 0 -8px;
+  width:calc(100% + 16px);
+  height:min(85vh,1100px);
+  min-height:420px;
+  overflow:hidden;
+  border-radius:var(--radius);
+  background:var(--surface2);
+}
+.mm-iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  border:none;
+  vertical-align:top;
+  background:transparent;
+}
+
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="week-6">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="page-split">
+<div class="notes-pane pane">
+<div class="container">
+<header>
+<h1>Week 6 · OO Design Patterns — Part 2</h1>
+</header>
+<nav class="tab-nav">
+<button class="tab-btn active" onclick="switchTab('mindmap',this)" type="button">Mindmap</button>
+<button class="tab-btn" onclick="switchTab('overview',this)" type="button">Design Patterns</button>
+<button class="tab-btn" onclick="switchTab('creational',this)" type="button">Creational</button>
+<button class="tab-btn" onclick="switchTab('structural',this)" type="button">Structural</button>
+<button class="tab-btn" onclick="switchTab('behavioral',this)" type="button">Behavioral</button>
+<button class="tab-btn" onclick="switchTab('tips',this)" type="button">Exam focus</button>
+</nav>
+<!-- Tab 0: Mind map -->
+<div class="tab-panel active" id="tab-mindmap">
+<div class="mm-iframe-wrap">
+<iframe class="mm-iframe" loading="lazy" src="../mindmap/week_6_design_patterns_mindmap.html" title="Design Patterns mind map"></iframe>
+</div>
+</div>
+<!-- Tab 1: Overview -->
+<div class="tab-panel" id="tab-overview">
+<div class="card">
+<div class="card-title">Design patterns — what are they?</div>
+<div class="keywords">
+<span class="kw green">Design pattern</span>
+<span class="kw">Reusable template</span>
+<span class="kw">Recurring problem</span>
+<span class="kw">GoF</span>
+</div>
+<div class="card-body">Design patterns are <span class="hl-green">reusable solution templates</span> for <span class="hl">recurring problems</span> in software development. The Gang of Four (GoF) systematized 23 classic patterns in <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>.</div>
+<ul class="blist">
+<li>They capture <strong>structure and intent</strong>, not finished code you paste in.</li>
+<li>Used well, they improve <strong>readability, flexibility, and maintainability</strong>.</li>
+<li>A single class can participate in <strong>several</strong> patterns at once.</li>
+<li>They give teams a <strong>shared vocabulary</strong> for talking about design.</li>
+</ul>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+“A class cannot participate in more than one design pattern” is <strong>false</strong>: a class can play multiple pattern roles at the same time.</div>
+</div>
+<div class="card">
+<div class="card-title">GoF pattern categories</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Category</th><th>Focus</th><th>Typical patterns</th></tr></thead>
+<tbody>
+<tr><td>Creational</td><td>How objects are <strong>created</strong></td><td>Singleton, Factory Method, Abstract Factory, Builder, Prototype</td></tr>
+<tr><td>Structural</td><td>How classes/objects are <strong>composed</strong></td><td>Adapter, Composite, Decorator, Facade, Proxy</td></tr>
+<tr><td>Behavioral</td><td>How objects <strong>interact</strong> and divide responsibility</td><td>Observer, Strategy, Iterator, Interpreter, Visitor, State</td></tr>
+</tbody>
+</table>
+</div>
+<div class="blue-box">
+<div class="note-label">Mnemonic</div>
+<strong>Creational (how to build) → Structural (how to compose) → Behavioral (how to collaborate)</strong>
+</div>
+</div>
+</div>
+<!-- Tab 2: Creational -->
+<div class="tab-panel" id="tab-creational">
+<div class="card">
+<div class="card-title">Creational patterns — how objects are created</div>
+<div class="keywords">
+<span class="kw amber">Creational</span>
+<span class="kw">Object creation</span>
+<span class="kw">Instantiation</span>
+<span class="kw">Flexibility</span>
+</div>
+<div class="card-body">Creational patterns <span class="hl-amber">separate object creation from the code that uses those objects</span>, so the rest of the system does not depend on concrete constructors. That improves flexibility and makes it easier to extend or swap implementations.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Pattern</th><th>Core idea</th></tr></thead>
+<tbody>
+<tr><td>Singleton</td><td>Ensure one instance of a class and provide a global access point.</td></tr>
+<tr><td>Factory Method</td><td>Define an interface for creating objects; let subclasses choose which class to instantiate.</td></tr>
+<tr><td>Abstract Factory</td><td>Provide an interface for creating families of related objects without naming concrete classes.</td></tr>
+<tr><td>Builder</td><td>Construct a complex object step by step; the same construction process can yield different representations.</td></tr>
+<tr><td>Prototype</td><td>Create new objects by cloning an existing instance (e.g. <code>clone()</code>).</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Tab 3: Structural -->
+<div class="tab-panel" id="tab-structural">
+<div class="card">
+<div class="card-title">Structural patterns — how classes and objects are composed</div>
+<div class="keywords">
+<span class="kw blue">Structural</span>
+<span class="kw">Composition</span>
+<span class="kw">Interface</span>
+<span class="kw">Composite</span>
+</div>
+<div class="card-body">Structural patterns show how to build <span class="hl-blue">larger structures from classes or objects</span> while keeping the design flexible and efficient. This week emphasizes the <span class="hl">Composite</span> pattern.</div>
+<hr class="divider"/>
+<div class="card-body">Composite lets a <span class="hl">single object (leaf)</span> and a <span class="hl">group of objects (composite)</span> be treated the same way by clients, forming a tree.</div>
+<div class="summary-grid">
+<div class="summary-cell">
+<div class="sc-label">Component</div>
+<div class="sc-val">Abstract type shared by all parts of the tree; declares operations every node supports.</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Leaf</div>
+<div class="sc-val">A leaf has no children; it implements the Component operations.</div>
+</div>
+<div class="summary-cell">
+<div class="sc-label">Composite</div>
+<div class="sc-val">A composite holds child components and implements child-management operations.</div>
+</div>
+</div>
+<div class="note-box">
+<div class="note-label">Key distinction</div>
+The <strong>Component</strong> abstraction declares only operations shared by every node (e.g. render, resize).<br/>
+<strong>Child-management</strong> methods (<code>add</code> / <code>remove</code> / <code>getChild</code>) live on the <strong>Composite</strong> class, not on the Component interface.</div>
+<div class="green-box">
+<div class="note-label">Typical scenario</div>
+A 3D scene graph: one mesh (leaf) and a group of meshes (composite) must support the same transforms (resize, rotate) — Composite lets clients apply operations uniformly to individuals and groups.</div>
+</div>
+</div>
+<!-- Tab 4: Behavioral -->
+<div class="tab-panel" id="tab-behavioral">
+<div class="card">
+<div class="card-title">Behavioral patterns — collaboration and responsibility</div>
+<div class="keywords">
+<span class="kw green">Behavioral</span>
+<span class="kw">Interaction</span>
+<span class="kw">Responsibility</span>
+<span class="kw">Algorithm</span>
+</div>
+<div class="card-body">Behavioral patterns describe how objects <span class="hl-green">communicate and divide responsibility</span>: encapsulating algorithms, coordinating collaborators, and changing behavior at runtime without brittle conditionals.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Pattern</th><th>Core idea</th><th>Keywords</th></tr></thead>
+<tbody>
+<tr><td>Observer</td><td>When a subject’s state changes, notify all dependent observers automatically.</td><td>Publish–subscribe, one-to-many notification</td></tr>
+<tr><td>Strategy</td><td>Encapsulate a family of algorithms and swap them at runtime.</td><td>Runtime switching, algorithm family</td></tr>
+<tr><td>Iterator</td><td>Traverse a collection’s elements sequentially without exposing its internals.</td><td>Traversal, sequential access</td></tr>
+<tr><td>Interpreter</td><td>Define a grammar and represent rules as a hierarchy of expression classes.</td><td>AST, grammar, syntax tree</td></tr>
+<tr><td>Visitor</td><td>Add new operations over an object structure without changing element classes.</td><td>Double dispatch, open operations</td></tr>
+<tr><td>State</td><td>Delegate behavior that varies with internal state to state objects.</td><td>State machine, transitions</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr class="divider"/>
+<div class="card">
+<div class="card-title">Observer</div>
+<div class="keywords">
+<span class="kw green">Observer</span>
+<span class="kw">Subject</span>
+<span class="kw">Notify</span>
+<span class="kw">Decouple</span>
+<span class="kw">One-to-many</span>
+</div>
+<div class="card-body">Observer decouples <span class="hl-green">who holds state (subject)</span> from <span class="hl-green">who reacts to it (observers)</span>. When the subject changes, it notifies every registered observer.</div>
+<ul class="blist">
+<li>Many observers can listen to the <strong>same subject</strong> (one-to-many).</li>
+<li>The subject may change state at any time; observers receive updates after each change.</li>
+<li>Central definition: <strong>separate the display of object state from the object itself</strong> — the subject holds state; observers react.</li>
+</ul>
+<div class="note-box">
+<div class="note-label">Contrast</div>
+Observer separates <em>state</em> from <em>views of that state</em>. It is <strong>not</strong> mainly about separating a view from its implementation — that line of thinking fits MVC or Strategy better.</div>
+</div>
+<div class="card">
+<div class="card-title">Strategy</div>
+<div class="keywords">
+<span class="kw blue">Strategy</span>
+<span class="kw">Algorithm family</span>
+<span class="kw">Runtime switch</span>
+<span class="kw">Encapsulation</span>
+<span class="kw">Interchangeable</span>
+</div>
+<div class="card-body">Strategy defines a family of algorithms, encapsulates each one, and lets clients use them <span class="hl-blue">interchangeably at runtime</span> without changing calling code.</div>
+<ul class="blist">
+<li>Decouples <strong>using</strong> an algorithm from <strong>implementing</strong> it.</li>
+<li>A context object holds a strategy reference and can reassign it when behavior should change.</li>
+<li>Reduces sprawling <code>if</code>/<code>else</code> or <code>switch</code> chains over algorithm variants.</li>
+</ul>
+<div class="green-box">
+<div class="note-label">Typical scenario</div>
+A trading desk swaps execution algorithms during a session — each strategy is its own object; the context selects which one runs without rewriting core logic.</div>
+</div>
+<div class="card">
+<div class="card-title">Interpreter</div>
+<div class="keywords">
+<span class="kw amber">Interpreter</span>
+<span class="kw">Context</span>
+<span class="kw">AbstractExpression</span>
+<span class="kw">TerminalExpression</span>
+<span class="kw">NonTerminalExpression</span>
+<span class="kw">AST</span>
+</div>
+<div class="card-body">Interpreter defines a language grammar and maps it to a hierarchy of expression classes. Evaluation walks an <span class="hl-amber">abstract syntax tree (AST)</span> built from those expressions.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Role</th><th>Responsibility</th></tr></thead>
+<tbody>
+<tr><td>AbstractExpression</td><td>Declares <code>interpret(Context)</code> (or equivalent).</td></tr>
+<tr><td>TerminalExpression</td><td>Leaf in the grammar; no sub-expressions; evaluates directly.</td></tr>
+<tr><td>NonTerminalExpression</td><td>Interior node; holds child expressions and delegates interpretation recursively.</td></tr>
+<tr><td>Context</td><td>Holds global information for interpretation; it is <em>not</em> a node in the AST.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Exam tip</div>
+<strong>The AST consists of expression objects, not <code>Context</code> instances.</strong><br/>
+<code>Context</code> is passed along during interpretation; it does not form the tree.</div>
+</div>
+</div>
+<!-- Tab 5: Exam focus -->
+<div class="tab-panel" id="tab-tips">
+<div class="card">
+<div class="card-title">Patterns that are easy to mix up</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Pattern</th><th>Main goal</th><th>Clues in the problem</th></tr></thead>
+<tbody>
+<tr><td>Observer</td><td>State changes should fan out to many dependents.</td><td>Events, publish–subscribe, broadcast notification</td></tr>
+<tr><td>Strategy</td><td>Swap algorithms or behaviors at runtime.</td><td>On-the-fly switching, interchangeable policies</td></tr>
+<tr><td>Composite</td><td>Treat individual objects and groups uniformly.</td><td>Tree structure, same operations on part and whole</td></tr>
+<tr><td>Iterator</td><td>Sequential access without exposing representation.</td><td>“Walk” a collection, hide internals</td></tr>
+<tr><td>Visitor</td><td>Add operations over a stable class hierarchy.</td><td>New behavior without editing each element class, double dispatch</td></tr>
+<tr><td>Interpreter</td><td>Evaluate or execute a little language.</td><td>Grammar rules, AST, parsing</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<div class="card-title">Composite: three roles</div>
+<div class="keywords">
+<span class="kw blue">Component</span>
+<span class="kw green">Leaf</span>
+<span class="kw amber">Composite</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Role</th><th>Declares or implements shared operations?</th><th>Manages children?</th><th>Has children?</th></tr></thead>
+<tbody>
+<tr><td>Component (interface)</td><td style="color:var(--accent);font-weight:600;">Declares</td><td style="color:var(--red);font-weight:600;">No</td><td style="color:var(--red);font-weight:600;">No</td></tr>
+<tr><td>Leaf</td><td style="color:var(--accent);font-weight:600;">Implements</td><td style="color:var(--red);font-weight:600;">No</td><td style="color:var(--red);font-weight:600;">No</td></tr>
+<tr><td>Composite</td><td style="color:var(--accent);font-weight:600;">Implements</td><td style="color:var(--accent);font-weight:600;">Yes (<code>add</code> / <code>remove</code>)</td><td style="color:var(--accent);font-weight:600;">Yes</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-label">Common trap</div>
+“The component interface includes methods to manipulate children” is <strong>false</strong>: child-management methods belong on <strong>Composite</strong>, not on the shared Component abstraction.</div>
+</div>
+<div class="card">
+<div class="card-title">Scenario → pattern quick reference</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Scenario</th><th>Best fit</th></tr></thead>
+<tbody>
+<tr><td>3D library: one object and groups of objects need the same transforms.</td><td>Composite</td></tr>
+<tr><td>A fund switches trading strategies during a session.</td><td>Strategy</td></tr>
+<tr><td>Behavior or algorithm must change while the program runs.</td><td>Strategy</td></tr>
+<tr><td>One state change must notify many dependents.</td><td>Observer</td></tr>
+<tr><td>Walk elements of a collection in order without exposing structure.</td><td>Iterator</td></tr>
+<tr><td>Parse a grammar and evaluate an expression tree.</td><td>Interpreter</td></tr>
+</tbody>
+</table>
+</div>
+<div class="blue-box">
+<div class="note-label">Strategy vs. Visitor</div>
+Both can move behavior out of a monolithic class, but they solve different problems: <strong>Strategy</strong> swaps <em>algorithms</em> (whole behavior changes). <strong>Visitor</strong> adds <em>new operations</em> across a fixed object structure without changing each element’s class.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quiz-pane pane">
+<div class="qz-wrap">
+<div class="qz-toolbar">
+<h2 class="qz-heading">Week 6 - quiz</h2>
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 9</span></div>
+</div>
+</div>
+<div id="questions-container"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const questions = [
+  {
+    num: 1,
+    text: "Which of the following patterns does NOT belong to software Design pattern categories?",
+    options: ["Creational patterns", "Structural patterns", "Behavioral patterns", "None of the above"],
+    correct: 3,
+    explanations: [
+      "❌ Creational patterns — This IS a valid GoF design pattern category; covers object creation mechanisms.",
+      "❌ Structural patterns — This IS a valid GoF category; deals with class/object composition.",
+      "❌ Behavioral patterns — This IS a valid GoF category; characterizes object interaction and responsibility.",
+      "✅ None of the above — All three options (Creational, Structural, Behavioral) are legitimate GoF categories, so none of them fails to belong. The correct answer is 'None of the above'."
+    ]
+  },
+  {
+    num: 2,
+    text: "Which of the following statements is true about the Observer pattern?",
+    options: [
+      "The state of the observed subject cannot be changed once initialized",
+      "There can be only one observer",
+      "It separates the display of object state from the object itself",
+      "It separates the display and the display implementation"
+    ],
+    correct: 2,
+    explanations: [
+      "❌ The state of the observed subject cannot be changed once initialized — False; the whole purpose of Observer is to notify observers when the subject's state changes.",
+      "❌ There can be only one observer — False; Observer supports multiple observers registered to a single subject.",
+      "✅ It separates the display of object state from the object itself — True; Observer decouples the subject (state holder) from its observers (display/reaction logic), allowing independent variation.",
+      "❌ It separates the display and the display implementation — This describes a different concern (closer to MVC or Strategy); it is not the core definition of Observer."
+    ]
+  },
+  {
+    num: 3,
+    text: "Which of the following is true about Behavioral patterns?",
+    options: [
+      "Concerned with the process of object creation",
+      "Deal with the composition of classes or objects",
+      "Characterize the ways in which classes or objects interact and distribute responsibility",
+      "None of the above"
+    ],
+    correct: 2,
+    explanations: [
+      "❌ Concerned with the process of object creation — This describes Creational patterns, not Behavioral.",
+      "❌ Deal with the composition of classes or objects — This describes Structural patterns, not Behavioral.",
+      "✅ Characterize the ways in which classes or objects interact and distribute responsibility — This is the textbook definition of Behavioral patterns (e.g., Observer, Strategy, Iterator, Interpreter).",
+      "❌ None of the above — Incorrect; option 3 is accurate."
+    ]
+  },
+  {
+    num: 4,
+    text: "Which of the following statements is NOT true about using Design patterns?",
+    options: [
+      "Design patterns are reusable templates that help programmers solve some reoccurring issues in software development",
+      "A class cannot participate in more than one Design pattern",
+      "Using Design patterns improves code readability and flexibility"
+    ],
+    correct: 1,
+    explanations: [
+      "❌ Design patterns are reusable templates that help programmers solve some reoccurring issues in software development — This IS true; design patterns are reusable solutions to common problems.",
+      "✅ A class cannot participate in more than one Design pattern — This is NOT true. A single class can and often does participate in multiple design patterns simultaneously.",
+      "❌ Using Design patterns improves code readability and flexibility — This IS true; patterns provide shared vocabulary and proven structure that improve maintainability."
+    ]
+  },
+  {
+    num: 5,
+    text: "Which of the following patterns allows a class behavior or its algorithm to be changed at run time?",
+    options: ["Composite pattern", "Visitor pattern", "Iterator pattern", "Strategy pattern"],
+    correct: 3,
+    explanations: [
+      "❌ Composite pattern — Addresses tree structures of objects; not about swapping algorithms at runtime.",
+      "❌ Visitor pattern — Adds operations to objects without modifying them; behavior switching is not its primary purpose.",
+      "❌ Iterator pattern — Provides sequential access to collection elements; unrelated to runtime algorithm switching.",
+      "✅ Strategy pattern — Defines a family of algorithms, encapsulates each one, and makes them interchangeable at runtime without changing the client."
+    ]
+  },
+  {
+    num: 6,
+    text: "Which of the following is NOT true about the Composite pattern?",
+    options: [
+      "The Leaf class implements all methods in the Component interface",
+      "The Composite class implements methods to manipulate children",
+      "The Component interface is the abstraction for all components, including composite ones",
+      "The Component interface includes methods to manipulate children"
+    ],
+    correct: 3,
+    explanations: [
+      "❌ The Leaf class implements all methods in the Component interface — True; Leaf must implement the Component interface even if child-management methods are no-ops.",
+      "❌ The Composite class implements methods to manipulate children — True; Composite holds and manages child components.",
+      "❌ The Component interface is the abstraction for all components, including composite ones — True; both Leaf and Composite implement Component.",
+      "✅ The Component interface includes methods to manipulate children — NOT true. Child-manipulation methods (add, remove, getChild) belong to the Composite class, not the Component interface. The interface only declares common operations shared by all components."
+    ]
+  },
+  {
+    num: 7,
+    text: "In a 3D object manipulation library, objects as well as groups of objects need to support similar 3D transformations (e.g. resize, rotation). Which pattern could be best suitable?",
+    options: ["Observer pattern", "Composite pattern", "Iterator pattern", "State pattern"],
+    correct: 1,
+    explanations: [
+      "❌ Observer pattern — Handles publish-subscribe notification; not about treating individual and grouped objects uniformly.",
+      "✅ Composite pattern — Ideal here: individual 3D objects (Leaf) and groups of objects (Composite) both implement the same Component interface, allowing uniform application of transformations.",
+      "❌ Iterator pattern — Provides sequential traversal; does not address uniform treatment of objects and groups.",
+      "❌ State pattern — Manages state-dependent behavior changes; unrelated to tree-structured object hierarchies."
+    ]
+  },
+  {
+    num: 8,
+    text: "A hedge fund uses multiple trading strategies that need to be switched on-the-fly during a trading session. Which pattern could be best suitable?",
+    options: ["Observer pattern", "Strategy pattern", "Iterator pattern", "Visitor pattern"],
+    correct: 1,
+    explanations: [
+      "❌ Observer pattern — Suited for event notification across multiple listeners; not for swapping algorithms dynamically.",
+      "✅ Strategy pattern — Designed exactly for this: encapsulate each trading strategy as an interchangeable object and swap them at runtime without changing the surrounding context.",
+      "❌ Iterator pattern — Provides sequential access to elements; not relevant to algorithm switching.",
+      "❌ Visitor pattern — Adds operations to an object structure without modifying it; does not address runtime strategy switching."
+    ]
+  },
+  {
+    num: 9,
+    text: "Which of the following is NOT True about the Interpreter pattern?",
+    options: [
+      "The interpret method has \"Context\" as one of its method parameter types",
+      "The TerminalExpression class has no children and can be interpreted directly",
+      "The abstract syntax tree is made with Context instances",
+      "The NonTerminalExpression maintains a list of Expressions as children"
+    ],
+    correct: 2,
+    explanations: [
+      "❌ The interpret method has \"Context\" as one of its method parameter types — True; the interpret(Context) signature passes shared state through the tree.",
+      "❌ The TerminalExpression class has no children and can be interpreted directly — True; terminal expressions are leaf nodes that evaluate themselves.",
+      "✅ The abstract syntax tree is made with Context instances — NOT true. The abstract syntax tree is composed of Expression instances (Terminal and NonTerminal). Context carries global information used during interpretation, but does not form the tree itself.",
+      "❌ The NonTerminalExpression maintains a list of Expressions as children — True; NonTerminalExpression holds child expressions and delegates interpretation to them."
+    ]
+  }
+];
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+QuizPane.mount({ questions: questions });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

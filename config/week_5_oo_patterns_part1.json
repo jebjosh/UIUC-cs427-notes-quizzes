@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$comment": "Week 5 UML / OO foundation (notes-5 + quiz-5). Merge page: week_5_oo_patterns_part_1.html",
+  "$comment": "Week 5 UML / OO foundation (notes-5 + quiz-5). Merge page: zh/week_5_oo_patterns_part_1.html",
   "moduleId": "week_5",
-  "mergePageFilename": "week_5_oo_patterns_part_1.html",
+  "mergePageFilename": "zh/week_5_oo_patterns_part_1.html",
   "titles": {
     "documentTitle": "Week 5 · OO Paterns Part 1 & Quiz",
     "notesH1": "Week 5 - OO Paterns - Part 1",
