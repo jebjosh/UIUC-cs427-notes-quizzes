@@ -316,10 +316,37 @@ const rawQuestions = [
   { q: "Consider the following code. Which refers to the line annotated with comment 'line1'?", code: `@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}`, opts: ["Assume","Arrange","Act","Assert"], ans: 0, exp: "line1 is an assumption check used to guard test preconditions." },
   { q: "We specifically listed, formulated, and tested all possible returns of observers. What guideline is this?", opts: ["Assumption-first guideline","Property-first guideline"], ans: 1, exp: "Enumerating all possible observer returns is property-first." },
   { q: "Which test generalization step has non-primitive objects as arguments?", opts: ["Parameterize","Generalize test oracle","Add assumptions","Cross test generalize"], ans: 0, exp: "Introducing object parameters belongs to the parameterize step." },
-  { q: "Which test-generalization step uses AssumeTrue or AssumeFalse?", opts: ["Parameterize","Generalize test oracle","Add assumptions","Cross test generalize"], ans: 2, exp: "AssumeTrue/AssumeFalse are used in the add assumptions step." }
+  { q: "Which test-generalization step uses AssumeTrue or AssumeFalse?", opts: ["Parameterize","Generalize test oracle","Add assumptions","Cross test generalize"], ans: 2, exp: "AssumeTrue/AssumeFalse are used in the add assumptions step." },
+  // ── EXTRA QUESTIONS ──────────────────────────────────────────────────────
+  { q: "True or False: Unit tests act as documentation for how a class should be used.", opts: ["True","False"], ans: 0, exp: "Unit tests demonstrate correct usage with concrete inputs and expected outputs — they are executable documentation." },
+  { q: "The quality of a unit test suite depends on both coverage and assertions because:", opts: ["High coverage with no assertions proves the code runs but checks nothing","High assertions with low coverage checks a few things exhaustively but misses most code","Both together ensure code runs AND behaves correctly","All of the above"], ans: 3, exp: "Experience: just high coverage OR many assertions alone is insufficient — both together are required for quality." },
+  { q: "@BeforeAll in JUnit 5 must be:", opts: ["Instance method","Static method","Private method","Abstract method"], ans: 1, exp: "@BeforeAll (and @AfterAll) must be static because they run before any test instance is created." },
+  { q: "True or False: assertThrows returns the thrown exception so you can inspect its message.", opts: ["True","False"], ans: 0, exp: "assertThrows(Type.class, executable) returns the exception — you can then assert on exception.getMessage() etc." },
+  { q: "When should you use assertAll instead of separate assertions?", opts: ["When you want to stop at the first failure","When you want ALL failures reported in a single test run","When assertions involve floating-point","When testing exceptions"], ans: 1, exp: "assertAll executes all lambdas regardless of earlier failures, reporting every problem at once." },
+  { q: "In @CsvSource, the value \"'baz, qux', 3\" uses single quotes to:", opts: ["Indicate a char type","Wrap a string value that contains a comma","Mark it as nullable","Denote an enum constant"], ans: 1, exp: "Single quotes in @CsvSource wrap strings containing commas so they are treated as one argument." },
+  { q: "@MethodSource factory method must be:", opts: ["Instance method only","Static method or external static method","Any visibility","Private method"], ans: 1, exp: "@MethodSource requires a static factory method (in the same class or an external class with fully qualified name)." },
+  { q: "Property-first guideline Step 1 is to classify methods as:", opts: ["Public and private","Modifiers and observers","Static and instance","Abstract and concrete"], ans: 1, exp: "Step 1: classify methods as modifiers (change state) or observers (return value without modifying state)." },
+  { q: "Test generalization Step 4 (Cross-test generalize) transforms:", opts: ["Constants into parameters","Multiple similar parameterized tests into one more general test","Test oracles into assumptions","Individual tests into a test suite"], ans: 1, exp: "Step 4 merges similar PTs (e.g., PT1 push 1 elem + PT3 push 2 elems) into one general PT(int[] elems)." },
+  { q: "True or False: @AfterEach can be used to verify postconditions that should hold after every test.", opts: ["True","False"], ans: 0, exp: "Yes — @AfterEach can assert invariants or postconditions that must hold after every test method completes." },
+  { q: "Implicit string conversion in @ValueSource allows:", opts: ["Passing null directly","JUnit to automatically convert a String to int, boolean, Enum, File, etc.","Converting objects to JSON","Only converting to primitives"], ans: 1, exp: "JUnit 5 implicit conversion: 'true'→boolean, '1'→int, 'SECONDS'→TimeUnit, '/path'→File, etc." },
+  { q: "ArgumentsAccessor is used in parameterized tests to:", opts: ["Validate argument types at compile time","Access multiple CSV columns by index and convert to typed values","Generate random test inputs","Replace @MethodSource"], ans: 1, exp: "ArgumentsAccessor gives you arguments.getString(0), arguments.get(2, Gender.class), etc. for multi-column CSV." },
+  { q: "assumingThat(condition, executable) — if condition is false:", opts: ["Test FAILS","Test is ABORTED","The executable runs anyway","An exception is thrown"], ans: 1, exp: "If the condition is false, the executable is skipped — but the test CONTINUES (unlike assumeTrue which aborts)." },
+  { q: "True or False: Two conventional tests CT1 (push elem=1) and CT2 (push elem=30) are redundant with respect to each other after test generalization.", opts: ["True","False"], ans: 0, exp: "After generalization, both map to the same PT1(int elem, Stack stk) — CT2 covers the same partition and is redundant." }
 ];
 
-const questions = rawQuestions.map(function (rq, idx) {
+// Shuffle helper
+function shuffleArray(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+var allRaw = shuffleArray(rawQuestions);
+
+const questions = allRaw.map(function (rq, idx) {
   var o = { num: idx + 1, text: rq.q, code: rq.code || "", options: rq.opts, correct: rq.ans };
   if (rq.expItems && rq.expItems.length) o.explanations = rq.expItems;
   else o.exp = rq.exp;

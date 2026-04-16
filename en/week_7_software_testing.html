@@ -629,10 +629,186 @@ const rawQuestions = [
       "❌ Decision tables map combinations of conditions to actions—a rule matrix, not merely grouping inputs by class.",
       "❌ Use-case testing derives scenarios from user workflows, not the generic partition-then-representative pattern."
     ]
+  },
+  // ── EXTRA QUESTIONS (shuffled in) ──────────────────────────────────────
+  {
+    q: "Validation is defined as determining whether a system satisfies:",
+    opts: ["The conditions set at the start of the current development phase","Specified requirements — the right product?","Only the non-functional requirements","The internal design document"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — That matches Verification (did we build the phase right?).",
+      "✅ Correct — Validation checks against specified requirements: 'Are we building the right product?' (IEEE 2017).",
+      "❌ Incorrect — Validation covers all requirements, functional and non-functional.",
+      "❌ Incorrect — Internal design is an artifact of the process, not the validation criterion."
+    ]
+  },
+  {
+    q: "Test Execution activity requires which level of knowledge?",
+    opts: ["Deep domain knowledge","Technical testing expertise","Very little knowledge","Strong programming background"],
+    ans: 2,
+    explanations: [
+      "❌ Incorrect — Domain knowledge is needed for Test Evaluation (judging results), not Execution.",
+      "❌ Incorrect — Technical testing expertise is needed for Test Design, not Execution.",
+      "✅ Correct — Test Execution simply runs scripts and records results; very little knowledge is required (Testing Activities tab).",
+      "❌ Incorrect — Programming background belongs to Test Automation."
+    ]
+  },
+  {
+    q: "Which code coverage level checks that every conditional predicate has been both true and false?",
+    opts: ["Method coverage","Statement coverage","Branch/decision coverage","Loop coverage"],
+    ans: 2,
+    explanations: [
+      "❌ Incorrect — Method coverage only checks that every method has been called.",
+      "❌ Incorrect — Statement coverage checks every line is executed but does not require both branches.",
+      "✅ Correct — Branch/decision coverage: every if/while/for must evaluate to both true and false.",
+      "❌ Incorrect — Loop coverage checks 0/1/2/many iterations through a loop."
+    ]
+  },
+  {
+    q: "An infeasible path in a program is one that:",
+    opts: ["Takes too long to execute","Can never be reached by any test input","Is always executed first","Only executes on certain hardware"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — Infeasibility is about reachability, not execution time.",
+      "✅ Correct — An infeasible path cannot be triggered by any possible input; 100% coverage cannot cover it (Code Coverage tab).",
+      "❌ Incorrect — Always-first execution does not make a path infeasible.",
+      "❌ Incorrect — Hardware dependence is a different concern."
+    ]
+  },
+  {
+    q: "The mistake → fault → error → failure chain: what does 'error' specifically refer to?",
+    opts: ["The incorrect line of code","The incorrect program state during execution","The wrong output the user sees","The developer's misunderstanding"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — The incorrect line of code is the Fault (defect).",
+      "✅ Correct — Error: the difference between computed/observed and the correct value — an incorrect intermediate state (Fault & Failure tab).",
+      "❌ Incorrect — Wrong output is the Failure.",
+      "❌ Incorrect — Developer's misunderstanding is the Mistake."
+    ]
+  },
+  {
+    q: "For range input [a, b] in Boundary Value Analysis (integer), which test values are required?",
+    opts: ["Only a and b","a, b, a+1, b-1","a, a+1, a-1, b, b+1, b-1","Only mid-range values"],
+    ans: 2,
+    explanations: [
+      "❌ Incomplete — BVA requires values at and around each boundary, not just the endpoints.",
+      "❌ Incomplete — Missing a-1 and b+1 which test robustness beyond the boundary.",
+      "✅ Correct — BVA for integer range: a, a-1, a+1, b, b-1, b+1 — at boundary and ±1 on each side.",
+      "❌ Incorrect — Mid-range values are used for Equivalence Partitioning, not BVA."
+    ]
+  },
+  {
+    q: "Which condition of PIE explains why passing all tests does NOT guarantee zero bugs?",
+    opts: ["Execution — some statements were not executed","Infection — the fault never corrupted state","Propagation — the error never reached an observable output","All three together"],
+    ans: 3,
+    explanations: [
+      "❌ Partially correct but incomplete — even with 100% execution, I and P may not hold.",
+      "❌ Partially correct but incomplete — alone this explains masked faults, not the whole picture.",
+      "❌ Partially correct but incomplete — propagation failure is one reason but not the only one.",
+      "✅ Correct — Even with 100% statement coverage, a fault might execute (E) but not infect state (I), or infect state but not propagate to an observable output (P). All three together explain why tests cannot prove correctness."
+    ]
+  },
+  {
+    q: "Testing guidelines for collections say to test the collection with exactly one element because:",
+    opts: ["It is faster","Edge cases near empty are common fault locations","It uses less memory","It satisfies statement coverage alone"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — Speed is not the reason for this guideline.",
+      "✅ Correct — The boundary between 'empty' and 'non-empty' is a common fault location; testing with exactly 1 element catches off-by-one errors near empty (Equivalence Partitioning tab).",
+      "❌ Incorrect — Memory usage is irrelevant to this guideline.",
+      "❌ Incorrect — Coverage type is not the motivation; it is about fault-prone boundary behavior."
+    ]
+  },
+  {
+    q: "Scenario-based tests are written based on:",
+    opts: ["Random inputs","User stories and user workflows","The internal code structure","Boundary values only"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — Random inputs describe fuzz testing.",
+      "✅ Correct — Scenario-based tests derive cases from user stories and realistic end-to-end workflows (Test Cases tab: kinds of tests).",
+      "❌ Incorrect — Internal structure drives white-box testing.",
+      "❌ Incorrect — Boundary values are a BVA technique, not scenario-based."
+    ]
+  },
+  {
+    q: "White-box testing is typically conducted:",
+    opts: ["Before black-box testing","After black-box testing","Only on unit tests","Only on system tests"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — The standard order is black-box first to cover requirements-level faults, then white-box.",
+      "✅ Correct — White-box testing is typically conducted after black-box testing to cover remaining code paths (White-Box tab: 'typically after black-box').",
+      "❌ Incorrect — White-box can apply at all test levels.",
+      "❌ Incorrect — White-box applies at unit, integration, and system level."
+    ]
+  },
+  {
+    q: "A test with balance=0, calAmount() returning 10 with oracle 'assertTrue(amount==10)' — which element of PIE is demonstrated when the fault (balance*3 instead of *2) is NOT triggered?",
+    opts: ["Execution fails — the faulty statement never runs","Infection fails — state is not corrupted (0*3=0=0*2)","Propagation fails — the error does not reach output","All three conditions are met"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — The faulty statement balance*3 does execute.",
+      "✅ Correct — When balance=0, 0*3=0 and 0*2=0 — same result. The fault executes (E satisfied) but the state is NOT infected (I fails). This is a masked fault.",
+      "❌ Incorrect — Propagation is irrelevant if Infection never occurs.",
+      "❌ Incorrect — Only E is satisfied; I fails."
+    ]
+  },
+  {
+    q: "Loop coverage requires which of the following test executions?",
+    opts: ["0 iterations only","1 and many iterations","0, 1, 2, and many (n>2) iterations","Only many iterations"],
+    ans: 2,
+    explanations: [
+      "❌ Incorrect — Only 0 misses the important single-pass and multi-pass cases.",
+      "❌ Incorrect — Missing 0 (skip the loop) and 2 (minimal multi-pass).",
+      "✅ Correct — Loop coverage requires: skip (0), single (1), double (2), and many (n>2) passes (Code Coverage tab).",
+      "❌ Incorrect — Only many misses the important empty and single-iteration edge cases."
+    ]
+  },
+  {
+    q: "Regression tests are run to:",
+    opts: ["Find new features to implement","Verify that existing behavior still works after changes","Measure performance under load","Explore the system for unknown faults"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — Feature discovery is not a testing goal.",
+      "✅ Correct — Regression tests verify that changes (fixes, refactors, new features) have not broken previously working functionality (Test Cases tab: regression).",
+      "❌ Incorrect — Load testing measures performance under heavy load.",
+      "❌ Incorrect — Exploring for unknown faults describes exploratory testing."
+    ]
+  },
+  {
+    q: "Which testing activity requires the most expertise and why?",
+    opts: ["Test Execution — because running scripts is complex","Test Design — because it requires domain knowledge and testing expertise to identify meaningful cases","Test Automation — because it requires the most programming skill","Test Evaluation — because it requires management approval"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — Test Execution requires very little knowledge.",
+      "✅ Correct — Test Design requires both domain knowledge (what should the software do?) and testing expertise (how to find meaningful fault-revealing cases). It is the most knowledge-intensive activity.",
+      "❌ Incorrect — Test Automation requires programming skill but Test Design requires broader expertise.",
+      "❌ Incorrect — Test Evaluation requires domain knowledge but not management approval."
+    ]
+  },
+  {
+    q: "True or False: White-box testing can still catch missing logic (faults of omission).",
+    opts: ["True","False"],
+    ans: 1,
+    explanations: [
+      "❌ Incorrect — White-box testing examines existing code paths; it cannot reveal requirements that were never coded. Missing logic is invisible in code.",
+      "✅ Correct — White-box tests only see code that exists. If a requirement was simply never implemented (omission), there are no code paths to cover — white-box cannot detect what was never written."
+    ]
   }
 ];
 
-const questions = rawQuestions.map(function (rq, idx) {
+// Shuffle helper
+function shuffleArray(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+var allRaw = shuffleArray(rawQuestions);
+
+const questions = allRaw.map(function (rq, idx) {
   return {
     num: idx + 1,
     text: rq.q,
@@ -644,7 +820,7 @@ const questions = rawQuestions.map(function (rq, idx) {
 </script>
 <script src="../js/quiz-pane.js"></script>
 <script>
-QuizPane.mount({ questions: questions });
+QuizPane.mount({ questions: questions, expandExplanationToOptions: false });
 </script>
 <script src="../js/study-weeks-config.js"></script>
 <script src="../js/study-lang.js"></script>

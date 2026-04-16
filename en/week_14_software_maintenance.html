@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Chapter 14 · Software Maintenance &amp; Quiz</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.page-split{display:grid;grid-template-columns:minmax(0,var(--notes-pane-fr,1.15fr)) minmax(0,var(--quiz-pane-fr,0.85fr));min-height:100vh;max-width:1600px;width:100%;margin:0;}
+.pane{min-width:0;overflow-y:auto;max-height:100vh;padding:28px 22px 56px;}
+.notes-pane,.quiz-pane{background:var(--bg);border:none;}
+.notes-pane .container{max-width:none;margin:0;width:100%;}
+@media (max-width:960px){.page-split{grid-template-columns:1fr;}.pane{max-height:none;}}
+header{margin-bottom:24px;}
+header h1{font-family:'Lora',serif;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;}
+.tab-nav{display:flex;flex-wrap:wrap;column-gap:2px;row-gap:6px;border:none;margin-bottom:24px;padding-bottom:0;overflow:visible;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 16px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.card-title{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.35;}
+.keywords{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.kw{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;background:var(--tag-bg);border:none;border-radius:4px;padding:3px 9px;color:var(--text2);}
+.kw.green{background:var(--accent-light);color:var(--accent);}
+.kw.blue{background:var(--blue-light);color:var(--blue);}
+.kw.amber{background:var(--accent2-light);color:var(--accent2);}
+.kw.red{background:var(--red-light);color:var(--red);}
+.card-body{font-size:0.9rem;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.hl{color:var(--text);font-weight:600;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.blist li{font-size:0.88rem;color:var(--text2);padding-left:16px;position:relative;line-height:1.6;}
+.blist li::before{content:'—';position:absolute;left:0;color:var(--border);font-size:0.75rem;top:3px;}
+.tbl-wrap{overflow-x:auto;margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
+td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
+td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.note-box,.green-box,.blue-box{border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
+.note-box{background:var(--accent2-light);}
+.green-box{background:var(--accent-light);}
+.blue-box{background:var(--blue-light);}
+.note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.note-box .note-label{color:var(--accent2);}
+.green-box .note-label{color:var(--accent);}
+.blue-box .note-label{color:var(--blue);}
+.red-box{border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;background:var(--red-light);}
+.red-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--red);margin-bottom:4px;}
+code{font-family:'Source Code Pre',monospace;font-size:0.85em;background:var(--tag-bg);padding:1px 6px;border-radius:3px;color:var(--text);}
+pre.code-block{background:var(--surface2);border-radius:6px;padding:12px 14px;font-family:'Source Code Pro',monospace;font-size:0.8rem;line-height:1.55;overflow:auto;margin-bottom:14px;color:var(--text);}
+/* quiz pane */
+.qz-wrap{position:relative;font-family:'Source Sans 3',sans-serif;}
+.qz-header{margin-bottom:18px;padding-right:280px;}
+.qz-header h2{font-family:'Lora',serif;font-size:1.35rem;font-weight:600;color:var(--text);letter-spacing:-0.01em;line-height:1.3;margin:0;}
+.quiz-pane .qz-tab-nav{display:flex;gap:2px;border:none;margin-bottom:24px;padding-bottom:4px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;}
+.quiz-pane .qz-tab-nav::-webkit-scrollbar{display:none;}
+.quiz-pane .qz-tab-btn{font-family:'Source Sans 3',sans-serif;font-size:0.83rem;font-weight:500;padding:9px 14px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
+.quiz-pane .qz-tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
+.quiz-pane .qz-tab-btn:hover:not(.active){color:var(--text2);}
+.qz-tab-panel{display:none;}
+.qz-tab-panel.active{display:block;animation:fadeIn 0.2s ease;}
+.qz-panel-toolbar{position:absolute;top:0;right:0;display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;}
+.qz-actions{margin-left:0;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.qz-reset{font-family:'Source Code Pro',monospace;font-size:0.76rem;font-weight:500;padding:6px 12px;border:none;background:var(--surface2);color:var(--text2);border-radius:4px;cursor:pointer;}
+.qz-reset:hover{color:var(--text);background:var(--tag-bg);}
+.score-bar{font-family:'Source Code Pro',monospace;font-size:0.76rem;color:var(--muted);margin:0;display:flex;align-items:center;gap:8px;}
+.score-pill{background:var(--surface2);border:none;border-radius:20px;padding:3px 10px;font-weight:500;color:var(--text);}
+.q-card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.q-num{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px;}
+.q-text{font-family:'Source Sans 3',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);line-height:1.65;margin-bottom:14px;}
+.q-code{margin:0 0 14px 0;padding:12px 14px;background:var(--surface2);border:none;border-radius:6px;overflow:auto;}
+.q-code code{display:block;font-family:'Source Code Pro',monospace;font-size:0.8rem;line-height:1.55;background:none;padding:0;white-space:pre;}
+.qz-options{display:flex;flex-direction:column;gap:6px;}
+.qz-opt{font-family:'Source Sans 3',sans-serif;font-size:0.88rem;padding:9px 13px;border:none;border-radius:4px;background:var(--surface2);color:var(--text);cursor:pointer;text-align:left;line-height:1.45;}
+.qz-opt:hover:not([disabled]){background:var(--accent-light);color:var(--accent);}
+.qz-opt[disabled]{cursor:default;}
+.qz-opt-correct,.qz-opt-wrong,.qz-opt-reveal,.qz-opt-neutral{font-family:'Source Sans 3',sans-serif;font-size:0.88rem;padding:9px 13px;border-radius:4px;text-align:left;line-height:1.45;cursor:default;border:none;}
+.qz-opt-correct{background:var(--correct-bg)!important;color:var(--correct-text)!important;font-weight:600;}
+.qz-opt-wrong{background:var(--wrong-bg)!important;color:var(--wrong-text)!important;}
+.qz-opt-reveal{background:var(--reveal-bg)!important;color:var(--reveal-text)!important;}
+.qz-opt-neutral{background:var(--surface2);color:var(--muted);}
+.qz-explanation{display:none;margin-top:14px;background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;}
+.qz-expl-title{font-family:'Source Code Pro',monospace;font-weight:500;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--blue);margin-bottom:8px;}
+.qz-expl-plain{font-size:0.86rem;line-height:1.55;}
+@media (max-width:960px){.qz-header{padding-right:0;}.qz-panel-toolbar{position:static;margin-bottom:14px;}}
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="week-14">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="page-split">
+
+<!-- ═══════════════════════════════ NOTES PANE ═══════════════════════════════ -->
+<div class="notes-pane pane">
+<div class="container">
+<header><h1>Chapter 14 — Software Maintenance</h1></header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('overview',this)" type="button">Overview</button>
+  <button class="tab-btn" onclick="switchTab('metrics',this)" type="button">Metrics</button>
+  <button class="tab-btn" onclick="switchTab('oo-metrics',this)" type="button">OO Metrics</button>
+  <button class="tab-btn" onclick="switchTab('refactoring',this)" type="button">Refactoring</button>
+  <button class="tab-btn" onclick="switchTab('smells',this)" type="button">Code Smells</button>
+</nav>
+
+<!-- TAB: Overview -->
+<div class="tab-panel active" id="tab-overview">
+  <div class="card">
+    <div class="card-title">Types of Software Maintenance (IEEE 14764)</div>
+    <div class="keywords"><span class="kw red">Corrective</span><span class="kw amber">Preventive</span><span class="kw blue">Adaptive</span><span class="kw green">Perfective</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Category</th><th>Purpose</th><th>Customer request?</th><th>Visible to user?</th></tr></thead>
+        <tbody>
+          <tr><td>Corrective</td><td>Correction</td><td>Fix discovered faults</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Preventive</td><td>Correction</td><td>Prevent future faults (refactoring, docs)</td><td>No</td><td>No</td></tr>
+          <tr><td>Adaptive</td><td>Enhancement</td><td>Adapt to new environment</td><td>Sometimes</td><td>Maybe</td></tr>
+          <tr><td>Perfective</td><td>Enhancement</td><td>Implement new/changed user requirements</td><td>Yes</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="green-box"><div class="note-label">Exam tip</div><strong>Corrective</strong> and <strong>Preventive</strong> both fix problems — but Corrective reacts to discovered faults while Preventive is proactive. <strong>Adaptive</strong> responds to environment changes (new OS, new regulation). <strong>Perfective</strong> adds new features.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Reality of Software</div>
+    <div class="card-body">Software <span class="hl">always changes</span> after delivery. Google's codebase: ~2 billion lines, 9 million source files, ~40,000 commits per workday. Maintenance is the <span class="hl">longest and most expensive</span> phase of the software lifecycle.</div>
+    <div class="note-box"><div class="note-label">Key rule</div>All four maintenance types require testing — even Preventive (confirm nothing broke).</div>
+  </div>
+</div>
+
+<!-- TAB: Metrics -->
+<div class="tab-panel" id="tab-metrics">
+  <div class="card">
+    <div class="card-title">Size Metrics — Lines of Code (LOC)</div>
+    <div class="keywords"><span class="kw">LOC / SLOC</span><span class="kw blue">Cyclomatic Complexity</span></div>
+    <div class="card-body">LOC (aka SLOC) is easy to measure and correlates with build/maintenance time. However it is only a <span class="hl">valid metric</span> when: same language, standard formatting, code already reviewed.</div>
+    <ul class="blist">
+      <li><strong>Language matters:</strong> Assembly ~3× longer than C; C ~3× longer than Java.</li>
+      <li>Counting blank lines and comments differently produces incomparable numbers.</li>
+      <li>Between two programs of equal functionality, <strong>fewer LOC is better</strong>.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Cyclomatic Complexity (McCabe, 1976)</div>
+    <div class="card-body">Measures <span class="hl">logical complexity</span> at the method level. Upper bound on tests needed for complete branch coverage.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Formula</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td>#decisionPoints + 1</td><td>Exactly one exit point</td></tr>
+          <tr><td>#edges − #nodes + 2</td><td>Multiple exit points (draw control flow graph)</td></tr>
+          <tr><td>#regions of flow graph</td><td>Graphical alternative — count enclosed regions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="blist">
+      <li>Decision points: <code>if</code>, <code>while</code>, <code>for</code>, <code>case</code>, <code>catch</code> — one each.</li>
+      <li>Compound condition <code>if (x &gt; 0 &amp;&amp; y &gt; 0)</code> counts as <strong>2</strong> decision points.</li>
+      <li>Cyclomatic complexity <strong>&gt; 10</strong>: method is considered hard to test and fault-prone.</li>
+    </ul>
+    <div class="note-box"><div class="note-label">Example</div><code>processInterest()</code>: 1 <code>for</code> + 1 <code>if</code> = 2 decision points → complexity = 3.</div>
+    <div class="blue-box"><div class="note-label">Uses</div>Identify refactoring candidates; focus code review and testing effort on high-complexity methods.</div>
+  </div>
+</div>
+
+<!-- TAB: OO Metrics -->
+<div class="tab-panel" id="tab-oo-metrics">
+  <div class="card">
+    <div class="card-title">Chidamber &amp; Kemerer OO Metrics (1994)</div>
+    <div class="keywords"><span class="kw">WMC</span><span class="kw">DIT</span><span class="kw">NOC</span><span class="kw blue">CBO</span><span class="kw blue">RFC</span><span class="kw red">LCOM</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>Full Name</th><th>Definition</th><th>Desirable</th></tr></thead>
+        <tbody>
+          <tr><td>WMC</td><td>Weighted Methods Per Class</td><td>Sum of complexities of all methods in the class</td><td>Low (tradeoff)</td></tr>
+          <tr><td>DIT</td><td>Depth of Inheritance Tree</td><td>Length from class to root of class hierarchy</td><td>Low (tradeoff)</td></tr>
+          <tr><td>NOC</td><td>Number of Children</td><td>Number of immediate subclasses</td><td>Low (tradeoff)</td></tr>
+          <tr><td>CBO</td><td>Coupling Between Object Classes</td><td># other classes this class is coupled to (calls methods of)</td><td>Lower</td></tr>
+          <tr><td>RFC</td><td>Response For a Class</td><td>|methods in class ∪ methods called by class|</td><td>Lower</td></tr>
+          <tr><td>LCOM</td><td>Lack of Cohesion in Methods</td><td>#pairs not sharing instance vars − #pairs sharing</td><td>Lower</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="green-box"><div class="note-label">Key insight</div>High <strong>CBO</strong> → harder to test, change, and reuse. High <strong>LCOM</strong> → class should be split. WMC/DIT/NOC are tradeoffs — some depth and breadth is good for reuse.</div>
+  </div>
+</div>
+
+<!-- TAB: Refactoring -->
+<div class="tab-panel" id="tab-refactoring">
+  <div class="card">
+    <div class="card-title">What is Refactoring? (Fowler et al., 1999)</div>
+    <div class="keywords"><span class="kw green">Extract Method</span><span class="kw green">Extract Variable</span><span class="kw amber">Introduce Parameter Object</span></div>
+    <div class="card-body"><span class="hl">Changing internal structure</span> without changing external behaviour. Makes code easier to understand and cheaper to modify.</div>
+    <div class="red-box"><div class="note-label">Key rule</div>Change <strong>DESIGN XOR FUNCTIONALITY</strong> — never both simultaneously. Refactoring must pass all existing tests. Changing behaviour requires new tests.</div>
+    <ul class="blist">
+      <li>Key part of XP, software evolution, and making reusable software.</li>
+      <li>Refactor before changing behaviour, after changing behaviour, or to understand code.</li>
+      <li>One refactoring often leads to another (e.g., Introduce Parameter Object → Extract Method).</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Extract Method</div>
+    <div class="card-body">Group code that belongs together into a new method with an informative name. Increases reusability and readability.</div>
+    <ul class="blist">
+      <li>Step 1: Create new method; name it by its <strong>purpose</strong>.</li>
+      <li>Step 2: Copy extracted code into new method.</li>
+      <li>Step 3: Replace original code with a call to the new method.</li>
+      <li>Step 4: Pass local variables used in extracted code as parameters.</li>
+      <li>Step 5: If one local variable is modified, return it. If more than one, cannot extract as-is.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Extract Variable</div>
+    <div class="card-body">Replace a complex expression with a named <code>final</code> temporary variable that explains its purpose.</div>
+    <ul class="blist">
+      <li>Declare a <code>final</code> temp variable set to the complex expression (or part of it).</li>
+      <li>Replace the expression with the temp variable.</li>
+    </ul>
+    <div class="note-box"><div class="note-label">Example</div>A complex boolean: <code>platform.toUpperCase().indexOf("MAC") &gt; -1</code> → <code>final boolean isMacOs = ...</code></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Introduce Parameter Object</div>
+    <div class="card-body">When a group of parameters naturally go together and appear in many methods, create a new class for the group.</div>
+    <ul class="blist">
+      <li>Step 1: Make a new class for the group (e.g., <code>DateRange</code> for <code>start</code>, <code>end</code>).</li>
+      <li>Step 2: Add a parameter of the new type to the method; keep old params temporarily.</li>
+      <li>Step 3: Update all callers to pass a new object.</li>
+      <li>Steps 4–5: Incrementally replace each old param with the new object's getters.</li>
+    </ul>
+    <div class="blue-box"><div class="note-label">Follow-up</div>After Introduce Parameter Object, check if the condition logic should be moved as a method <em>into</em> the new class (Extract Method again).</div>
+  </div>
+</div>
+
+<!-- TAB: Code Smells -->
+<div class="tab-panel" id="tab-smells">
+  <div class="card">
+    <div class="card-title">Code Smells — General (Fowler et al., 1999)</div>
+    <div class="keywords"><span class="kw red">Duplicated Code</span><span class="kw red">Long Method</span><span class="kw red">Long Parameter List</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Smell</th><th>Why it's bad</th><th>Refactoring</th></tr></thead>
+        <tbody>
+          <tr><td>Duplicated Code</td><td>Fix bug in one copy, miss others; hard to maintain</td><td>Extract Method; move to superclass; move to common component</td></tr>
+          <tr><td>Long Method</td><td>Won't fit on screen; can't comprehend as a whole</td><td>Extract Method on loop bodies and comment-worthy blocks</td></tr>
+          <tr><td>Long Parameter List</td><td>Hard to understand; grows over time</td><td>Introduce Parameter Object (especially when shared across methods)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">OO Code Smells</div>
+    <div class="keywords"><span class="kw red">Large Class</span><span class="kw red">Message Chain</span><span class="kw red">Feature Envy</span><span class="kw red">Data Class</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Smell</th><th>Sign</th><th>Refactoring</th></tr></thead>
+        <tbody>
+          <tr><td>Large Class</td><td>&gt;24 methods OR &gt;6 instance variables</td><td>Extract Class; Extract Subclass</td></tr>
+          <tr><td>Message Chain</td><td><code>a.getB().getC().getD()</code> — client depends on navigation structure</td><td>Shorten to single step; Move Method</td></tr>
+          <tr><td>Feature Envy</td><td>Method uses another class's data more than its own</td><td>Move Method to the class it envies</td></tr>
+          <tr><td>Data Class</td><td>Only getters/setters; no real behaviour</td><td>Find Feature Envy elsewhere; move that logic here</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="green-box"><div class="note-label">Example — Feature Envy</div><code>teacher.getClasses().add(thisClass); teacher.setClassLoad(teacher.getClassLoad() + 1);</code><br>→ Move to: <code>teacher.addClass(thisClass);</code> — the logic belongs inside Teacher.</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+</div><!-- /notes-pane -->
+
+<!-- ═══════════════════════════════ QUIZ PANE ════════════════════════════════ -->
+<div class="quiz-pane pane">
+<div class="qz-wrap">
+<div class="qz-header"><h2>Chapter 14 — quiz</h2></div>
+<nav aria-label="Quiz sections" class="qz-tab-nav">
+  <button class="qz-tab-btn active" onclick="switchQuizTab('14-1',this)" type="button">14.1</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-2',this)" type="button">14.2</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-3',this)" type="button">14.3</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-4',this)" type="button">14.4</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-5',this)" type="button">14.5</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-6',this)" type="button">14.6</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-7',this)" type="button">14.7</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('14-sum',this)" type="button">Summary</button>
+</nav>
+
+<div class="qz-tab-panel active" id="qz-panel-14-1">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_1()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-1">— / 5</span></div>
+  </div></div>
+  <div id="questions-ch14-1"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-2">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_2()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-2">— / 5</span></div>
+  </div></div>
+  <div id="questions-ch14-2"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-3">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_3()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-3">— / 5</span></div>
+  </div></div>
+  <div id="questions-ch14-3"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-4">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_4()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-4">— / 5</span></div>
+  </div></div>
+  <div id="questions-ch14-4"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-5">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_5()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-5">— / 5</span></div>
+  </div></div>
+  <div id="questions-ch14-5"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-6">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_6()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-6">— / 4</span></div>
+  </div></div>
+  <div id="questions-ch14-6"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-7">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_7()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-7">— / 4</span></div>
+  </div></div>
+  <div id="questions-ch14-7"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-14-sum">
+  <div class="qz-panel-toolbar"><div class="qz-actions">
+    <button class="qz-reset" onclick="resetQuizCh14_sum()" type="button">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-ch14-sum">— / 20</span></div>
+  </div></div>
+  <div id="questions-ch14-sum"></div>
+</div>
+
+</div><!-- /qz-wrap -->
+</div><!-- /quiz-pane -->
+
+</div><!-- /page-split -->
+</div><!-- /app-shell -->
+
+<script>
+function switchQuizTab(id, btn) {
+  var pane = btn.closest('.quiz-pane');
+  if (!pane) return;
+  pane.querySelectorAll('.qz-tab-panel').forEach(function(p){p.classList.remove('active');});
+  pane.querySelectorAll('.qz-tab-nav .qz-tab-btn').forEach(function(b){b.classList.remove('active');});
+  var panel = document.getElementById('qz-panel-' + id);
+  if (panel) panel.classList.add('active');
+  btn.classList.add('active');
+}
+
+var CH14_RAW = [
+  // 14.1 — Maintenance Overview (5)
+  { q:'[14.1] Which type of maintenance fixes discovered faults?', opts:['Corrective','Preventive','Adaptive','Perfective'], ans:0, exp:'Corrective maintenance corrects discovered faults after delivery.' },
+  { q:'[14.1] Which type of maintenance adapts software to a changed environment?', opts:['Corrective','Preventive','Adaptive','Perfective'], ans:2, exp:'Adaptive maintenance responds to new OS, regulations, or platform changes.' },
+  { q:'[14.1] True or False: Preventive maintenance is typically requested by the customer.', opts:['True','False'], ans:1, exp:'Preventive is an internal quality initiative — customers don\'t usually ask for it.' },
+  { q:'[14.1] Which maintenance type implements new or changed user requirements?', opts:['Corrective','Preventive','Adaptive','Perfective'], ans:3, exp:'Perfective maintenance adds new features or changes existing ones per user request.' },
+  { q:'[14.1] Which maintenance type is NOT visible to the customer?', opts:['Corrective','Preventive','Adaptive','Perfective'], ans:1, exp:'Preventive (e.g., refactoring) does not change external behaviour so users see no difference.' },
+
+  // 14.2 — Size & Complexity Metrics (5)
+  { q:'[14.2] LOC is a valid metric when:', opts:['Same language, standard formatting, reviewed code','Any mix of languages is fine','Blank lines and comments are always excluded','Longer is always better'], ans:0, exp:'LOC comparisons only make sense within the same language and formatting standard.' },
+  { q:'[14.2] processInterest() has one for-loop and one if-statement. What is its cyclomatic complexity?', opts:['1','2','3','4'], ans:2, exp:'2 decision points (for + if) + 1 = 3.' },
+  { q:'[14.2] A method with cyclomatic complexity greater than ___ is considered hard to test and fault-prone.', opts:['5','7','10','15'], ans:2, exp:'The threshold commonly cited is >10.' },
+  { q:'[14.2] Which formula gives cyclomatic complexity for a method with multiple exit points?', opts:['#decisionPoints + 1','#edges − #nodes + 2','#nodes − #edges + 2','#decisionPoints − 1'], ans:1, exp:'With multiple exits use #edges − #nodes + 2 (draw the control flow graph).' },
+  { q:'[14.2] The expression if (x > 0 && y > 0) counts as how many decision points?', opts:['1','2','3','4'], ans:1, exp:'Each sub-condition in a compound boolean is one decision point at the machine level.' },
+
+  // 14.3 — OO Metrics (5)
+  { q:'[14.3] WMC stands for:', opts:['Weighted Methods Per Class','Width of Method Calls','Weighted Module Complexity','Width Metrics Count'], ans:0, exp:'WMC = Weighted Methods Per Class — sum of method complexities.' },
+  { q:'[14.3] A class with a large DIT (Depth of Inheritance Tree):', opts:['Is easier to predict its behavior','Reuses more methods but is harder to predict','Has no children','Has lower coupling'], ans:1, exp:'Deeper classes inherit more but behavior is harder to predict.' },
+  { q:'[14.3] Which metric measures coupling between classes?', opts:['WMC','DIT','NOC','CBO'], ans:3, exp:'CBO = Coupling Between Object Classes — the number of other classes this class calls methods on.' },
+  { q:'[14.3] RFC for a class is defined as:', opts:['Number of methods in the class only','Number of methods called by the class only','Union of methods in the class and methods called by the class','Number of instance variables'], ans:2, exp:'RFC = |methods in class ∪ methods called by class|.' },
+  { q:'[14.3] For LCOM, a desirable value is:', opts:['Higher — means methods are independent','Lower — means methods share instance variables','Higher — means more cohesion','It does not matter'], ans:1, exp:'Lower LCOM means methods are cohesive (share state). High LCOM suggests the class should be split.' },
+
+  // 14.4 — Refactoring (5)
+  { q:'[14.4] Refactoring changes the ___ without changing the ___.', opts:['External behavior; internal structure','Internal structure; external behavior','Requirements; design','Design; requirements'], ans:1, exp:'Refactoring restructures code without altering observable behavior.' },
+  { q:'[14.4] Which is NOT an example of a named refactoring?', opts:['Extract Method','Inline Method','Add Feature','Rename'], ans:2, exp:'"Add Feature" adds new behavior — that is not refactoring by definition.' },
+  { q:'[14.4] In Extract Method, if more than one local variable is modified by the extracted code, you:', opts:['Return all of them as a list','Cannot extract as-is','Create global variables','Use a static field'], ans:1, exp:'More than one modified variable prevents clean extraction — split the code first.' },
+  { q:'[14.4] Extract Variable replaces a complex expression with:', opts:['A new method','A final temporary variable with an informative name','A new class','An abstract class'], ans:1, exp:'Extract Variable creates a named final temp to explain the expression\'s purpose.' },
+  { q:'[14.4] True or False: You should always refactor and add features at the same time for efficiency.', opts:['True','False'], ans:1, exp:'Change DESIGN XOR FUNCTIONALITY — never mix refactoring with behaviour changes.' },
+
+  // 14.5 — Example Refactoring: Introduce Parameter Object (5)
+  { q:'[14.5] "Introduce Parameter Object" is useful when:', opts:['A class has too many methods','A group of parameters naturally go together across many methods','A method is too long','A loop is nested too deeply'], ans:1, exp:'When the same set of parameters appears across multiple methods, group them into a class.' },
+  { q:'[14.5] In Introduce Parameter Object, what is the FIRST step?', opts:['Delete the original parameters immediately','Create a new class for the parameter group','Add the new parameter to all callers at once','Move the method body to the new class'], ans:1, exp:'Step 1 is to create the new class (e.g., DateRange) before changing any method signatures.' },
+  { q:'[14.5] After applying Introduce Parameter Object to getFlowBetween(Date start, Date end), the signature becomes:', opts:['getFlowBetween(Date start)','getFlowBetween(DateRange range)','getFlowBetween()','getFlowBetween(DateRange range, Date start, Date end)'], ans:1, exp:'Both original params are replaced by the new DateRange object.' },
+  { q:'[14.5] After Introduce Parameter Object, what refactoring should you consider next?', opts:['Extract Variable','Extract Method — move inline logic to the new class','Inline Method','Rename only'], ans:1, exp:'Condition logic that only uses the new class\'s data can be moved into that class as a method.' },
+  { q:'[14.5] True or False: One refactoring often leads to another.', opts:['True','False'], ans:0, exp:'Yes — Introduce Parameter Object naturally leads to Extract Method in the new class.' },
+
+  // 14.6 — Code Smells (4)
+  { q:'[14.6] Which code smell is best fixed by "Extract Method"?', opts:['Long Parameter List','Duplicated Code (same class)','Large Class','Message Chain'], ans:1, exp:'Duplicated expressions within the same class are extracted into a shared method.' },
+  { q:'[14.6] A long parameter list is best refactored with:', opts:['Extract Method','Extract Variable','Introduce Parameter Object','Move Method'], ans:2, exp:'Group the related parameters into a new class using Introduce Parameter Object.' },
+  { q:'[14.6] True or False: Comments in code are a sign that Extract Method should be applied.', opts:['True','False'], ans:0, exp:'When you want to add a comment to explain what a block does, that block is a candidate for extraction.' },
+  { q:'[14.6] Duplicated methods in subclasses should be refactored by:', opts:['Extracting them to a sibling class','Moving them to the superclass','Deleting one copy','Adding an interface'], ans:1, exp:'Move duplicate methods up to the superclass so they are shared.' },
+
+  // 14.7 — OO Code Smells (4)
+  { q:'[14.7] A class with 30 methods is an example of which code smell?', opts:['Message Chain','Feature Envy','Large Class','Data Class'], ans:2, exp:'Large Class: >24 methods or >6 instance variables.' },
+  { q:'[14.7] customer.getAddress().getState().getCode() is an example of:', opts:['Feature Envy','Message Chain','Data Class','Long Method'], ans:1, exp:'Message Chain — client is coupled to the navigation structure.' },
+  { q:'[14.7] teacher.getClasses().add(c); teacher.setClassLoad(teacher.getClassLoad()+1); exhibits:', opts:['Data Class','Message Chain','Feature Envy','Large Class'], ans:2, exp:'Feature Envy — the method is manipulating Teacher\'s internals and should live inside Teacher.' },
+  { q:'[14.7] A Data Class is best fixed by:', opts:['Deleting the class','Finding Feature Envy elsewhere and moving that logic into the class','Extracting an interface','Adding more getters'], ans:1, exp:'Find other classes envying its data and move that logic in, giving the class real behaviour.' },
+
+  // Summary (20)
+  { q:'[Summary] Which maintenance type requires NO new features and is NOT customer-requested?', opts:['Corrective','Preventive','Adaptive','Perfective'], ans:1, exp:'Preventive is proactive internal work — no customer request, no new features.' },
+  { q:'[Summary] LOC is NOT a valid comparison metric when:', opts:['Same language is used','Standard formatting is applied','Mixing Java and C code','Code has been reviewed'], ans:2, exp:'LOC only means something when comparing programs in the same language.' },
+  { q:'[Summary] Method with 3 if-statements and 1 while-loop and one exit — cyclomatic complexity?', opts:['4','5','6','3'], ans:1, exp:'3 ifs + 1 while = 4 decision points + 1 = 5.' },
+  { q:'[Summary] Higher NOC (Number of Children) means:', opts:['The class is more reused but changes affect all children','The class is less important','The class has fewer methods','The class has lower coupling'], ans:0, exp:'More children means wider reuse but also wider blast radius for changes.' },
+  { q:'[Summary] Which OO metric directly relates to cohesion within a class?', opts:['CBO','RFC','LCOM','DIT'], ans:2, exp:'LCOM measures Lack of Cohesion in Methods — lower is better (more cohesive).' },
+  { q:'[Summary] True or False: Refactoring must pass all existing tests.', opts:['True','False'], ans:0, exp:'Refactoring changes structure only — all existing tests must still pass.' },
+  { q:'[Summary] The purpose of Extract Variable is to:', opts:['Create a new method','Give a complex expression a descriptive name via a temp variable','Move logic to another class','Remove duplicate code'], ans:1, exp:'Extract Variable replaces a complex expression with a named, readable temp variable.' },
+  { q:'[Summary] Which step in Introduce Parameter Object comes last?', opts:['Create the new class','Add new parameter to method','Update all callers','Remove all original parameters from method'], ans:3, exp:'You incrementally replace each original param — the last one is removed at the end.' },
+  { q:'[Summary] Refactoring is a key part of which agile methodology?', opts:['Scrum','RUP','eXtreme Programming (XP)','Waterfall'], ans:2, exp:'Refactoring is a core XP practice — continuously improving the design.' },
+  { q:'[Summary] Long Method smell is best resolved by:', opts:['Introducing Parameter Object','Extract Method on loop bodies and commented blocks','Move Method','Extract Variable'], ans:1, exp:'Extract Method breaks a long method into smaller, named pieces.' },
+  { q:'[Summary] Message Chain smell means the client:', opts:['Calls too many methods on the same object','Navigates a chain of objects to get something it needs','Has too many parameters','Creates too many objects'], ans:1, exp:'Message Chain: a.getB().getC()... makes the client dependent on the entire navigation path.' },
+  { q:'[Summary] Feature Envy is fixed by:', opts:['Extract Class','Move Method to the class it envies','Introduce Parameter Object','Extract Variable'], ans:1, exp:'Move the envious method to the class whose data it uses most.' },
+  { q:'[Summary] True or False: A Data Class with only getters/setters is always considered a good design.', opts:['True','False'], ans:1, exp:'A Data Class is a code smell — it should gain behaviour by pulling in Feature Envy from other classes.' },
+  { q:'[Summary] Which metric would you examine to decide if a class is a candidate for Extract Class?', opts:['DIT','WMC and number of instance variables','RFC','CBO'], ans:1, exp:'Large Class is detected by high WMC (>24 methods) or too many instance variables (>6).' },
+  { q:'[Summary] CBO for a class is defined as:', opts:['Sum of method complexities','Number of methods called by the class','Number of other classes this class is coupled to','Depth in the inheritance tree'], ans:2, exp:'CBO = number of other classes whose methods are called by this class.' },
+  { q:'[Summary] True or False: Adaptive maintenance is always triggered by a customer feature request.', opts:['True','False'], ans:1, exp:'Adaptive responds to environment changes (new OS, new law) — not always a user feature request.' },
+  { q:'[Summary] Which of the following is NOT a valid refactoring?', opts:['Rename Variable','Move Method','Add New Business Feature','Extract Class'], ans:2, exp:'Adding a business feature changes behavior — that is not refactoring.' },
+  { q:'[Summary] Cyclomatic complexity informs the minimum number of tests to achieve:', opts:['Statement coverage','Branch coverage','Method coverage','Path coverage'], ans:1, exp:'Cyclomatic complexity is the upper bound on tests needed for complete branch coverage.' },
+  { q:'[Summary] True or False: High DIT (Depth of Inheritance Tree) always means bad design.', opts:['True','False'], ans:1, exp:'DIT is a tradeoff — some depth enables reuse; it\'s "Low (tradeoff)" not "always bad".' },
+  { q:'[Summary] The refactoring "teacher.addClass(thisClass)" fixes which code smell in teacher.getClasses().add(c)?', opts:['Large Class','Message Chain and Feature Envy','Data Class','Long Method'], ans:1, exp:'The chain (Message Chain) and the envious logic (Feature Envy) are both fixed by moving the method into Teacher.' }
+];
+
+function ch14Slice(start, end) {
+  return CH14_RAW.slice(start, end).map(function(rq, i) {
+    return { num: i+1, text: rq.q.replace(/^\[[^\]]+\]\s*/,''), options: rq.opts, correct: rq.ans, exp: rq.exp };
+  });
+}
+function ch14Mount(cfg) {
+  QuizPane.mount({ questions: cfg.questions, expandExplanationToOptions: true,
+    containerId: cfg.containerId, scoreId: cfg.scoreId,
+    idPrefix: cfg.idPrefix, resetGlobalName: cfg.resetGlobalName, noGlobalReset: true });
+}
+</script>
+<script src="../js/quiz-pane.js"></script>
+<script>
+ch14Mount({ questions: ch14Slice(0,5),   containerId:'questions-ch14-1',   scoreId:'score-ch14-1',   idPrefix:'ch14m1-',   resetGlobalName:'resetQuizCh14_1' });
+ch14Mount({ questions: ch14Slice(5,10),  containerId:'questions-ch14-2',   scoreId:'score-ch14-2',   idPrefix:'ch14m2-',   resetGlobalName:'resetQuizCh14_2' });
+ch14Mount({ questions: ch14Slice(10,15), containerId:'questions-ch14-3',   scoreId:'score-ch14-3',   idPrefix:'ch14m3-',   resetGlobalName:'resetQuizCh14_3' });
+ch14Mount({ questions: ch14Slice(15,20), containerId:'questions-ch14-4',   scoreId:'score-ch14-4',   idPrefix:'ch14m4-',   resetGlobalName:'resetQuizCh14_4' });
+ch14Mount({ questions: ch14Slice(20,25), containerId:'questions-ch14-5',   scoreId:'score-ch14-5',   idPrefix:'ch14m5-',   resetGlobalName:'resetQuizCh14_5' });
+ch14Mount({ questions: ch14Slice(25,29), containerId:'questions-ch14-6',   scoreId:'score-ch14-6',   idPrefix:'ch14m6-',   resetGlobalName:'resetQuizCh14_6' });
+ch14Mount({ questions: ch14Slice(29,33), containerId:'questions-ch14-7',   scoreId:'score-ch14-7',   idPrefix:'ch14m7-',   resetGlobalName:'resetQuizCh14_7' });
+ch14Mount({ questions: ch14Slice(33,53), containerId:'questions-ch14-sum', scoreId:'score-ch14-sum', idPrefix:'ch14msum-', resetGlobalName:'resetQuizCh14_sum' });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

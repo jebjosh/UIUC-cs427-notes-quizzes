@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>CS427 Full Practice Exam — All Weeks</title>
+<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--surface2:#f4f3f0;
+  --border:#e8e6e1;--text:#1c1b18;--text2:#4a4840;--muted:#8a8780;
+  --accent:#3d6b4f;--accent-light:#edf4ef;
+  --accent2:#7c5c2e;--accent2-light:#fdf4e7;
+  --blue:#2d5fa6;--blue-light:#ebf1fb;
+  --red:#a63d2d;--red-light:#fdf0ef;
+  --tag-bg:#f0ede8;--radius:8px;
+  --correct-bg:#dcfce7;--correct-text:#14532d;
+  --wrong-bg:#fee2e2;--wrong-text:#7f1d1d;
+  --reveal-bg:#dbeafe;--reveal-text:#1e3a8a;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);padding:0;min-height:100vh;}
+.exam-shell{max-width:860px;margin:0 auto;padding:36px 24px 80px;}
+.exam-header{margin-bottom:32px;}
+.exam-header h1{font-family:'Lora',serif;font-size:1.75rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:8px;}
+.exam-header p{font-size:0.9rem;color:var(--text2);line-height:1.6;}
+.exam-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:28px;padding:16px 20px;background:var(--surface);border-radius:var(--radius);}
+.exam-toolbar label{font-size:0.85rem;color:var(--text2);font-weight:500;}
+.exam-toolbar select{font-family:'Source Sans 3',sans-serif;font-size:0.85rem;padding:6px 10px;border:none;border-radius:4px;background:var(--surface2);color:var(--text);cursor:pointer;}
+.btn-primary{font-family:'Source Code Pro',monospace;font-size:0.8rem;font-weight:500;padding:8px 16px;border:none;background:var(--accent);color:#fff;border-radius:4px;cursor:pointer;}
+.btn-primary:hover{opacity:0.88;}
+.btn-secondary{font-family:'Source Code Pro',monospace;font-size:0.8rem;font-weight:500;padding:8px 16px;border:none;background:var(--surface2);color:var(--text2);border-radius:4px;cursor:pointer;}
+.btn-secondary:hover{background:var(--tag-bg);color:var(--text);}
+.score-bar{font-family:'Source Code Pro',monospace;font-size:0.82rem;color:var(--muted);margin-left:auto;display:flex;align-items:center;gap:8px;}
+.score-pill{background:var(--surface2);border-radius:20px;padding:4px 12px;font-weight:500;color:var(--text);}
+.week-filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.wf-btn{font-family:'Source Code Pro',monospace;font-size:0.74rem;font-weight:500;padding:4px 10px;border:none;border-radius:4px;background:var(--surface2);color:var(--text2);cursor:pointer;}
+.wf-btn.active{background:var(--accent-light);color:var(--accent);}
+.wf-label{font-size:0.8rem;color:var(--muted);align-self:center;margin-right:4px;}
+#questions-container{display:flex;flex-direction:column;gap:0;}
+.q-card{background:var(--surface);border:none;border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.q-num{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px;}
+.q-week-tag{display:inline-block;font-family:'Source Code Pro',monospace;font-size:0.68rem;font-weight:500;padding:2px 7px;border-radius:3px;background:var(--tag-bg);color:var(--text2);margin-bottom:10px;}
+.q-text{font-family:'Source Sans 3',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);line-height:1.65;margin-bottom:14px;}
+.q-code{margin:0 0 14px 0;padding:12px 14px;background:var(--surface2);border:none;border-radius:6px;overflow:auto;}
+.q-code code{display:block;font-family:'Source Code Pro',monospace;font-size:0.8rem;line-height:1.55;background:none;padding:0;white-space:pre;}
+.qz-options{display:flex;flex-direction:column;gap:6px;}
+.qz-opt{font-family:'Source Sans 3',sans-serif;font-size:0.88rem;padding:9px 13px;border:none;border-radius:4px;background:var(--surface2);color:var(--text);cursor:pointer;text-align:left;line-height:1.45;}
+.qz-opt:hover:not([disabled]){background:var(--accent-light);color:var(--accent);}
+.qz-opt[disabled]{cursor:default;}
+.qz-opt-correct{background:var(--correct-bg)!important;color:var(--correct-text)!important;font-weight:600;border:none;border-radius:4px;padding:9px 13px;text-align:left;line-height:1.45;cursor:default;}
+.qz-opt-wrong{background:var(--wrong-bg)!important;color:var(--wrong-text)!important;border:none;border-radius:4px;padding:9px 13px;text-align:left;line-height:1.45;cursor:default;}
+.qz-opt-reveal{background:var(--reveal-bg)!important;color:var(--reveal-text)!important;border:none;border-radius:4px;padding:9px 13px;text-align:left;line-height:1.45;cursor:default;}
+.qz-opt-neutral{background:var(--surface2);color:var(--muted);border:none;border-radius:4px;padding:9px 13px;text-align:left;line-height:1.45;cursor:default;}
+.qz-explanation{display:none;margin-top:14px;background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;}
+.qz-expl-title{font-family:'Source Code Pro',monospace;font-weight:500;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--blue);margin-bottom:8px;}
+.progress-bar{height:4px;background:var(--surface2);border-radius:2px;margin-bottom:24px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s ease;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:0.9rem;}
+</style>
+<link href="../css/study-week-tabs.css" rel="stylesheet"/>
+<script src="../js/study-week-common.js"></script>
+</head>
+<body data-study-week="final">
+<div class="app-shell">
+<div id="study-sidebar-root"></div>
+<div class="exam-shell">
+  <div class="exam-header">
+    <h1>CS427 — Full Practice Exam</h1>
+    <p>All weeks combined. Questions are <strong>randomly shuffled</strong> on every reset. Use the week filter to focus on specific topics, or pick a question count and hit <strong>Start Exam</strong>.</p>
+  </div>
+
+  <div class="exam-toolbar">
+    <label for="q-count">Questions:</label>
+    <select id="q-count">
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30" selected>30</option>
+      <option value="50">50</option>
+      <option value="all">All</option>
+    </select>
+    <button class="btn-primary" id="btn-start" onclick="startExam()">🔀 Shuffle &amp; Start</button>
+    <button class="btn-secondary" onclick="resetExam()">Reset</button>
+    <div class="score-bar">Score: <span class="score-pill" id="score-display">— / —</span></div>
+  </div>
+
+  <div class="week-filter" id="week-filter">
+    <span class="wf-label">Filter:</span>
+    <button class="wf-btn active" data-week="all" onclick="toggleWeekFilter('all',this)">All Weeks</button>
+    <button class="wf-btn" data-week="2" onclick="toggleWeekFilter('2',this)">Wk 2</button>
+    <button class="wf-btn" data-week="3" onclick="toggleWeekFilter('3',this)">Wk 3</button>
+    <button class="wf-btn" data-week="4" onclick="toggleWeekFilter('4',this)">Wk 4</button>
+    <button class="wf-btn" data-week="5" onclick="toggleWeekFilter('5',this)">Wk 5</button>
+    <button class="wf-btn" data-week="6" onclick="toggleWeekFilter('6',this)">Wk 6</button>
+    <button class="wf-btn" data-week="7" onclick="toggleWeekFilter('7',this)">Wk 7</button>
+    <button class="wf-btn" data-week="8" onclick="toggleWeekFilter('8',this)">Wk 8</button>
+    <button class="wf-btn" data-week="11" onclick="toggleWeekFilter('11',this)">Wk 11</button>
+    <button class="wf-btn" data-week="14" onclick="toggleWeekFilter('14',this)">Wk 14</button>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="questions-container"></div>
+</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// MASTER QUESTION BANK — all weeks
+// Each question: { w: weekNum, q: text, opts: [], ans: idx, exp: string, code?: string }
+// ─────────────────────────────────────────────────────────────────────────────
+var BANK = [
+
+  // ══════════════ WEEK 2 — Software Process ══════════════
+  {w:2, q:'Which of the following is NOT one of the 5 sections of IEEE 1074?', opts:['Project Management','Pre-Development','Testing Validation','Support'], ans:2, exp:'The 5 sections are Project Management, Pre-Development, Development, Post-Development, and Support. Testing Validation is not a section.'},
+  {w:2, q:'In the Spiral model, which quadrant immediately follows "Determine Objectives"?', opts:['Development and Test','Plan the next iteration','Identify and Resolve Risks','Deployment'], ans:2, exp:'The four Spiral quadrants in order are: Determine Objectives → Identify and Resolve Risks → Development and Test → Plan Next Iteration.'},
+  {w:2, q:'In the Agile Manifesto, which is valued MORE than "Processes and tools"?', opts:['Comprehensive documentation','Contract negotiation','Individuals and interactions','Following a plan'], ans:2, exp:'The Manifesto values "Individuals and interactions over Processes and tools."'},
+  {w:2, q:'In XP, what is Test-Driven Development (TDD)?', opts:['Write tests after all code is complete','Write the test first (it fails), then write code to pass it','Skip tests for simple methods','Hire a dedicated QA team to write tests'], ans:1, exp:'TDD: write the failing test first (red), then write code to make it pass (green).'},
+  {w:2, q:'In Pair Programming, the Navigator role primarily:', opts:['Types the code','Observes and reviews for defects','Runs the tests','Manages the backlog'], ans:1, exp:'The Navigator reviews the Driver\'s work looking for tactical and strategic defects.'},
+  {w:2, q:'Project Velocity in XP is:', opts:['The maximum speed at which a developer can type','Story points completed in previous iterations, used to plan next iteration','The number of bugs found per sprint','Lines of code written per day'], ans:1, exp:'Velocity = story points actually completed in past iterations; used to set realistic iteration goals.'},
+  {w:2, q:'Risk Exposure is calculated as:', opts:['Probability + Cost','Probability × Cost','Impact / Probability','Cost / Impact'], ans:1, exp:'Risk Exposure = Probability × Cost (in dollars or effort). Higher exposure = higher priority.'},
+  {w:2, q:'Which of the Boehm & Turner five factors for methodology choice relates to how often requirements change?', opts:['Personnel','Criticality','Dynamism','Size'], ans:2, exp:'Dynamism measures the rate of requirements change — high change favors Agile.'},
+  {w:2, q:'The Waterfall model is good at detecting faults of:', opts:['Commission','Omission','Regression','Performance'], ans:1, exp:'Waterfall catches missing requirements (omission) through its formal requirements phase.'},
+  {w:2, q:'In PERT charts, the critical path is:', opts:['The shortest path through the network','The path with the most tasks','The longest path — determines minimum project duration','Any path with slack > 0'], ans:2, exp:'The critical path is the longest path; it determines the earliest possible completion date.'},
+  {w:2, q:'In RUP, which phase answers "Should we build it?"', opts:['Inception','Elaboration','Construction','Transition'], ans:0, exp:'Inception establishes feasibility and the go/no-go decision.'},
+  {w:2, q:'Story points measure:', opts:['Hours of work','The overall size of a user story (effort + complexity + uncertainty)','Lines of code needed','Number of tests required'], ans:1, exp:'Story points are abstract size units that combine effort, complexity, and uncertainty.'},
+
+  // ══════════════ WEEK 3 — Requirements Engineering ══════════════
+  {w:3, q:'According to IEEE 2014, "shall" in a requirement means:', opts:['Is recommended that','Is a future reference not under system control','Is required to (mandatory)','Depends on context'], ans:2, exp:'"Shall" = mandatory requirement. "Should" = recommended. "Will" = future reference outside system control.'},
+  {w:3, q:'A descriptive statement in requirements is one that:', opts:['Holds only when the system enforces it','Holds regardless of how the system behaves (e.g., physical law)','Is desirable but optional','Describes the user interface'], ans:1, exp:'Descriptive statements hold due to domain reality/physics, not software enforcement.'},
+  {w:3, q:'The "<<include>>" stereotype in a use case diagram means:', opts:['X optionally includes Y','X always includes Y as a subtask','Y extends X in exceptional cases','X and Y are alternative paths'], ans:1, exp:'<<include>>: in the course of doing X, Y will ALWAYS be completed — Y is a required subtask.'},
+  {w:3, q:'Which is the MOST complete and formal kind of use case?', opts:['Actor-goal list','Use case brief','Casual use case','Fully dressed use case'], ans:3, exp:'Fully dressed has labeled sections: Primary Actor, Preconditions, Main Flow, Subflows, Alternative Flows.'},
+  {w:3, q:'Requirements elicitation is defined as (Nuseibeh & Easterbrook, 2000):', opts:['Writing formal specifications','A process of discovering and adjusting stakeholder expectations','Running automated tests','Implementing user stories'], ans:1, exp:'Elicitation: discover stakeholder expectations AND adjust them (resolve conflicts, help articulate needs).'},
+  {w:3, q:'Which quality factor of requirements is violated by "The system should be fast"?', opts:['Completeness','Unambiguity','Measurability','Feasibility'], ans:2, exp:'"Fast" has no metric — it is unmeasurable. A measurable version would specify response time.'},
+  {w:3, q:'In the health claims system, which informal requirement involves OCR processing?', opts:['R1','R2','R5','R7'], ans:1, exp:'R2: Scanned paper and fax are processed by OCR after form dropout, deskewing, despeckling.'},
+  {w:3, q:'The "Neutralize" step in tracking/reproducing removes:', opts:['System configuration data','Negative and emotional language from the description','Steps that cannot be reproduced','Duplicate entries'], ans:1, exp:'Neutralize removes emotional wording ("nasty bug wasted my time") leaving only technical facts.'},
+
+  // ══════════════ WEEK 4 — Software Architecture ══════════════
+  {w:4, q:'Tony Hoare\'s quote says good software design should be:', opts:['Complicated enough to hide deficiencies','Simple enough that deficiencies are obvious','Both simple and complicated','Abstracted at every level'], ans:1, exp:'"Make it so simple that there are obviously no deficiencies" — simplicity, not complexity.'},
+  {w:4, q:'Prescriptive architecture is also called:', opts:['As-implemented architecture','As-designed architecture','As-tested architecture','As-deployed architecture'], ans:1, exp:'Prescriptive = as-designed; Descriptive = as-implemented. Drift between them is architectural drift.'},
+  {w:4, q:'The Perry & Wolf "Rationale" component answers:', opts:['WHAT elements exist','HOW elements are constrained','WHY design decisions were made','WHERE components are deployed'], ans:2, exp:'Rationale = WHY — the justification for design decisions, derived from system requirements.'},
+  {w:4, q:'Information hiding (Parnas, 1972) means each module should:', opts:['Expose all its internal state','Hide a design decision from other modules','Share all data through global variables','Have no interface'], ans:1, exp:'Each module hides a design decision; others know only the interface, not the implementation.'},
+  {w:4, q:'Conway\'s Law states:', opts:['The architecture of a system matches its team\'s communication structure','Good architecture requires deep inheritance hierarchies','Simple systems have simple architectures','Performance determines architecture'], ans:0, exp:'Conway\'s Law: the system\'s architecture mirrors the communication structure of the team that built it.'},
+  {w:4, q:'In the Pipe-and-Filter architectural style, what are the connectors?', opts:['Filters','Pipes','Events','Procedure calls'], ans:1, exp:'Pipes are the connectors; filters are the components that transform data.'},
+  {w:4, q:'The Gold Plating anti-pattern for software architects means:', opts:['The architect never attends team meetings','The architect over-designs, adding unnecessary complexity','The architect is absent after handing over the design','The architect only gives advice but produces nothing'], ans:1, exp:'Gold Plating: spending too much time on unnecessary complexity or future-proofing that isn\'t needed.'},
+  {w:4, q:'Which type of coupling (cohesion ranking weakest to strongest) comes right after "Temporal"?', opts:['Logical','Procedural','Communicational','Sequential'], ans:1, exp:'Weakest to strongest: Coincidental < Logical < Temporal < Procedural < Communicational < Sequential < Functional.'},
+  {w:4, q:'In MVC, which component notifies views of state changes?', opts:['View','Controller','Model','All three equally'], ans:2, exp:'The Model stores state and notifies all registered Views when state changes via event/observer notification.'},
+
+  // ══════════════ WEEK 5 — OO Design / UML ══════════════
+  {w:5, q:'In a UML class diagram, the ONLY mandatory compartment is:', opts:['Attributes','Operations','Class name','Visibility modifiers'], ans:2, exp:'Only the class name is required; attributes and operations compartments are optional.'},
+  {w:5, q:'Composition (filled diamond) differs from Aggregation (hollow diamond) because in Composition:', opts:['Parts can exist independently of the whole','Parts are created and destroyed with the whole','Parts are shared across multiple composites','The relationship is bidirectional'], ans:1, exp:'Composition: the whole owns the parts — they are created/destroyed together (lifecycles are shared).'},
+  {w:5, q:'In a sequence diagram, time flows:', opts:['Left to right','Right to left','Top to bottom','Bottom to top'], ans:2, exp:'In sequence diagrams, time flows downward — earlier events appear higher on the diagram.'},
+  {w:5, q:'A UML class with an italic name is:', opts:['An interface','An abstract class','A final class','A singleton'], ans:1, exp:'Italic class name = abstract class (cannot be instantiated).'},
+  {w:5, q:'The noun/verb extraction rule says: verbs in requirements become:', opts:['Classes','Attributes','Operations or relationships','Interface names'], ans:2, exp:'Verbs → operations (methods) or relationships (associations, generalizations, containment).'},
+  {w:5, q:'Which noun filter removes words like "sources", "information", and "system" from class candidates?', opts:['Redundant','Vague','Very General','Instances'], ans:2, exp:'"Very General" filters out overly broad concepts like "system", "data", "information".'},
+  {w:5, q:'In the sequence diagram from lecture, "handleClaim" is sent from:', opts:['A Claim to the Mainframe','An Adjudicator to A Claim','The Mainframe to An Adjudicator','The Post Office to A Claim'], ans:1, exp:'The adjudicator initiates by calling handleClaim on A Claim.'},
+  {w:5, q:'The "alt" interaction frame in a sequence diagram represents:', opts:['A loop','An optional interaction','An if-else conditional','A parallel interaction'], ans:2, exp:'"alt" = alternative — if-else conditional. Guards like [accept == true] and [else] separate the branches.'},
+
+  // ══════════════ WEEK 6 — Design Patterns ══════════════
+  {w:6, q:'The Observer pattern intent is to define a ___ dependency between objects.', opts:['1-to-1','Many-to-many','1-to-many','Hierarchical'], ans:2, exp:'Observer: 1-to-many — one Subject notifies many Observers when its state changes.'},
+  {w:6, q:'In the GoF book, how many patterns are Behavioral?', opts:['5','7','11','23'], ans:2, exp:'GoF: 5 Creational + 7 Structural + 11 Behavioral = 23 total.'},
+  {w:6, q:'The Composite pattern is categorized as:', opts:['Creational','Structural','Behavioral','Architectural'], ans:1, exp:'Composite is a Structural pattern — it deals with how objects are composed into tree structures.'},
+  {w:6, q:'In the Interpreter pattern, a TerminalExpression is:', opts:['A class that holds children','A leaf node that implements interpret() for a grammar terminal','The context holding global state','The client that builds the tree'], ans:1, exp:'Terminal expressions are leaf nodes — they implement interpret() for the simplest grammar rules.'},
+  {w:6, q:'The main trade-off between Interpreter and Visitor: Visitor makes it easy to:', opts:['Add new element types','Add new operations','Mix operations and elements','Reduce class count'], ans:1, exp:'Visitor centralizes operations — adding a new operation = new Visitor class, no element changes needed.'},
+  {w:6, q:'Template Method uses ___ to vary algorithm steps; Strategy uses ___.', opts:['Composition; inheritance','Inheritance; composition','Delegation; reflection','Reflection; delegation'], ans:1, exp:'Template Method: inheritance (override steps in subclass). Strategy: composition (swap strategy object).'},
+  {w:6, q:'The Iterator pattern hides the ___ of an aggregate object.', opts:['Size','Internal structure','Operations','Class hierarchy'], ans:1, exp:'Iterator hides whether the collection is an array, linked list, or tree — only exposes hasNext/next.'},
+  {w:6, q:'In the Strategy pattern, adding a new algorithm requires:', opts:['Modifying the Context class','Modifying all existing Strategy classes','Adding a new ConcreteStrategy class only','Changing the AbstractStrategy interface'], ans:2, exp:'Strategy: to add a new algorithm, just add a new ConcreteStrategy class — no other changes needed.'},
+  {w:6, q:'The FBIAgent/Mobster example illustrates Observer\'s ability to:', opts:['Add methods to classes at runtime','Eliminate circular dependencies between packages','Broadcast to exactly one observer','Replace inheritance with composition'], ans:1, exp:'Mobster depends only on the Observer interface, not on FBIAgent directly — breaking the cycle.'},
+  {w:6, q:'The Composite pattern\'s three objectives are Simplicity, Power, and:', opts:['Performance','Safety (uniform treatment of leaves and composites)','Flexibility','Inheritance'], ans:1, exp:'Safety: clients treat Leaf and Composite uniformly through the same Component interface — no special cases.'},
+
+  // ══════════════ WEEK 7 — Software Testing ══════════════
+  {w:7, q:'Validation answers which question?', opts:['Are we building the product right?','Are we building the right product?','Are we building the product efficiently?','Is the product free of bugs?'], ans:1, exp:'Validation: "right product?" Verification: "product right?" (IEEE 2017).'},
+  {w:7, q:'Which is NOT one of the four testing activities?', opts:['Test Design','Test Automation','Test Implementation','Test Evaluation'], ans:2, exp:'"Test Implementation" is not a named activity. The four are: Design, Automation, Execution, Evaluation.'},
+  {w:7, q:'Dijkstra\'s famous quote states testing shows:', opts:['The absence of bugs','The presence, not the absence, of bugs','100% correctness','Code quality'], ans:1, exp:'"Testing shows the presence, not the absence of bugs." — Dijkstra, 1972 Turing Award.'},
+  {w:7, q:'Which PIE condition states the fault-containing statement must execute?', opts:['Propagation','Infection','Execution','All three simultaneously'], ans:2, exp:'E = Execution: the faulty statement must run. I = Infection: must create wrong state. P = Propagation: must reach an observable output.'},
+  {w:7, q:'Black-box testing is good at detecting faults of:', opts:['Commission (extra logic)','Omission (missing logic)','Performance','Security'], ans:1, exp:'Black-box (spec-based): good at finding missing logic. White-box (code-based): good at finding extra/wrong logic.'},
+  {w:7, q:'Boundary Value Analysis tests:', opts:['Mid-range values only','Values at and just beyond the boundary of equivalence classes','Random values','All possible inputs'], ans:1, exp:'BVA: test at the boundary (e.g., a, a-1, a+1, b, b-1, b+1) where faults tend to cluster.'},
+  {w:7, q:'100% branch coverage requires:', opts:['Every method called at least once','Every statement executed','Every predicate evaluated to both true and false','All condition combinations tested'], ans:2, exp:'Branch/decision coverage: every if/while/for must evaluate to both true and false.'},
+  {w:7, q:'Loop coverage requires testing ___ pass(es) through the loop body.', opts:['Only 0 and 1','Only 1 and many','0, 1, 2, and many','Only many'], ans:2, exp:'Loop coverage: 0 passes (skip), 1 pass, 2 passes, and n>2 passes — all four cases.'},
+  {w:7, q:'The PIE model explains why 100% statement coverage is necessary because:', opts:['Without it, tests are not automated','Without executing a statement, its fault can never cause a failure','100% coverage proves correctness','It satisfies the test oracle'], ans:1, exp:'PIE condition E (Execution): if a faulty statement never runs, its fault literally cannot manifest as a failure.'},
+  {w:7, q:'Which activity requires "domain knowledge" as its key expertise?', opts:['Test Design','Test Automation','Test Execution','Test Evaluation'], ans:3, exp:'Test Evaluation requires domain knowledge to judge whether actual vs expected results are correct.'},
+
+  // ══════════════ WEEK 8 — JUnit & Testing ══════════════
+  {w:8, q:'Unit test quality requires BOTH:', opts:['High LOC and fast execution','High coverage AND good assertions','Many test methods and few assertions','Low coupling and high cohesion'], ans:1, exp:'Experience: just high coverage or many assertions alone is insufficient — both together are required.'},
+  {w:8, q:'assertEquals() for double values requires a third argument because:', opts:['Java requires it for overloading','Floating-point arithmetic is imprecise — exact equality is unreliable','It improves performance','JUnit 5 changed the API'], ans:1, exp:'0.1 + 0.2 != 0.3 in floating-point. The delta specifies the acceptable error margin.'},
+  {w:8, q:'assertSame() vs assertEquals() for objects:', opts:['They are identical','assertSame checks reference equality (==); assertEquals checks value equality (.equals())','assertEquals checks == ; assertSame checks .equals()','Both use .equals()'], ans:1, exp:'assertSame: same object in memory (==). assertEquals: same value (.equals()).'},
+  {w:8, q:'When assumeTrue() condition is false, the test outcome is:', opts:['FAIL','ERROR','ABORTED (skipped)','PASS'], ans:2, exp:'Assumption failure = ABORTED (test is skipped, not failed). Assertion failure = FAIL.'},
+  {w:8, q:'@BeforeEach annotated method runs:', opts:['Once before all tests in the class','Before each individual test method','After each test','Only before parameterized tests'], ans:1, exp:'@BeforeEach runs before EACH test method — typically used to reset state for test isolation.'},
+  {w:8, q:'Which annotation provides comma-separated inline argument rows to a parameterized test?', opts:['@ValueSource','@EnumSource','@CsvSource','@MethodSource'], ans:2, exp:'@CsvSource provides comma-separated string literals inline: @CsvSource({"foo, 1", "bar, 2"}).'},
+  {w:8, q:'The 4A pattern for parameterized tests is:', opts:['Analyze, Arrange, Act, Assert','Assume, Arrange, Act, Assert','Apply, Arrange, Automate, Assert','Assume, Automate, Act, Assess'], ans:1, exp:'4A: Assume (preconditions) → Arrange (setup) → Act (call method) → Assert (verify result).'},
+  {w:8, q:'Test Generalization Step 2 is:', opts:['Parameterize values','Generalize the oracle (replace constants with expressions)','Add assumptions','Cross-test generalize'], ans:1, exp:'Step 2: replace constant values in assertions with general expressions (e.g., 1 → oldSize + 1).'},
+  {w:8, q:'assertAll() is different from multiple separate assertEquals() calls because:', opts:['It runs faster','All assertions execute even if some fail; all failures are reported together','It requires a list, not lambdas','It only checks null values'], ans:1, exp:'assertAll: all assertions run regardless of earlier failures — all issues are reported at once.'},
+  {w:8, q:'assertThrows() is used to:', opts:['Throw an exception manually','Verify that executing a code block throws a specific exception type','Assert that no exception is thrown','Log expected exceptions'], ans:1, exp:'assertThrows(Type.class, () -> { code }) verifies the code throws the expected exception.'},
+
+  // ══════════════ WEEK 11 — Debugging ══════════════
+  {w:11, q:'The purpose of debugging is to:', opts:['Find failures','Fix failures','Fix faults (root causes)','Find test inputs'], ans:2, exp:'Debugging fixes underlying faults (defects), not merely the observable failures.'},
+  {w:11, q:'TRAFFIC stands for: Track, Reproduce, Automate, Find Origins, Focus, Isolate, and:', opts:['Check','Correct','Commit','Close'], ans:1, exp:'The last step is Correct — fix the fault, then re-test to verify the fix and check for regressions.'},
+  {w:11, q:'The "Neutralize" step in problem reproduction:', opts:['Removes system information','Strips negative/emotional language — keeps technical facts','Broadens the conditions','Narrows to a specific environment'], ans:1, exp:'Neutralize: remove emotional language ("nasty bug wasted my time") — keep only technical description.'},
+  {w:11, q:'Binary search on a 1000-line failing input requires approximately ___ splits.', opts:['log₂(1000) ≈ 10','√1000 ≈ 32','1000/2 = 500','log₁₀(1000) = 3'], ans:0, exp:'Binary search: ~log₂(n) steps. log₂(1000) ≈ 10 splits.'},
+  {w:11, q:'Delta debugging is used when binary search:', opts:['Finds the fault too quickly','Gets stuck because both halves pass independently','Produces too many questions','Requires too many tests'], ans:1, exp:'Delta debugging handles the "stuck" case by trying combinations of subsets.'},
+  {w:11, q:'Coverage-based fault localization computes a health score as:', opts:['#failing tests / total tests','#passing tests covering line / (passing + failing tests covering line)','#lines covered / total lines','#assertions passing / total assertions'], ans:1, exp:'Health = #passing covering / (#passing + #failing covering). Low health = suspicious line.'},
+  {w:11, q:'In Java, "assert exp1 : exp2" — what is exp2?', opts:['The condition to check','A diagnostic message if exp1 is false','The return value','A test oracle'], ans:1, exp:'exp2 is the detail message passed to AssertionError when exp1 is false.'},
+  {w:11, q:'A class invariant is true:', opts:['Only before each public method','Only after each public method','Before AND after every public method','Only when the object is first created'], ans:2, exp:'Class invariant: a condition that holds before AND after every public method — it\'s always true for valid objects.'},
+  {w:11, q:'Which debugging strategy follows the error propagation chain backward?', opts:['Tracing','Cause elimination','Backtracking','Coverage-based localization'], ans:2, exp:'Backtracking: start from the failure and follow the error propagation chain backward to the fault.'},
+  {w:11, q:'True or False: If a bug cannot be reproduced, it no longer exists.', opts:['True','False'], ans:1, exp:'Non-reproducibility does not mean the bug is gone — environment, timing, or state may hide it.'},
+
+  // ══════════════ WEEK 14 — Software Maintenance ══════════════
+  {w:14, q:'Which maintenance type prevents future faults proactively (e.g., via refactoring)?', opts:['Corrective','Preventive','Adaptive','Perfective'], ans:1, exp:'Preventive maintenance is proactive — refactoring, documentation improvement before faults occur.'},
+  {w:14, q:'LOC (Lines of Code) is NOT a valid comparison metric when:', opts:['Using the same language throughout','Applying standard formatting','Mixing Java, Python, and C code','After code review'], ans:2, exp:'LOC only compares fairly within the same language. Mixing languages produces meaningless LOC counts.'},
+  {w:14, q:'Cyclomatic complexity for a method with 4 decision points and one exit is:', opts:['3','4','5','6'], ans:2, exp:'#decisionPoints + 1 = 4 + 1 = 5.'},
+  {w:14, q:'LCOM (Lack of Cohesion in Methods) measures:', opts:['The number of methods in a class','Coupling to other classes','Whether methods share instance variables — lower is more cohesive','The depth of the inheritance tree'], ans:2, exp:'LCOM = #non-sharing method pairs − #sharing pairs. Lower means methods work with the same data (cohesive).'},
+  {w:14, q:'Refactoring must:', opts:['Add at least one new feature','Change both design and functionality','Pass all existing tests — behavior is unchanged','Reduce LOC by at least 20%'], ans:2, exp:'Refactoring changes structure only. If existing tests fail, behavior changed — that\'s not refactoring.'},
+  {w:14, q:'Extract Method Step 4: if a local variable is modified in the extracted code:', opts:['Always return it','If one variable — return it; if more than one — cannot extract as-is','Use a global variable','Make it a class field'], ans:1, exp:'One modified local → return it as result. Multiple modified locals → cannot cleanly extract.'},
+  {w:14, q:'Feature Envy code smell means:', opts:['A method has too many parameters','A method uses another class\'s data and methods more than its own','A class has no methods','A method calls itself recursively'], ans:1, exp:'Feature Envy: the method "wishes" it were in the class it keeps accessing.'},
+  {w:14, q:'A Large Class code smell is indicated by more than ___ methods or ___ instance variables.', opts:['10 methods or 3 variables','24 methods or 6 variables','50 methods or 10 variables','15 methods or 5 variables'], ans:1, exp:'Large Class: >24 methods OR >6 instance variables — time to Extract Class or Extract Subclass.'},
+  {w:14, q:'Message Chain a.getB().getC().getD() is bad because:', opts:['It is slower','The client is tightly coupled to the full navigation structure','It uses too much memory','It is not object-oriented'], ans:1, exp:'If any intermediate class changes, all Message Chain clients must change too.'},
+  {w:14, q:'CBO (Coupling Between Object Classes) — higher values mean:', opts:['Better encapsulation','Better reuse','Harder to test, change, and reuse','Better cohesion'], ans:2, exp:'High CBO = many dependencies = harder to isolate for testing, harder to change, harder to reuse.'}
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EXAM ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
+var activeFilter = 'all';
+var activeQuestions = [];
+var answered = [];
+var correctCount = 0;
+
+function toggleWeekFilter(w, btn) {
+  activeFilter = w;
+  document.querySelectorAll('.wf-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function startExam() {
+  var pool = BANK.filter(function(q){ return activeFilter === 'all' || String(q.w) === String(activeFilter); });
+  var countSel = document.getElementById('q-count').value;
+  var count = countSel === 'all' ? pool.length : Math.min(parseInt(countSel), pool.length);
+  activeQuestions = shuffle(pool).slice(0, count);
+  answered = new Array(activeQuestions.length).fill(false);
+  correctCount = 0;
+  renderQuestions();
+}
+
+function resetExam() {
+  activeQuestions = [];
+  answered = [];
+  correctCount = 0;
+  document.getElementById('questions-container').innerHTML = '<div class="empty-state">Select options above and click 🔀 Shuffle &amp; Start to begin.</div>';
+  document.getElementById('score-display').textContent = '— / —';
+  document.getElementById('progress-fill').style.width = '0%';
+}
+
+function updateScore() {
+  var total = answered.filter(Boolean).length;
+  var n = activeQuestions.length;
+  document.getElementById('score-display').textContent = total === 0 ? '— / ' + n : correctCount + ' / ' + total + ' answered';
+  document.getElementById('progress-fill').style.width = (n > 0 ? (total / n * 100) : 0) + '%';
+}
+
+function weekLabel(w) {
+  var map = {2:'Wk 2',3:'Wk 3',4:'Wk 4',5:'Wk 5',6:'Wk 6',7:'Wk 7',8:'Wk 8',11:'Wk 11',14:'Wk 14'};
+  return map[w] || 'Wk ' + w;
+}
+
+function renderQuestions() {
+  var container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  if (activeQuestions.length === 0) {
+    container.innerHTML = '<div class="empty-state">No questions match the selected filter.</div>';
+    return;
+  }
+  activeQuestions.forEach(function(q, idx) {
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    var optsHtml = q.opts.map(function(opt, oi){
+      return '<button type="button" class="qz-opt" id="fe-opt-'+idx+'-'+oi+'" data-q="'+idx+'" data-o="'+oi+'">'+escHtml(opt)+'</button>';
+    }).join('');
+    var codeHtml = q.code ? '<div class="q-code"><code>'+escHtml(q.code)+'</code></div>' : '';
+    card.innerHTML =
+      '<div class="q-num">Q'+(idx+1)+'</div>'+
+      '<span class="q-week-tag">'+escHtml(weekLabel(q.w))+'</span>'+
+      '<div class="q-text">'+escHtml(q.q)+'</div>'+
+      codeHtml+
+      '<div class="qz-options" id="fe-opts-'+idx+'">'+optsHtml+'</div>'+
+      '<div class="qz-explanation" id="fe-expl-'+idx+'"><div class="qz-expl-title">Explanation</div><div class="qz-expl-plain" id="fe-expl-text-'+idx+'"></div></div>';
+    container.appendChild(card);
+  });
+  updateScore();
+  container.addEventListener('click', handleClick);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function handleClick(e) {
+  var btn = e.target.closest('.qz-opt');
+  if (!btn || btn.disabled) return;
+  var qIdx = parseInt(btn.getAttribute('data-q'), 10);
+  var oi   = parseInt(btn.getAttribute('data-o'), 10);
+  if (answered[qIdx]) return;
+  answered[qIdx] = true;
+  var q = activeQuestions[qIdx];
+  var isCorrect = oi === q.ans;
+  if (isCorrect) correctCount++;
+  q.opts.forEach(function(_, optI){
+    var b = document.getElementById('fe-opt-'+qIdx+'-'+optI);
+    if (!b) return;
+    b.disabled = true;
+    if (optI === oi && isCorrect)        b.className = 'qz-opt-correct';
+    else if (optI === oi && !isCorrect)  b.className = 'qz-opt-wrong';
+    else if (optI === q.ans && !isCorrect) b.className = 'qz-opt-reveal';
+    else                                 b.className = 'qz-opt-neutral';
+  });
+  var explEl = document.getElementById('fe-expl-'+qIdx);
+  var explText = document.getElementById('fe-expl-text-'+qIdx);
+  if (explEl && explText) {
+    explText.textContent = q.exp;
+    explEl.style.display = 'block';
+    explEl.classList.toggle('qz-explanation-correct', isCorrect);
+    explEl.classList.toggle('qz-explanation-wrong', !isCorrect);
+  }
+  updateScore();
+}
+
+// Auto-start with 30 questions on load
+window.addEventListener('DOMContentLoaded', function(){ startExam(); });
+</script>
+<script src="../js/study-weeks-config.js"></script>
+<script src="../js/study-lang.js"></script>
+<script src="../js/study-sidebar.js"></script>
+</body>
+</html>

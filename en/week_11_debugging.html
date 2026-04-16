@@ -243,6 +243,7 @@ code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--t
 <button class="qz-tab-btn" onclick="switchQuizTab('11-7',this)" type="button">11.7</button>
 <button class="qz-tab-btn" onclick="switchQuizTab('11-8',this)" type="button">11.8</button>
 <button class="qz-tab-btn" onclick="switchQuizTab('11-sum',this)" type="button">Summary</button>
+  <button class="qz-tab-btn" onclick="switchQuizTab('11-all',this)" type="button">All (Shuffled)</button>
 </nav>
 <div class="qz-tab-panel active" id="qz-panel-11-1">
 <div class="qz-panel-toolbar">
@@ -316,6 +317,15 @@ code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--t
 </div>
 <div id="questions-ch11-11-sum"></div>
 </div>
+<div class="qz-tab-panel" id="qz-panel-11-all">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuizCh11_all()" type="button">🔀 Reshuffle</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-ch11-all">— / 50</span></div>
+</div>
+</div>
+<div id="questions-ch11-all"></div>
+</div>
 </div>
 </div>
 </div>
@@ -367,7 +377,23 @@ var CH11_RAW_QUESTIONS = [
   { q: '[Summary] Description generalized to more fonts still reproducing — which step?', opts: ['Summarization', 'Generalization', 'Reproducing', 'Isolation', 'All of the above'], ans: 1, exp: 'Broadening conditions while still reproducing is generalization.' },
   { q: '[Summary] "Windows XP" refined to "Windows XP ONLY" — which step?', opts: ['Isolate', 'Condense', 'Summarize', 'None of the above'], ans: 0, exp: 'Narrowing to a specific environment is isolation.' },
   { q: '[Summary] Most efficient to find the line of failure in a very large input file?', opts: ['Binary search', 'Linear search', 'Delta debugging', 'None of the above'], ans: 0, exp: 'Binary search on the input halves the search space each time.' },
-  { q: '[Summary] Which is an example of a loop invariant for the code below?', code: 'x = 0; i = 2\n\nwhile i <= 5:\n    x = x + i*i\n    i = i + 1', opts: ['x = sum of squares of 2..i', 'x = sum of squares of 2..i-1', 'x = sum of squares of 1..i-1', 'x = sum of squares of 1..i'], ans: 1, exp: 'At loop test, i is the next value to add; x has accumulated squares for 2 through i-1.' }
+  { q: '[Summary] Which is an example of a loop invariant for the code below?', code: 'x = 0; i = 2\n\nwhile i <= 5:\n    x = x + i*i\n    i = i + 1', opts: ['x = sum of squares of 2..i', 'x = sum of squares of 2..i-1', 'x = sum of squares of 1..i-1', 'x = sum of squares of 1..i'], ans: 1, exp: 'At loop test, i is the next value to add; x has accumulated squares for 2 through i-1.' },
+  // ── EXTRA QUESTIONS ────────────────────────────────────────────────────
+  { q: '[Extra] Which TRAFFIC step involves writing an automated test that reproduces the failure?', opts: ['Track','Reproduce','Automate','Find Origins'], ans: 2, exp: 'Automate: write a system or unit test to reproduce the failure automatically so it can be run repeatedly.' },
+  { q: '[Extra] True or False: The purpose of debugging is to find failures.', opts: ['True','False'], ans: 1, exp: 'Debugging finds and fixes FAULTS (root causes). Testing finds FAILURES (symptoms). Different goals.' },
+  { q: '[Extra] Which seven elements does a good problem report include?', opts: ['Product release, OS environment, system resources, problem history, expected behavior, experienced behavior, one-line summary','Product release, OS environment, memory, CPU, team members, fix date, patch number','Title, author, date, environment, steps, screenshots, video','Bug ID, priority, severity, assignee, comment, attachment, tag'], ans: 0, exp: '7 elements per Zeller: product release, OS environment, system resources, problem history, expected behavior, experienced behavior, one-line summary.' },
+  { q: '[Extra] Nearest-neighbor fault localization finds:', opts: ['The line with the lowest health score','The passing test most similar to a failing test; their coverage difference highlights suspicious lines','The test with the most assertions','The method with the highest cyclomatic complexity'], ans: 1, exp: 'Nearest neighbor: find the passing test most similar (fewest coverage differences) to the failing test. The lines only in the failing test are most suspicious.' },
+  { q: '[Extra] In the SpeedyWriter example, what does the "Isolate" step reveal?', opts: ['The bug affects all fonts universally','The bug only occurs on Windows 98, not on Solaris or Mac, and only for new files','The bug is in the OCR engine','The bug affects all operating systems equally'], ans: 1, exp: 'Isolate narrows conditions: "Only happens under Windows 98, not Solaris/Mac. Bug does not occur with existing files."' },
+  { q: '[Extra] True or False: After fixing a bug, you should re-test only the specific fix.', opts: ['True','False'], ans: 1, exp: 'You must re-test the fix AND run regression tests — fixing one fault can introduce new faults elsewhere.' },
+  { q: '[Extra] The "Generalize" step in problem reproduction involves:', opts: ['Making the test case more specific','Broadening the conditions while the failure still reproduces (e.g., other fonts also trigger it)','Writing formal postconditions','Deleting irrelevant test steps'], ans: 1, exp: 'Generalize: expand the reproducing conditions — "Also happens with Wingdings and Symbol fonts" broadens the known failure scope.' },
+  { q: '[Extra] Java assertions are DISABLED by default in production code. To enable them you use JVM flag:', opts: ['-debug','-ea (enable assertions)','-test','-verbose'], ans: 1, exp: '-ea (or -enableassertions) enables Java assert statements. They are off by default so production code is unaffected.' },
+  { q: '[Extra] A postcondition assertion for int abs(int n) at the return statement is:', opts: ['assert n > 0','assert n >= 0','assert n == input','assert n != null'], ans: 1, exp: 'After computing absolute value, the result must be >= 0. assert number >= 0 is the correct postcondition.' },
+  { q: '[Extra] Which fault localization strategy requires deep knowledge of common bug types (null pointers, uninitialized objects)?', opts: ['Coverage-based localization','Binary search','Cause elimination','Tracing'], ans: 2, exp: 'Cause elimination needs program model knowledge AND knowledge of common fault types to hypothesize and rule out causes.' },
+  { q: '[Extra] True or False: Bugzilla is an IDE with built-in debugging features.', opts: ['True','False'], ans: 1, exp: 'Bugzilla is a bug-tracking/issue-tracking system, not an IDE or debugger.' },
+  { q: '[Extra] The "Condense" step in problem reproduction involves:', opts: ['Adding more reproduction steps','Removing unnecessary words to make each statement as brief as possible','Generalizing the conditions','Isolating to a specific OS'], ans: 1, exp: 'Condense: shorten each statement to the minimum needed — "Saving file before changing font prevents bug" is more concise.' },
+  { q: '[Extra] Health score for a line = 0% means:', opts: ['All tests covering this line pass','No tests cover this line','All tests covering this line fail — highest suspicion','Half pass and half fail'], ans: 2, exp: '0% health = every test that executes this line fails — this is the most suspicious line for containing the fault.' },
+  { q: '[Extra] In Design by Contract, who is responsible for satisfying a precondition?', opts: ['The method being called','The caller of the method','The test framework','The compiler'], ans: 1, exp: 'Preconditions are the caller\'s responsibility — the method assumes they hold. If the caller violates them, behavior is undefined.' },
+  { q: '[Extra] True or False: Delta debugging is only needed when both halves of a binary search fail.', opts: ['True','False'], ans: 1, exp: 'Delta debugging is needed when both halves PASS (binary search gets stuck). If one half fails, binary search continues.' }
 ];
 
 function ch11Slice(start, end) {
@@ -453,6 +479,22 @@ ch11Mount({
   idPrefix: 'ch11m11-sum-',
   resetGlobalName: 'resetQuizCh11_11_sum'
 });
+
+// All questions shuffled
+function shuffleCh11(arr) {
+  var a = arr.slice(); for (var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a;
+}
+function ch11MountAll() {
+  var all = shuffleCh11(CH11_RAW_QUESTIONS).map(function(rq,i){
+    return { num:i+1, text:rq.q.replace(/^\[[^\]]+\]\s*/,''), code:rq.code||'', options:rq.opts, correct:rq.ans, exp:rq.exp };
+  });
+  QuizPane.mount({ questions:all, expandExplanationToOptions:true,
+    containerId:'questions-ch11-all', scoreId:'score-ch11-all',
+    idPrefix:'ch11mall-', resetGlobalName:'resetQuizCh11_all', noGlobalReset:true });
+}
+ch11MountAll();
+// override reset to reshuffle
+window.resetQuizCh11_all = function(){ ch11MountAll(); };
 </script>
 <script src="../js/study-weeks-config.js"></script>
 <script src="../js/study-lang.js"></script>
