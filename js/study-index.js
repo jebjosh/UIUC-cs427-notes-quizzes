@@ -68,6 +68,9 @@
         onWeekClick: loadWeek
       });
     }
+    if (typeof window.enhanceSidebarToggle === 'function') {
+      window.enhanceSidebarToggle(document.querySelector('.study-nav'));
+    }
     if (initial) loadWeek(initial);
 
     var langRoot = document.getElementById('study-lang-switch-root');

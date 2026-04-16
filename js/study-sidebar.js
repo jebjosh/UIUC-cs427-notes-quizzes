@@ -79,6 +79,55 @@
     });
   }
 
+  function setSidebarCollapsed(collapsed) {
+    document.body.classList.toggle('study-sidebar-collapsed', !!collapsed);
+    try { localStorage.setItem('studySidebarCollapsed', collapsed ? '1' : '0'); } catch (e) {}
+    var btn = document.querySelector('.study-nav-toggle');
+    if (btn) {
+      btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      btn.setAttribute('title', collapsed ? 'Show weeks' : 'Hide weeks');
+    }
+  }
+
+  function getPreferredCollapsed() {
+    try {
+      var saved = localStorage.getItem('studySidebarCollapsed');
+      if (saved === '1') return true;
+      if (saved === '0') return false;
+    } catch (e) {}
+    return window.innerWidth <= 960;
+  }
+
+  function enhanceSidebarToggle(scope) {
+    var aside = scope || document.querySelector('.study-nav');
+    if (!aside) return;
+    var header = aside.querySelector('.study-nav-header');
+    if (!header) return;
+    var existing = header.querySelector('.study-nav-toggle');
+    if (!existing) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'study-nav-toggle';
+      btn.setAttribute('aria-label', 'Toggle week menu');
+      btn.innerHTML = '<span></span><span></span><span></span>';
+      header.appendChild(btn);
+      btn.addEventListener('click', function () {
+        setSidebarCollapsed(!document.body.classList.contains('study-sidebar-collapsed'));
+      });
+    }
+    setSidebarCollapsed(getPreferredCollapsed());
+
+    aside.querySelectorAll('.study-nav-list a').forEach(function (link) {
+      if (link.dataset.sidebarAutoBound === '1') return;
+      link.dataset.sidebarAutoBound = '1';
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 960) {
+          setSidebarCollapsed(true);
+        }
+      });
+    });
+  }
+
   function mountStudySidebar() {
     if (document.documentElement.classList.contains('embed-mode')) return;
     if (/(?:^|[?&])embed=1(?:&|$)/.test(location.search)) return;
@@ -108,18 +157,28 @@
       window.mountStudyLangSwitch(langRoot, { inIndex: false });
     }
     renderStudyNavList(nav, { currentId: currentId, useHash: false });
+    enhanceSidebarToggle(aside);
     syncNotesTitleWithSidebar(currentId);
   }
 
   window.renderStudyNavList = renderStudyNavList;
   window.mountStudySidebar = mountStudySidebar;
+  window.enhanceSidebarToggle = enhanceSidebarToggle;
 
   function boot() {
     var currentId = document.body.getAttribute('data-study-week') || '';
     syncNotesTitleWithSidebar(currentId);
     if (document.getElementById('study-sidebar-root')) {
       mountStudySidebar();
+    } else {
+      enhanceSidebarToggle(document.querySelector('.study-nav'));
     }
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 960) {
+        setSidebarCollapsed(false);
+      }
+    });
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
