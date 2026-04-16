@@ -32,7 +32,9 @@
     var frame = $('#study-frame');
     if (!frame) return;
     var f = window.getWeekFile ? window.getWeekFile(week) : week.file;
-    frame.src = f + '?embed=1';
+    var src = f + '?embed=1';
+    if (typeof window.withCacheBust === 'function') src = window.withCacheBust(src);
+    frame.src = src;
     setCurrentNav(week.id);
     try {
       history.replaceState(null, '', '#' + week.id);

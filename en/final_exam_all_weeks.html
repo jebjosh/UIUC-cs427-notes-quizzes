@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CS427 Full Practice Exam — All Weeks</title>
-<link href="../css/study-sidebar.css" rel="stylesheet"/>
+<link href="../css/study-sidebar.css?v=20260416" rel="stylesheet"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -59,8 +62,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s ease;}
 .empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:0.9rem;}
 </style>
-<link href="../css/study-week-tabs.css" rel="stylesheet"/>
-<script src="../js/study-week-common.js"></script>
+<link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
+<script src="../js/study-week-common.js?v=20260416"></script>
 </head>
 <body data-study-week="final">
 <div class="app-shell">
@@ -88,6 +91,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
   <div class="week-filter" id="week-filter">
     <span class="wf-label">Filter:</span>
     <button class="wf-btn active" data-week="all" onclick="toggleWeekFilter('all',this)">All Weeks</button>
+    <button class="wf-btn" data-week="1" onclick="toggleWeekFilter('1',this)">Wk 1</button>
     <button class="wf-btn" data-week="2" onclick="toggleWeekFilter('2',this)">Wk 2</button>
     <button class="wf-btn" data-week="3" onclick="toggleWeekFilter('3',this)">Wk 3</button>
     <button class="wf-btn" data-week="4" onclick="toggleWeekFilter('4',this)">Wk 4</button>
@@ -110,6 +114,87 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 // Each question: { w: weekNum, q: text, opts: [], ans: idx, exp: string, code?: string }
 // ─────────────────────────────────────────────────────────────────────────────
 var BANK = [
+
+  // ══════════════ WEEK 1 — Introduction to Software Engineering ══════════════
+  {
+    w: 1,
+    q: "Which of the following is NOT a part of Software Development Life Cycle?",
+    opts: ["Requirements Phase", "Design Phase", "Implementation Phase", "Evaluation Phase"],
+    ans: 3,
+    exp: "Evaluation Phase is not one of the standard SDLC phases used here. The core phases are requirements, design, implementation, testing, and maintenance."
+  },
+  {
+    w: 1,
+    q: "The trinity of a software project does NOT include which of the following?",
+    opts: ["Software System", "Software Design", "Software Users", "Software Development Process"],
+    ans: 1,
+    exp: "The project trinity here is software system, software users, and software development process. Software design is important, but it is not one of those three."
+  },
+  {
+    w: 1,
+    q: "______ provides flexibility for changing a component's internal design decisions without impacting the external code using this component's interface.",
+    opts: ["Project Management", "Divide and Conquer", "Inheritance", "Information Hiding"],
+    ans: 3,
+    exp: "Information hiding keeps implementation details internal so the component can change without breaking code that uses its interface."
+  },
+  {
+    w: 1,
+    q: "Which of the following is a characteristic of Software?",
+    opts: ["Malleable", "Simple", "Constant", "Requiring a single person to develop"],
+    ans: 0,
+    exp: "Software is malleable because it can be modified and adapted relatively easily compared with physical systems."
+  },
+  {
+    w: 1,
+    q: "Which of the following roles is/are project stakeholders of a software project? Select the best answer.",
+    opts: ["Support Engineer", "Designer", "Tester", "All of the above"],
+    ans: 3,
+    exp: "Support engineers, designers, and testers are all stakeholders in a software project."
+  },
+  {
+    w: 1,
+    q: "Is the following statement TRUE?\nIn the context of a software project, users are different from customers.",
+    opts: ["True", "False"],
+    ans: 0,
+    exp: "Users are the people who use the software, while customers are the people or organizations paying for it. They may be different."
+  },
+  {
+    w: 1,
+    q: "True or false?\nAdding more team members helps solve the software crisis.",
+    opts: ["True", "False"],
+    ans: 1,
+    exp: "False. Adding people to a troubled or late project often makes it worse because of onboarding and communication overhead, which is Brooks' Law."
+  },
+  {
+    w: 1,
+    q: "John is an efficient programmer and eager to learn, but he has never worked on a team. Which attribute does he most need to become a successful software engineer?",
+    opts: ["Working alone", "Being defensive about his work", "Ability to interact and collaborate effectively in a team", "None—John already has what he needs"],
+    ans: 2,
+    exp: "Software engineering is strongly collaborative, so teamwork and communication are essential."
+  },
+  {
+    w: 1,
+    q: "Which of the following statements is NOT true?",
+    opts: [
+      "Software engineering is primarily concerned with multi-person development",
+      "Software engineering is primarily concerned with writing a single version of a program",
+      "Software engineering and programming are two different concepts"
+    ],
+    ans: 1,
+    exp: "Software engineering is not just about producing a one-off program. It covers evolving systems, teamwork, process, quality, and maintenance."
+  },
+  {
+    w: 1,
+    q: "Which of the following is NOT among the competing goals of a software project (in the usual \"iron triangle\" sense)?",
+    opts: [
+      "Time used by developers to develop the software",
+      "Cost for the customers to pay the software project team to develop the software",
+      "Quality of the developed software",
+      "Market share occupied by the developed software"
+    ],
+    ans: 3,
+    exp: "The classical competing goals are time, cost, and quality. Market share is a business outcome, not one of the standard project trade-off dimensions."
+  },
 
   // ══════════════ WEEK 2 — Software Process ══════════════
   {w:2, q:'Which of the following is NOT one of the 5 sections of IEEE 1074?', opts:['Project Management','Pre-Development','Testing Validation','Support'], ans:2, exp:'The 5 sections are Project Management, Pre-Development, Development, Post-Development, and Support. Testing Validation is not a section.'},
@@ -267,7 +352,7 @@ function updateScore() {
 }
 
 function weekLabel(w) {
-  var map = {2:'Wk 2',3:'Wk 3',4:'Wk 4',5:'Wk 5',6:'Wk 6',7:'Wk 7',8:'Wk 8',11:'Wk 11',14:'Wk 14'};
+  var map = {1:'Wk 1',2:'Wk 2',3:'Wk 3',4:'Wk 4',5:'Wk 5',6:'Wk 6',7:'Wk 7',8:'Wk 8',11:'Wk 11',14:'Wk 14'};
   return map[w] || 'Wk ' + w;
 }
 
@@ -335,8 +420,8 @@ function handleClick(e) {
 // Auto-start with 30 questions on load
 window.addEventListener('DOMContentLoaded', function(){ startExam(); });
 </script>
-<script src="../js/study-weeks-config.js"></script>
-<script src="../js/study-lang.js"></script>
-<script src="../js/study-sidebar.js"></script>
+<script src="../js/study-weeks-config.js?v=20260416"></script>
+<script src="../js/study-lang.js?v=20260416"></script>
+<script src="../js/study-sidebar.js?v=20260416"></script>
 </body>
 </html>

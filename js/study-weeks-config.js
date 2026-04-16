@@ -24,3 +24,10 @@ window.formatWeekLabel = function (w) {
   if (!w || w.num == null) return w.label || '';
   return 'Week ' + w.num + ' — ' + w.label;
 };
+
+
+window.withCacheBust = function (url) {
+  if (!url) return url;
+  var sep = url.indexOf('?') === -1 ? '?' : '&';
+  return url + sep + 'v=' + String(Date.now());
+};
