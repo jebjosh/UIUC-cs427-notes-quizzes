@@ -330,3 +330,23 @@
   color: var(--text2);
   line-height: 1.55;
 }
+
+
+@media (max-width:700px){
+  .qz-toolbar{position:sticky;top:0;z-index:30;background:var(--bg, #faf9f7);padding:10px 0 12px;margin-bottom:14px;}
+  .qz-heading{font-size:1.12rem;min-width:0;}
+  .qz-actions{width:100%;justify-content:space-between;gap:8px;}
+  .qz-reset{padding:8px 12px;font-size:0.78rem;}
+  .score-bar{font-size:0.72rem;gap:6px;}
+  .score-pill{padding:4px 10px;}
+  .q-card{padding:18px 16px;margin-bottom:12px;}
+  .q-num{margin-bottom:8px;}
+  .q-text{font-size:0.94rem;line-height:1.55;}
+  .q-code{padding:10px 12px;}
+  .q-code code{font-size:0.74rem;line-height:1.45;}
+  .qz-opt,.qz-opt-correct,.qz-opt-wrong,.qz-opt-reveal,.qz-opt-neutral{font-size:0.9rem;padding:11px 12px;line-height:1.4;}
+  .qz-submit{width:100%;justify-content:center;}
+  .qz-explanation{padding:11px 12px;font-size:0.84rem;}
+  .qz-source-line{margin-bottom:16px;padding-bottom:2px;}
+  .qz-diagram img{max-height:180px;}
+}

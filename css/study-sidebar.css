@@ -53,3 +53,19 @@
   .study-nav-list .study-nav-soon{padding:8px 11px;font-size:0.76rem;}
   .study-nav-group-label,.study-nav-sub{padding:8px!important;}
 }
+
+
+/* Mobile polish */
+@media (max-width:700px){
+  .study-nav{padding:12px 12px 10px;}
+  .study-nav-header{margin-bottom:12px;padding:0 4px 10px 6px;}
+  .study-nav-title{font-size:0.86rem;line-height:1.3;}
+  .study-nav-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .study-nav-list > a,.study-nav-list > span.study-nav-soon,.study-nav-list > .study-nav-group{margin:0;min-width:0;}
+  .study-nav-list a,.study-nav-list .study-nav-soon,.study-nav-group-label,.study-nav-sub{font-size:0.74rem!important;padding:8px 9px!important;line-height:1.35;}
+  .study-lang-switch{display:flex;width:100%;}
+  .study-lang-btn{flex:1 1 0;text-align:center;}
+}
+@media (max-width:420px){
+  .study-nav-list{grid-template-columns:1fr;}
+}

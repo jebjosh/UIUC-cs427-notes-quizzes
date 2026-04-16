@@ -123,6 +123,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 .diamond-info .di-val{font-size:0.88rem;font-weight:600;color:var(--text);}
 .diamond-info .di-desc{font-size:0.82rem;color:var(--text2);margin-top:2px;}
 
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -498,8 +526,8 @@ Message order follows <strong>trigger time</strong>: what happens first appears 
 </div>
 <script>
 const IMGS = {
-  q2: 'assets/week5-quiz-q2.png',
-  q5: 'assets/week5-quiz-q5.png'
+  q2: '../assets/week5-quiz-q2.png',
+  q5: '../assets/week5-quiz-q5.png'
 };
 
 const questions = [
@@ -633,6 +661,288 @@ const questions = [
 "✅ The order of events based on their triggering time — The events in the sequence diagram are arranged from top to bottom according to their triggering time, reflecting the actual execution/interaction sequence.",
 "❌ The order of events based on their importance — importance is not a ranking basis.",
 "❌ The order of events based on their duration time — duration does not determine order."
+    ]
+  },
+{
+  num:14, text:"Object-oriented design deals with which of the following (choose all that apply):",
+  options:["Medium level of implementation details", "Low level of requirements details", "Only requirement details", "None of the above"], correct:[0, 1],
+  explanations:[
+"✅ Medium level of implementation details is correct.",
+"✅ Low level of requirements details is correct.",
+"❌ Only requirement details is not correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:15, text:"Is the following statement True or False?\nArchitecture and object-oriented design provide details involving Requirements and Implementation.",
+  options:["True", "False"], correct:0,
+  explanations:[
+"✅ True is correct.",
+"❌ False is not correct."
+    ]
+  },
+{
+  num:16, text:"Which of the following are the benefits of Modeling Notations? (choose all that apply)",
+  options:["Communication between engineers", "Assuring quality of design", "Reduction of code complexity", "None of the above"], correct:[0, 1],
+  explanations:[
+"✅ Communication between engineers is correct.",
+"✅ Assuring quality of design is correct.",
+"❌ Reduction of code complexity is not the listed answer here.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:17, text:"Is the following statement True or False?\nUnified Modeling Language is a popular language for requirements and OO design.",
+  options:["True", "False"], correct:0,
+  explanations:[
+"✅ True is correct.",
+"❌ False is not correct."
+    ]
+  },
+{
+  num:18, text:"Which of the following diagrams is a part of Unified Modeling Language (UML)?",
+  options:["Class Diagram", "Interface Diagram", "Intention Diagram", "All of the above"], correct:0,
+  explanations:[
+"✅ Class Diagram is correct.",
+"❌ Interface Diagram is not the marked answer.",
+"❌ Intention Diagram is not a UML diagram here.",
+"❌ All of the above is not correct."
+    ]
+  },
+{
+  num:19, text:"Which of the following is NOT true about a class diagram?",
+  options:["Class diagram provides an overall structure of a software system", "Class diagram shows classes for later implementation", "Class diagram provides detailed description including attributes and operations for each of the classes", "Class diagram provides information about how each class interacts with another"], correct:3,
+  explanations:[
+"❌ This is true.",
+"❌ This is true.",
+"❌ This is true.",
+"✅ This is the NOT true statement here."
+    ]
+  },
+{
+  num:20, text:"Is the following statement True or False?\nInherited attributes must be listed in the class definition in a Class Diagram.",
+  options:["True", "False"], correct:1,
+  explanations:[
+"❌ True is not correct.",
+"✅ False is correct."
+    ]
+  },
+{
+  num:21, text:"Which of the following can be used to describe an Association in a Class Diagram?",
+  options:["Direction", "Multiplicity", "Aggregation/Composition", "All of the above"], correct:3,
+  explanations:[
+"❌ Direction can be used, but not alone.",
+"❌ Multiplicity can be used, but not alone.",
+"❌ Aggregation/Composition can be used, but not alone.",
+"✅ All of the above is correct."
+    ]
+  },
+{
+  num:22, text:"An operation in a class in a Class diagram does NOT contain which of the following?",
+  options:["Return Type", "Method Parameters", "Visibility", "None of the above"], correct:3,
+  explanations:[
+"❌ Return type can appear in an operation.",
+"❌ Method parameters can appear in an operation.",
+"❌ Visibility can appear in an operation.",
+"✅ None of the above is correct."
+    ]
+  },
+{
+  num:23, text:"Aggregation describes which of the following relationships?",
+  options:["Parent-child relationship", "Whole-part relationship", "Calling relationship", "None of the above"], correct:1,
+  explanations:[
+"❌ Parent-child is not correct here.",
+"✅ Whole-part relationship is correct.",
+"❌ Calling relationship is not correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:24, text:"Is the following statement True or False?\nAssociation and composition indicate exactly the same relationship.",
+  options:["True", "False"], correct:1,
+  explanations:[
+"❌ True is not correct.",
+"✅ False is correct."
+    ]
+  },
+{
+  num:25, text:"Which of the following can be used to describe an association relationship?",
+  options:["Direction", "Multiplicity", "Both of the above", "None of the above"], correct:2,
+  explanations:[
+"❌ Direction alone is incomplete here.",
+"❌ Multiplicity alone is incomplete here.",
+"✅ Both of the above is correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:26, text:"0..1 indicates which of the following?",
+  options:["1 instance", "At least one instance", "At most one instance", "Zero or more instances"], correct:2,
+  explanations:[
+"❌ 1 instance is not correct.",
+"❌ At least one instance is not correct.",
+"✅ At most one instance is correct.",
+"❌ Zero or more instances is not correct."
+    ]
+  },
+{
+  num:27, text:"Is composition a stronger relation than association?",
+  options:["Yes", "No"], correct:0,
+  explanations:[
+"✅ Yes is correct.",
+"❌ No is not correct."
+    ]
+  },
+{
+  num:28, text:"What kind of relationship does a Generalization relationship describe?",
+  options:["Whole-part relationship", "Parent-child relationship", "Calling relationship", "All of the above"], correct:1,
+  explanations:[
+"❌ Whole-part is not correct.",
+"✅ Parent-child relationship is correct.",
+"❌ Calling relationship is not correct.",
+"❌ All of the above is not correct."
+    ]
+  },
+{
+  num:29, text:"Which of the following is NOT true about an Abstract Class?",
+  options:["Concrete classes override operations in an Abstract Class", "An Abstract Class can be instantiated directly", "Abstract Classes are different from interfaces", "None of the above"], correct:1,
+  explanations:[
+"❌ This may be true.",
+"✅ An Abstract Class can be instantiated directly is the NOT true statement.",
+"❌ This is true.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:30, text:"Is the following statement True or False?\nIt is possible to create instances of an Interface.",
+  options:["True", "False"], correct:1,
+  explanations:[
+"❌ True is not correct.",
+"✅ False is correct."
+    ]
+  },
+{
+  num:31, text:"What can be the purpose of a dotted line in a Class Diagram?",
+  options:["To establish an association relationship between an Abstract Class and an Interface", "To establish a generalization relationship between two Interfaces", "To establish a generalization relationship between an Abstract Class and a Concrete Class", "To establish an implementing relationship between an Interface and a Concrete Class"], correct:3,
+  explanations:[
+"❌ Not correct.",
+"❌ Not correct.",
+"❌ Not correct.",
+"✅ This is correct."
+    ]
+  },
+{
+  num:32, text:"Dependency relationship can describe which of the following relationships? (Choose all that apply)",
+  options:["Class A calls a method in Class B", "Class A creates an instance of Class B", "Class A is a subclass of Class B", "Class A is independent of Class B"], correct:[0, 1],
+  explanations:[
+"✅ This is correct.",
+"✅ This is correct.",
+"❌ This is not correct.",
+"❌ This is not correct."
+    ]
+  },
+{
+  num:33, text:"Is the following statement True or False?\nAll Interfaces are Abstract Classes as well.",
+  options:["True", "False"], correct:1,
+  explanations:[
+"❌ True is not correct.",
+"✅ False is correct."
+    ]
+  },
+{
+  num:34, text:"Is the following statement True or False?\nExternal Actors are not included in a Class Diagram.",
+  options:["True", "False"], correct:0,
+  explanations:[
+"✅ True is correct.",
+"❌ False is not correct."
+    ]
+  },
+{
+  num:35, text:"From requirements, nouns are often mapped to ______ and verbs are often mapped to ______ in a Class Diagram.",
+  options:["Operations, Classes", "Relationships, Classes", "Classes, Operations", "None of the above"], correct:2,
+  explanations:[
+"❌ Not correct.",
+"❌ Not correct.",
+"✅ Classes, Operations is correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:36, text:"Mapping all nouns/verbs to classes/operations can result in which of the following?",
+  options:["Redundancy", "Completeness", "Traceability", "All of the above"], correct:0,
+  explanations:[
+"✅ Redundancy is correct.",
+"❌ Not correct.",
+"❌ Not correct.",
+"❌ Not correct."
+    ]
+  },
+{
+  num:37, text:"From the requirements of an online shopping platform stated below, identify candidate classes/objects.\n1. A buyer must be able to purchase a product.\n2. A seller must be able to contact the buyer.",
+  options:["Buyer", "Seller", "Product", "Contact"], correct:[0, 1, 2],
+  explanations:[
+"✅ Buyer is correct.",
+"✅ Seller is correct.",
+"✅ Product is correct.",
+"❌ Contact is not the marked class/object."
+    ]
+  },
+{
+  num:38, text:"From Question 4, identify the operations/relationships from the requirements.",
+  options:["Purchase", "Contact", "Sell", "None of the above"], correct:[0, 1],
+  explanations:[
+"✅ Purchase is correct.",
+"✅ Contact is correct.",
+"❌ Sell is not correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:39, text:"Which of the following is NOT true about a Sequence Diagram (without interaction frame)?",
+  options:["Shows sequence of actions in a single scenario", "Shows communication between objects/classes in a single scenario", "Shows the overall communication of the system in multiple scenarios", "None of the above"], correct:2,
+  explanations:[
+"❌ This is true.",
+"❌ This is true.",
+"✅ This is the NOT true statement.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:40, text:"Messages are represented by ________ in a Sequence Diagram.",
+  options:["Horizontal Lines", "Vertical Lines", "Rectangular Boxes", "None of the above"], correct:0,
+  explanations:[
+"✅ Horizontal Lines is correct.",
+"❌ Vertical Lines is not correct.",
+"❌ Rectangular Boxes is not correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:41, text:"Which of the following is a purpose of using Activations?",
+  options:["To impose conditions on classes/objects", "To indicate when a message can be sent", "To indicate whether the object is currently on the stack", "None of the above"], correct:2,
+  explanations:[
+"❌ Not correct.",
+"❌ Not correct.",
+"✅ This is correct.",
+"❌ None of the above is not correct."
+    ]
+  },
+{
+  num:42, text:"Which of the following can be used to describe a message? (Choose all that apply)",
+  options:["Name", "Arguments", "Condition", "Termination"], correct:[0, 1, 2],
+  explanations:[
+"✅ Name is correct.",
+"✅ Arguments is correct.",
+"✅ Condition is correct.",
+"❌ Termination is not correct."
+    ]
+  },
+{
+  num:43, text:"Is the following statement True or False?\nA single Sequence Diagram typically represents one specific scenario of interaction between objects in a system.",
+  options:["True", "False"], correct:0,
+  explanations:[
+"✅ True is correct.",
+"❌ False is not correct."
     ]
   }
 ];

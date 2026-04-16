@@ -88,6 +88,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 #tab-mindmap{padding-top:0;}
 .mm-iframe-wrap{margin:0 -8px;width:calc(100% + 16px);height:min(85vh,1100px);min-height:420px;overflow:hidden;border-radius:var(--radius);background:var(--surface2);}
 .mm-iframe{display:block;width:100%;height:100%;border:none;vertical-align:top;background:transparent;}
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link rel="stylesheet" href="../css/study-week-tabs.css?v=20260416">
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -530,6 +558,257 @@ const questions = [
       "❌ Cost for the customers to pay the software project team to develop the software — Cost IS a competing goal.",
       "❌ Quality of the developed software — Quality IS a competing goal.",
       "✅ Market share occupied by the developed software — Market share is a business metric, NOT one of the classical competing goals (Time, Cost, Quality) of a software project."
+    ]
+  }
+,
+  {
+    num: 11,
+    text: "Which of the following is not a part of Software Development Cycle?",
+    options: ["Conception Phase", "Requirements Phase", "Design Phase", "Implementation Phase"],
+    correct: 0,
+    explanations: [
+      "✅ Conception Phase — This is the correct answer used in your source set for this question.",
+      "❌ Requirements Phase — This is a standard part of the development cycle.",
+      "❌ Design Phase — This is a standard part of the development cycle.",
+      "❌ Implementation Phase — This is a standard part of the development cycle."
+    ]
+  },
+  {
+    num: 12,
+    text: "Which of the following is not a part of the considerations when defining software engineering? Select the best answer.",
+    options: [
+      "Systematic application of process for developing, operating, and maintaining software",
+      "Practical, economic value provided by the software, being developed in a practical and economical way",
+      "High quality of the software being developed",
+      "High quality of the software engineers in the software project team"
+    ],
+    correct: 3,
+    explanations: [
+      "❌ Systematic application of process for developing, operating, and maintaining software — This belongs to the definition of software engineering.",
+      "❌ Practical, economic value provided by the software, being developed in a practical and economical way — This is part of the usual consideration in defining software engineering.",
+      "❌ High quality of the software being developed — This is a core goal of software engineering.",
+      "✅ High quality of the software engineers in the software project team — This is not the best answer for the definition itself; the focus is on process, value, and software quality."
+    ]
+  },
+  {
+    num: 13,
+    text: "What does the Design phase of the Software Development cycle involve?",
+    options: [
+      "Specification of individual modules' interfaces",
+      "Specification of overall structure of modules",
+      "Checking conformance of design to requirements",
+      "All of the above"
+    ],
+    correct: 3,
+    explanations: [
+      "❌ Specification of individual modules' interfaces — This is part of design, but it is not the complete answer.",
+      "❌ Specification of overall structure of modules — This is also part of design, but not the full answer.",
+      "❌ Checking conformance of design to requirements — This also belongs in design-related work, but not by itself.",
+      "✅ All of the above — The design phase covers module interfaces, overall structure, and checking that the design matches requirements."
+    ]
+  },
+  {
+    num: 14,
+    text: "What is Unit Testing?",
+    options: [
+      "Testing of individual modules",
+      "Testing of the entire system",
+      "Testing after the integration of two modules",
+      "Testing of user interface"
+    ],
+    correct: 0,
+    explanations: [
+      "✅ Testing of individual modules — Unit testing focuses on small individual components or modules.",
+      "❌ Testing of the entire system — That is system testing, not unit testing.",
+      "❌ Testing after the integration of two modules — That is closer to integration testing.",
+      "❌ Testing of user interface — That is not the standard definition of unit testing."
+    ]
+  },
+  {
+    num: 15,
+    text: "Is the following statement True or False?\nThe 1968 NATO conference was started to address only the issue of defining the field of software engineering.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ True — This is incorrect.",
+      "✅ False — The 1968 NATO conference was started not only to address the issue of defining software engineering, but also the issue of the software crisis."
+    ]
+  },
+  {
+    num: 16,
+    text: "Software Engineering involves which of the following? Select all that apply.",
+    options: ["Multi-person development", "Multiple-version programs", "None of the above"],
+    correct: [0, 1],
+    explanations: [
+      "✅ Multi-person development — Software engineering is typically team-based.",
+      "✅ Multiple-version programs — Software engineering usually deals with evolving software across versions and releases.",
+      "❌ None of the above — Incorrect, because the first two choices both apply."
+    ]
+  },
+  {
+    num: 17,
+    text: "Pick the INCORRECT statement from the following.",
+    options: [
+      "Software engineering involves a Multi-Person development process",
+      "Information hiding eases future extension of a program",
+      "Programming involves multiple versions of a program",
+      "Software engineering and programming are two different concepts"
+    ],
+    correct: 2,
+    explanations: [
+      "❌ Software engineering involves a Multi-Person development process — This is true.",
+      "❌ Information hiding eases future extension of a program — This is true.",
+      "✅ Programming involves multiple versions of a program — This is the incorrect statement. Software engineering is the broader discipline focused on evolving, multi-version systems.",
+      "❌ Software engineering and programming are two different concepts — This is true."
+    ]
+  },
+  {
+    num: 18,
+    text: "Is the following statement True or False?\nA good programmer always makes a good software engineer.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ True — This is incorrect.",
+      "✅ False — Software engineering also requires teamwork, communication, process awareness, and other skills beyond programming alone."
+    ]
+  },
+  {
+    num: 19,
+    text: "Which of the following properties define Software? Select all that apply.",
+    options: ["Malleable", "Complex", "Constant", "None of the above"],
+    correct: [0, 1],
+    explanations: [
+      "✅ Malleable — Software can be modified and reshaped relatively easily.",
+      "✅ Complex — Software systems are often highly complex.",
+      "❌ Constant — Software changes over time; it is not usually constant.",
+      "❌ None of the above — Incorrect, because both Malleable and Complex apply."
+    ]
+  },
+  {
+    num: 20,
+    text: "Software systems vary in which of the following aspects? Select the best answer.",
+    options: ["Cost", "Size", "Requirements Stability", "All of the above"],
+    correct: 3,
+    explanations: [
+      "❌ Cost — Software systems do vary in cost, but this is not the full answer.",
+      "❌ Size — Software systems do vary in size, but this is not the full answer.",
+      "❌ Requirements Stability — Software systems do vary in how stable their requirements are, but this is not the full answer.",
+      "✅ All of the above — Cost, size, and requirements stability all vary across software systems."
+    ]
+  },
+  {
+    num: 21,
+    text: "What does interactiveness in a software system indicate?",
+    options: ["Interaction of components within the software", "Interaction of humans with software", "All of the above", "None of the above"],
+    correct: 1,
+    explanations: [
+      "❌ Interaction of components within the software — This is not what this question is targeting.",
+      "✅ Interaction of humans with software — Interactiveness refers to how humans interact with the software system.",
+      "❌ All of the above — The source marks human interaction as the intended answer.",
+      "❌ None of the above — Incorrect."
+    ]
+  },
+  {
+    num: 22,
+    text: "Is the following statement True or False?\nSoftware is only used in the information technology industry.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ True — This is incorrect.",
+      "✅ False — Software is used in many industries, not just the information technology industry."
+    ]
+  },
+  {
+    num: 23,
+    text: "Which of the following belong/belongs to major stakeholders in a software project? Select the best answer.",
+    options: ["Users", "Customers", "Developers", "All of the above"],
+    correct: 3,
+    explanations: [
+      "❌ Users — Users are stakeholders, but this is not the complete answer.",
+      "❌ Customers — Customers are stakeholders, but this is not the complete answer.",
+      "❌ Developers — Developers are stakeholders, but this is not the complete answer.",
+      "✅ All of the above — Users, customers, and developers are all major stakeholders in a software project."
+    ]
+  },
+  {
+    num: 24,
+    text: "John is responsible to support Product A after the development of the product. Is John a stakeholder in the project?",
+    options: ["Yes", "No"],
+    correct: 0,
+    explanations: [
+      "✅ Yes — A person responsible for supporting the product after development is a stakeholder.",
+      "❌ No — This is incorrect."
+    ]
+  },
+  {
+    num: 25,
+    text: "Which of the following are components of the trinity of a software project?",
+    options: [
+      "Software System, Code, Users",
+      "Software System, Software Users, Software Development Process",
+      "Requirements, Development, Evaluation",
+      "None of the above"
+    ],
+    correct: 1,
+    explanations: [
+      "❌ Software System, Code, Users — This is not the trinity definition used here.",
+      "✅ Software System, Software Users, Software Development Process — These are the three components of the trinity of a software project.",
+      "❌ Requirements, Development, Evaluation — This is incorrect.",
+      "❌ None of the above — Incorrect."
+    ]
+  },
+  {
+    num: 26,
+    text: "Is the following statement True or False?\nUsers are different from customers.",
+    options: ["True", "False"],
+    correct: 0,
+    explanations: [
+      "✅ True — Users and customers can be different people or groups.",
+      "❌ False — This is incorrect."
+    ]
+  },
+  {
+    num: 27,
+    text: "Anna is responsible for continuously testing Product A during the development process. Which of the following roles most closely fits Anna's responsibilities?",
+    options: ["Evaluator", "Tester", "Requirements engineer", "None of the above"],
+    correct: 1,
+    explanations: [
+      "❌ Evaluator — Not the best answer here.",
+      "✅ Tester — Continuously testing the product during development most closely matches the tester role.",
+      "❌ Requirements engineer — This focuses on requirements, not ongoing testing.",
+      "❌ None of the above — Incorrect."
+    ]
+  },
+  {
+    num: 28,
+    text: "Is the following statement True or False?\nSoftware is large but usually constant.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ True — This is incorrect.",
+      "✅ False — Software may be large, but it is not usually constant; it evolves over time."
+    ]
+  },
+  {
+    num: 29,
+    text: "Is the following statement True or False?\nRequirements for a software system in the real world are usually ambiguous and evolving.",
+    options: ["True", "False"],
+    correct: 0,
+    explanations: [
+      "✅ True — Real-world requirements are often incomplete, ambiguous, and changing.",
+      "❌ False — This is incorrect."
+    ]
+  },
+  {
+    num: 30,
+    text: "Which of the following attributes make a good software engineer?",
+    options: ["Good programmer", "Good team player", "Open minded personality", "All of the above"],
+    correct: 3,
+    explanations: [
+      "❌ Good programmer — Important, but not the full answer.",
+      "❌ Good team player — Important, but not the full answer.",
+      "❌ Open minded personality — Important, but not the full answer.",
+      "✅ All of the above — A good software engineer benefits from all of these attributes."
     ]
   }
 ];

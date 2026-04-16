@@ -109,6 +109,34 @@ code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--t
   .qz-header{padding-right:0;}
   .qz-panel-toolbar{position:static;margin-bottom:14px;}
 }
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -396,7 +424,37 @@ var CH11_RAW_QUESTIONS = [
   { q: '[Extra] The "Condense" step in problem reproduction involves:', opts: ['Adding more reproduction steps','Removing unnecessary words to make each statement as brief as possible','Generalizing the conditions','Isolating to a specific OS'], ans: 1, exp: 'Condense: shorten each statement to the minimum needed — "Saving file before changing font prevents bug" is more concise.' },
   { q: '[Extra] Health score for a line = 0% means:', opts: ['All tests covering this line pass','No tests cover this line','All tests covering this line fail — highest suspicion','Half pass and half fail'], ans: 2, exp: '0% health = every test that executes this line fails — this is the most suspicious line for containing the fault.' },
   { q: '[Extra] In Design by Contract, who is responsible for satisfying a precondition?', opts: ['The method being called','The caller of the method','The test framework','The compiler'], ans: 1, exp: 'Preconditions are the caller\'s responsibility — the method assumes they hold. If the caller violates them, behavior is undefined.' },
-  { q: '[Extra] True or False: Delta debugging is only needed when both halves of a binary search fail.', opts: ['True','False'], ans: 1, exp: 'Delta debugging is needed when both halves PASS (binary search gets stuck). If one half fails, binary search continues.' }
+  { q: '[Extra] True or False: Delta debugging is only needed when both halves of a binary search fail.', opts: ['True','False'], ans: 1, exp: 'Delta debugging is needed when both halves PASS (binary search gets stuck). If one half fails, binary search continues.' },
+{ q: '[Practice] Developer A tries to determine the fault by following an error propagation chain. Which activity best describes this during fault localization?', opts: ['Tracing', 'Cause elimination', 'Backtracking', 'None of the above'], ans: 2, exp: 'Following the error propagation chain backward from the failure to the cause is backtracking.' },
+  { q: '[Practice] Developer B watches execution by inserting breakpoints, assertions, and print statements. Which activity best describes this during fault localization?', opts: ['Tracing', 'Backtracking', 'Cause elimination', 'Coverage based localization'], ans: 0, exp: 'Observing execution with breakpoints, assertions, and print statements is tracing.' },
+  { q: '[Practice] Developer C attempts to check every possible cause of the failure. Which activity best describes this during fault localization?', opts: ['Backtracking', 'Cause elimination', 'Tracing', 'None of the above'], ans: 1, exp: 'Systematically ruling out possible causes is cause elimination.' },
+  { q: '[Practice] True or False: Cause elimination requires the person debugging to have expertise about the program and common developer faults.', opts: ['True', 'False'], ans: 0, exp: 'Cause elimination relies on program knowledge and experience with common bug patterns.' },
+  { q: '[Practice] True or False: Assertions in debugging are different from those in testing.', opts: ['True', 'False'], ans: 0, exp: 'Assertions may look similar syntactically, but their role in debugging vs. testing differs.' },
+  { q: '[Practice] Should assertions be a part of production code?', opts: ['Yes', 'No', "Doesn't matter"], ans: 1, exp: 'Assertions are typically disabled in production and should not be relied on for normal runtime behavior.' },
+  { q: '[Practice] Which assertion is the one that needs to be True after a method execution?', opts: ['Precondition', 'Checkpoint', 'Postcondition', 'None of the above'], ans: 2, exp: 'A postcondition is what must hold after the method completes.' },
+  { q: '[Practice] True or False: Invariants are assertions that are always True.', opts: ['True', 'False'], ans: 0, exp: 'Invariants must hold throughout the relevant scope.' },
+  { q: '[Practice] Which of the following have to be True for a loop invariant? (Select all that apply)', opts: ['Before the loop', 'After the loop', 'During the loop'], ans: [0,1,2], exp: 'A proper loop invariant holds before the loop, during every iteration, and after the loop terminates.' },
+  { q: '[Practice] What is the purpose of debugging?', opts: ['Fix failures', 'Find failures', 'Fix faults', 'Find faults'], ans: 2, exp: 'Debugging is about locating and fixing faults, not just observing failures.' },
+  { q: '[Practice] True or False: Debugging has the same purpose as testing.', opts: ['True', 'False'], ans: 1, exp: 'Testing finds failures; debugging locates and fixes faults.' },
+  { q: '[Practice] Which of the following steps is NOT a part of the debugging process?', opts: ['Reproduce', 'Focus', 'Isolate', 'None of the above'], ans: 3, exp: 'All listed steps belong to the debugging process.' },
+  { q: '[Practice] Which information does the problem history section of the bug report include?', opts: ['System specifications', 'Error Output', 'Expected behavior', 'Steps to reproduce the bug'], ans: 3, exp: 'Problem history records how the bug was observed and reproduced.' },
+  { q: '[Practice] True or False: The bug report includes bug ids of duplicated problems.', opts: ['True', 'False'], ans: 0, exp: 'Duplicate IDs are often tracked in bug reports.' },
+  { q: '[Practice] Bugzilla is which of the following?', opts: ['IDE', 'Debugging Tool', 'Bug tracking tool', 'All of the above'], ans: 2, exp: 'Bugzilla is a bug tracking system.' },
+  { q: '[Practice] Which of the following is NOT true about testing and debugging?', opts: ['Both testing and debugging can involve looking at source code', 'Testing finds failures; Debugging finds/corrects faults', 'Testing and debugging always fix the issues they identify.', 'Both testing and debugging improve code quality'], ans: 2, exp: 'Neither activity guarantees that a found issue is immediately fixed.' },
+  { q: '[Practice] True or False: The fact that bugs cannot be reproduced indicates the bugs no longer exist.', opts: ['True', 'False'], ans: 1, exp: 'A bug may still exist even if reproduction is intermittent.' },
+  { q: '[Practice] True or False: Debugging can result in the introduction of new bugs.', opts: ['True', 'False'], ans: 0, exp: 'Changes during debugging can introduce regressions.' },
+  { q: '[Practice] Which of the following is NOT a step in the debugging process?', opts: ['Add the bug report in a tracker', 'Reproduce the bug', 'Trace the origins of the bug', 'Ignore the bug if it is minor', 'Isolate the causes for failure'], ans: 3, exp: 'Ignoring a bug is not a formal debugging step.' },
+  { q: '[Practice] Which of the following is NOT included in a bug report?', opts: ['Environment related information', 'Support contact information', 'Problem history', 'Expected and Experienced behavior'], ans: 1, exp: 'Support contact information is not part of the core bug report fields in this model.' },
+  { q: '[Practice] During tracking/reproducing, the description changed from a specific Arial/font-size case to a broader one that still reproduces. Which step best represents this?', opts: ['Summarization', 'Generalization', 'Reproducing', 'Isolation', 'All of the above'], ans: 1, exp: 'Broadening the conditions while the bug still reproduces is generalization.' },
+  { q: '[Practice] During tracking/reproducing, the description changed from “The problem occurs in Windows XP.” to “The problem occurs in Windows XP ONLY.” Which step best represents this?', opts: ['Isolate', 'Condense', 'Summarize', 'None of the above'], ans: 0, exp: 'Narrowing to a specific environment is isolation.' },
+  { q: '[Practice] Which approach is the MOST efficient to figure out the line of failure in a very large input file?', opts: ['Binary Search', 'Linear Search', 'Delta Debugging', 'None of the above'], ans: 0, exp: 'Binary search minimizes the number of checks by halving the search space.' },
+  { q: '[Practice] Consider the code: x=0; i=2; while i<=5: x=x+i*i; i=i+1. Which is an example of a loop invariant?', opts: ['x = sum of squares of 2..i', 'x = sum of squares of 2..i-1', 'x = sum of squares of 1..i-1', 'x = sum of squares of 1..i'], ans: 1, exp: 'At the loop test, x already holds the sum up through i-1.' },
+  { q: '[Practice] What is the correct description of “Failure” in software engineering?', opts: ['The cause of bugs', 'The symptoms of bugs', 'The products of bugs', 'The bugs'], ans: 1, exp: 'A failure is the observable symptom of a bug.' },
+  { q: '[Practice] Which of the following is the correct description of “Fault” in software engineering?', opts: ['The cause of bugs', 'The symptoms of bugs', 'The products of bugs', 'The bugs'], ans: 0, exp: 'A fault is the underlying cause in the program.' },
+  { q: '[Practice] “Follow and watch the execution of programs to determine the cause of bugs” describes which debugging behavior?', opts: ['Backtracking', 'Cause elimination', 'Tracing', 'Delta Debugging'], ans: 2, exp: 'Following execution to observe behavior is tracing.' },
+  { q: '[Practice] Which of the following is used for tracing technique in debugging?', opts: ['Print debugging', 'Breakpoint debugging', 'Assertion debugging', 'Single step debugging', 'All of above'], ans: 4, exp: 'All listed methods are tracing techniques.' },
+  { q: '[Practice] Backtracking techniques in debugging does NOT involve which of the following?', opts: ['Print debugging', 'Undo code changes', 'Record variable changes', 'Reverse instructions order'], ans: 3, exp: 'Backtracking does not literally reverse the instruction order.' },
+  { q: '[Practice] To pause execution when the program is running for debugging, you should ________.', opts: ['Execute the code by memory address offset', 'Throw an error in the code', 'Trigger an interruption', 'Set a breakpoint'], ans: 3, exp: 'A breakpoint pauses execution at a chosen location.' }
 ];
 
 function ch11Slice(start, end) {
@@ -476,7 +534,7 @@ ch11Mount({
   resetGlobalName: 'resetQuizCh11_11_8'
 });
 ch11Mount({
-  questions: ch11Slice(21, 36),
+  questions: ch11Slice(21, CH11_RAW_QUESTIONS.length),
   containerId: 'questions-ch11-11-sum',
   scoreId: 'score-ch11-11-sum',
   idPrefix: 'ch11m11-sum-',

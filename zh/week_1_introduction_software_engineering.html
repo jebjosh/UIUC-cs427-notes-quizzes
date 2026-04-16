@@ -88,6 +88,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 #tab-mindmap{padding-top:0;}
 .mm-iframe-wrap{margin:0 -8px;width:calc(100% + 16px);height:min(85vh,1100px);min-height:420px;overflow:hidden;border-radius:var(--radius);background:var(--surface2);}
 .mm-iframe{display:block;width:100%;height:100%;border:none;vertical-align:top;background:transparent;}
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link rel="stylesheet" href="../css/study-week-tabs.css?v=20260416">
 <script src="../js/study-week-common.js?v=20260416"></script>

@@ -21,6 +21,10 @@
       '.qz-explanation.qz-explanation-wrong .qz-expl-title{color:var(--blue,#2d5fa6)!important;}',
       '.qz-explanation .qz-expl-list{margin:0!important;padding:0 0 0 1.35rem!important;}',
       '.qz-explanation .qz-expl-list li{padding:4px 0 4px 0.35rem!important;}',
+      '.qz-opt.qz-opt-selected{outline:2px solid var(--blue,#2d5fa6)!important;background:var(--blue-light,#ebf1fb)!important;color:var(--blue,#2d5fa6)!important;}',
+      '.qz-submit{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid var(--border2,#d4d1ca);background:var(--surface,#fff);cursor:pointer;font:inherit;font-weight:600;}',
+      '.qz-submit:hover{background:var(--surface2,#f4f3f0);}',
+      '.qz-submit:disabled{opacity:.6;cursor:not-allowed;}',
     ].join('');
     document.head.appendChild(style);
   }
@@ -131,12 +135,24 @@
 
     var answered = [];
     var correctCount = 0;
+    var selectedMulti = [];
+
+    function isMultiQuestion(q) {
+      return Array.isArray(q.correct);
+    }
+
+    function getCorrectSet(q) {
+      return new Set(isMultiQuestion(q) ? q.correct : [q.correct]);
+    }
 
     function optElId(qIdx, oi) {
       return idPrefix + 'opt-' + qIdx + '-' + oi;
     }
     function explElId(qIdx) {
       return idPrefix + 'expl-' + qIdx;
+    }
+    function submitElId(qIdx) {
+      return idPrefix + 'submit-' + qIdx;
     }
 
     function updateScore() {
@@ -151,10 +167,61 @@
       }
     }
 
-    function selectOption(qIdx, optIdx) {
+    function setsEqual(a, b) {
+      if (a.size !== b.size) return false;
+      for (var value of a) {
+        if (!b.has(value)) return false;
+      }
+      return true;
+    }
+
+    function finalizeMultiQuestion(qIdx) {
       if (answered[qIdx]) return;
       answered[qIdx] = true;
       var q = questions[qIdx];
+      var selected = new Set(selectedMulti[qIdx] || []);
+      var correctSet = getCorrectSet(q);
+      var isCorrect = setsEqual(selected, correctSet);
+      if (isCorrect) correctCount++;
+      q.options.forEach(function (_, oi) {
+        var btn = document.getElementById(optElId(qIdx, oi));
+        if (!btn) return;
+        btn.disabled = true;
+        var isSelected = selected.has(oi);
+        var isRight = correctSet.has(oi);
+        if (isSelected && isRight) btn.className = 'qz-opt-correct';
+        else if (isSelected && !isRight) btn.className = 'qz-opt-wrong';
+        else if (!isSelected && isRight) btn.className = 'qz-opt-reveal';
+        else btn.className = 'qz-opt-neutral';
+      });
+      var submitBtn = document.getElementById(submitElId(qIdx));
+      if (submitBtn) submitBtn.disabled = true;
+      var explEl = document.getElementById(explElId(qIdx));
+      if (explEl) {
+        explEl.style.display = 'block';
+        explEl.classList.toggle('qz-explanation-correct', isCorrect);
+        explEl.classList.toggle('qz-explanation-wrong', !isCorrect);
+      }
+      updateScore();
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (answered[qIdx]) return;
+      var q = questions[qIdx];
+      if (isMultiQuestion(q)) {
+        if (!selectedMulti[qIdx]) selectedMulti[qIdx] = [];
+        var selected = selectedMulti[qIdx];
+        var pos = selected.indexOf(optIdx);
+        if (pos >= 0) selected.splice(pos, 1);
+        else selected.push(optIdx);
+        q.options.forEach(function (_, oi) {
+          var btn = document.getElementById(optElId(qIdx, oi));
+          if (!btn) return;
+          btn.className = selected.indexOf(oi) >= 0 ? 'qz-opt qz-opt-selected' : 'qz-opt';
+        });
+        return;
+      }
+      answered[qIdx] = true;
       var isCorrect = optIdx === q.correct;
       if (isCorrect) correctCount++;
       q.options.forEach(function (_, oi) {
@@ -181,6 +248,7 @@
       if (!container) return;
       container.innerHTML = '';
       answered = new Array(questions.length).fill(false);
+      selectedMulti = new Array(questions.length).fill(null).map(function(){ return []; });
       correctCount = 0;
 
       questions.forEach(function (q, idx) {
@@ -201,6 +269,9 @@
             );
           })
           .join('');
+        if (isMultiQuestion(q)) {
+          optsHTML += '<button type="button" class="qz-submit" id="' + submitElId(idx) + '" data-q="' + idx + '">Submit answer</button>';
+        }
         var explInner = renderExplanation(q, idx, escapeHtml);
         var explBlock = explInner
           ? '<div class="qz-explanation" id="' +
@@ -233,6 +304,12 @@
     var containerEl = document.getElementById(containerId);
     if (containerEl) {
       containerEl.addEventListener('click', function (e) {
+        var submitBtn = e.target.closest('.qz-submit');
+        if (submitBtn && !submitBtn.disabled) {
+          var submitQIdx = parseInt(submitBtn.getAttribute('data-q'), 10);
+          finalizeMultiQuestion(submitQIdx);
+          return;
+        }
         var btn = e.target.closest('.qz-opt');
         if (!btn || btn.disabled) return;
         var qIdx = parseInt(btn.getAttribute('data-q'), 10);

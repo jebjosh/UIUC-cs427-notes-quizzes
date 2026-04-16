@@ -89,6 +89,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 .blue-box .note-label{color:var(--blue);}
 .red-box .note-label{color:var(--red);}
 code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--tag-bg);padding:1px 6px;border-radius:3px;color:var(--text);}
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -294,7 +322,7 @@ code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--t
 <h2 class="qz-heading">Week 8 — quiz</h2>
 <div class="qz-actions">
 <button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
-<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 16</span></div>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 90</span></div>
 </div>
 </div>
 <div id="questions-container"></div>
@@ -335,6 +363,169 @@ const rawQuestions = [
   { q: "ArgumentsAccessor is used in parameterized tests to:", opts: ["Validate argument types at compile time","Access multiple CSV columns by index and convert to typed values","Generate random test inputs","Replace @MethodSource"], ans: 1, exp: "ArgumentsAccessor gives you arguments.getString(0), arguments.get(2, Gender.class), etc. for multi-column CSV." },
   { q: "assumingThat(condition, executable) — if condition is false:", opts: ["Test FAILS","Test is ABORTED","The executable runs anyway","An exception is thrown"], ans: 1, exp: "If the condition is false, the executable is skipped — but the test CONTINUES (unlike assumeTrue which aborts)." },
   { q: "True or False: Two conventional tests CT1 (push elem=1) and CT2 (push elem=30) are redundant with respect to each other after test generalization.", opts: ["True","False"], ans: 0, exp: "After generalization, both map to the same PT1(int elem, Stack stk) — CT2 covers the same partition and is redundant." }
+,
+
+  // Added Week 8 batch
+  { q: "What is test-driven development (TDD)?", opts: ["Software testers perform the development", "The code is implemented first and then tests are written", "The tests are written before the implementation", "Write code without unit tests"], ans: 2, exp: "In TDD, tests are written before implementation." },
+  { q: "Which of the following assert functions checks that an object isn't null?", opts: ["void assert(Object object, boolean toCheckAsNull)", "void assertCheck(Object object, boolean toCheckAsNull)", "void assertNotNull(Object object)", "void assertChecks(Object object, boolean toCheckAsNull)"], ans: 2, exp: "assertNotNull(object) verifies the reference is not null." },
+  { q: "Which of the following is the purpose of JUnit Test?", opts: ["To check whether the behaviors of the previous versions are preserved during software evolution", "To provide a short feedback loop, because unit tests excise small portions of the code, one at the time", "To provide clear and useful documentation that enables developers or other users of the system to better understand its behavior and how it operates in different scenarios.", "All"], ans: 3, exp: "All listed choices are recognized purposes/benefits of JUnit tests." },
+  { q: "How do you ensure that a test is readable?", opts: ["A. Describing the intentions of the unit test", "B. Delete duplicated or redundant tests", "C. Neither A nor B", "D. Both A and B"], ans: 3, exp: "Readable tests describe intent and avoid duplication." },
+  { q: "How can we determine the quality of the unit tests?", opts: ["A. Code coverage: all parts of the program under test are exercised by the unit tests", "B. Reflect the expected behaviors of the code", "C. Neither A nor B", "D. Both A and B"], ans: 3, exp: "Quality depends on both coverage and reflection of expected behavior." },
+  { q: "Which of the following is a JUnit feature?", opts: ["Assertion", "Assumption", "Annotation", "All of above"], ans: 3, exp: "Assertion, assumption, and annotation are all JUnit features." },
+  { q: "True or False: Annotating a public void method with @BeforeEach causes that method to be run before each test method.", opts: ["True", "False"], ans: 0, exp: "@BeforeEach methods run before each test." },
+  { q: "True or False: A test method annotated with @Ignore will not be executed.", opts: ["True", "False"], ans: 0, exp: "Ignored tests are skipped." },
+  { q: "True or False: We use @DisplayName to specify a custom name that is easy to read and provides information about the annotated test class or method.", opts: ["True", "False"], ans: 0, exp: "@DisplayName provides a custom readable name." },
+  { q: "True or False: A big test is better than several small tests.", opts: ["True", "False"], ans: 1, exp: "Several small focused tests are generally preferable." },
+  { q: "Which of the following is a valid method signature in JUnit API?", opts: ["static void assertEquals(byte expected, byte actual, double delta)", "static void assertEquals(double expected, double actual, double delta)", "static void assertEquals(double expected, double actual)"], ans: 1, exp: "The valid floating-point overload includes expected, actual, and delta for doubles." },
+  { q: "True or False: If the equal method doesn’t get overwritten, assertSame and assertEquals work in the same way.", opts: ["True", "False"], ans: 0, exp: "Without overriding equals, assertEquals behaves like reference equality." },
+  { q: "True or False: assertSame asserts that the expected and actual objects refer to the same object.", opts: ["True", "False"], ans: 0, exp: "assertSame checks object identity." },
+  { q: "True or False: assertAll won’t continue checks if one of the assertions does not pass.", opts: ["True", "False"], ans: 1, exp: "assertAll continues and reports all grouped failures together." },
+  { q: "True or False: assertThrows asserts that execution of the supplied executable throws an exception of the expectedType and returns the exception.", opts: ["True", "False"], ans: 0, exp: "assertThrows verifies and returns the thrown exception." },
+  { q: "`assumingThat` method has two arguments, they should be ordered by:", opts: ["The first one as Boolean assumption, second one being Executable", "The first one as Executable, second one being Boolean assumption"], ans: 0, exp: "assumingThat takes the boolean condition first and the executable second." },
+  { q: "True or False: In JUnit 5, if the condition passed to 'assumingThat' evaluates to false, only the code inside the 'assumingThat' block is skipped, while the rest of the test method continues to execute.", opts: ["True", "False"], ans: 0, exp: "assumingThat skips only its block and the rest of the test continues." },
+  { q: "Will “1” get printed?", code: `@Test
+void test() {
+    assumingThat(
+        false,
+        () -> { System.out.print("1"); }
+    );
+
+    System.out.print("2");
+}`, opts: ["Yes", "No"], ans: 1, exp: "The executable block is skipped because the condition is false." },
+  { q: "Will “2” get printed?", code: `@Test
+void test() {
+    assumingThat(
+        false,
+        () -> { System.out.print("1"); }
+    );
+
+    System.out.print("2");
+}`, opts: ["Yes", "No"], ans: 0, exp: "Code after assumingThat still executes." },
+  { q: "What are Parameterized tests used for in JUnit?", opts: ["Run a test many times with different sets of parameters", "Run a test with no parameters", "Run a test with only String parameters", "Run a test once with fixed set of parameters"], ans: 0, exp: "Parameterized tests rerun the same test with different parameters." },
+  { q: "Which annotation must a parameterized test class carry?", opts: ["@Test", "@ParameterisedClass", "@ParameterizedTest", "@Class"], ans: 2, exp: "Parameterized test methods use @ParameterizedTest." },
+  { q: "Which annotation allows you to supply a simple array of literal values (e.g., int, String, double) directly to a parameterized test?", opts: ["@CsvSource", "@EnumSource", "@ValueSource", "@ArgumentsSource"], ans: 2, exp: "@ValueSource provides simple literal values directly." },
+  { q: "True or False: If we want only specific values from the Enum, we can do that using @EnumSource name parameter.", opts: ["True", "False"], ans: 0, exp: "@EnumSource can select specific enum names." },
+  { q: "True or False: We can use @MethodSource to specify a factory method for test arguments. The factory method should be static.", opts: ["True", "False"], ans: 0, exp: "The factory method is typically static for @MethodSource." },
+  { q: "True or False: To support the @csvSource, JUnit provides conversions to convert String to target types.", opts: ["True", "False"], ans: 0, exp: "JUnit supports conversion from CSV/String input to target types." },
+  { q: "Which of the following types can be converted by implicit conversion?", opts: ["Float", "Short", "Enum subclass", "All"], ans: 3, exp: "All listed types can be supported via implicit conversion." },
+  { q: "What type of conversion does it use?", code: `@ParameterizedTest
+@ValueSource(strings = "42 Cats")
+void testWithImplicitFallbackArgumentConversion(Student s) {
+    assertEquals("Jane", student.getName());
+}`, opts: ["Implicit Conversion", "Explicit Conversion"], ans: 0, exp: "This example is categorized as implicit conversion." },
+  { q: "True or False: Explicit conversion should be used with @ConvertWith.", opts: ["True", "False"], ans: 0, exp: "Custom explicit conversion uses @ConvertWith." },
+  { q: "True or False: We can use @AggregateWith to specify a custom aggregator.", opts: ["True", "False"], ans: 0, exp: "@AggregateWith wires a custom aggregator." },
+  { q: "True or False: One can use an automatic test generation tool to construct a small test suite with high coverage.", opts: ["True", "False"], ans: 0, exp: "Automatic generation tools can build compact high-coverage suites." },
+  { q: "Which of the following refers to line4 \"assumeTrue(stk != null);\" ?", code: `@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack<Integer> stk) {
+    assumeTrue(stk != null);
+    int oldSize = stk.size();
+    stk.push(elem);
+    assertEquals(oldSize + 1, stk.size());
+}`, opts: ["Assume", "Arrange", "Act", "Assert"], ans: 0, exp: "The precondition check is the Assume step." },
+  { q: "Which of the following refers to line6?", code: `@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack<Integer> stk) {
+    assumeTrue(stk != null);
+    int oldSize = stk.size();
+    stk.push(elem);
+    assertEquals(oldSize + 1, stk.size());
+}`, opts: ["Assume", "Arrange", "Act", "Assert"], ans: 2, exp: "The push operation is the Act step." },
+  { q: "Which of the following does NOT belong to the Property-First Guideline?", opts: ["Classify methods", "Pairwise-combine methods to formulate properties", "Formulate properties specific to each feasible combination of observers' returns as assumptions", "Add proper assumptions to make the properties"], ans: 2, exp: "That option is not one of the Property-First Guideline steps." },
+  { q: "Which of the following is NOT a test generalization step?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Classify methods"], ans: 3, exp: "Classify methods is not a test generalization step." },
+  { q: "Which step does promoting all primitive values as arguments refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 0, exp: "Promoting primitive constants into parameters is Parameterize." },
+  { q: "Which step does replacing constant values in assertions with some generalized expressions refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 1, exp: "Generalizing concrete expected values is Generalize test oracle." },
+  { q: "Which step does adding assumptions to prevent illegal values for the parameters refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 2, exp: "Adding preconditions is the Add assumptions step." },
+  { q: "Which step does generalizing further across multiple tests refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 3, exp: "Further generalizing across tests is Cross test generalize." },
+  { q: "True or False: A reason that a big test is worse than several small tests is that the later assertions won't be executed if the preceding assertion fails.", opts: ["True", "False"], ans: 0, exp: "A failing earlier assertion in a big test can prevent later assertions from running." },
+  { q: "Which of the following is a valid JUnit API method signature?", opts: ["static void assertEquals(char expected, char actual, double delta)", "static void assertEquals(double expected, double actual, double delta)", "static void assertEquals(long expected, long actual, double delta)"], ans: 1, exp: "The valid signature here is the floating-point overload for doubles." },
+  { q: "Which of the following is correct about JUnit?", opts: ["It provides test runners to run tests", "JUnit tests can be run automatically and they check their own test results and provide immediate feedback of failing or passing", "Both A and B", "Neither A nor B"], ans: 2, exp: "Both statements are correct." },
+  { q: "True or False: Testing can be used in the process of checking the functionalities of a software application to whether it is working correctly as per its functional requirements.", opts: ["True", "False"], ans: 0, exp: "Testing checks whether functionality meets requirements." },
+  { q: "True or False: Annotating a public void method with @AfterEach causes that method to be run before each test method (i.e., a method annotated with @Test).", opts: ["True", "False"], ans: 1, exp: "@AfterEach runs after each test, not before." },
+  { q: "What will be the results of the above two assertions after the two test methods are run?", code: `public class A {
+    private int i;
+    public A(int i) { this.i = i; }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) { return true; }
+        else if (o == null) { return false; }
+        else if (getClass() != o.getClass()) { return false; }
+        else {
+            final A a = (A) o;
+            if (this.i == a.i)
+                return true;
+            else
+                return Objects.equals(a, a);
+        }
+    }
+}
+
+public class TestA {
+    final A a1 = new A(0);
+    final A a2 = new A(0);
+
+    @Test
+    public void assertsame_tTestAssertSame(){
+        assertSame(a1, a2);
+    }
+
+    @Test
+    public void assertsame_tTestAssertEquals(){
+        assertEquals(a1, a2);
+    }
+}`, opts: ["Pass, Pass", "Pass, Fail", "Fail, Pass", "Fail, Fail"], ans: 2, exp: "assertSame fails because the references differ, while assertEquals passes because equals compares state." },
+  { q: "True or False: The above two unit tests have exactly the same effect at runtime.", code: `public void shouldTellIfPrime(){
+    Assertions.assertAll(
+        () -> assertTrue(isPrime(2)),
+        () -> assertFalse(isPrime(4))
+    );
+}
+
+public void shouldTellIfPrime(){
+    Assertions.assertTrue(isPrime(2));
+    Assertions.assertFalse(isPrime(4));
+}`, opts: ["True", "False"], ans: 1, exp: "assertAll continues grouping checks; sequential asserts stop at the first failure." },
+  { q: "Will the line annotated with comment of \"line*\" get executed in a Windows operating system?", code: `public class ExampleUnitTest {
+    @Test
+    public void addition_isCorrect() throws Exception {
+        Assume.assumeFalse(System.getProperty("os.name").contains("Windows"));
+        assertEquals(4, 2 + 2);    // line*
+    }
+}`, opts: ["Yes", "No"], ans: 1, exp: "On Windows the assumption fails, so line* is skipped." },
+  { q: "If a test method is a parameterized test, then the method should use the tag of ________ to provide arguments for each invocation of the parameterized test, that is, to specify the source of its arguments.", opts: ["@Test", "@ValueSource", "@ParameterizedTest", "@Class"], ans: 1, exp: "@ValueSource is the source annotation used here." },
+  { q: "True or False: We can pass CSV values to test methods. We can specify the delimiter for multiple arguments in the test method.", opts: ["True", "False"], ans: 0, exp: "CSV-based sources allow multiple arguments and delimiters." },
+  { q: "True or False: We can use @MethodSource to specify a parameterized factory method. Then the return type of this factory method can be Stream, Iterator, Iterable, or array of element sets.", opts: ["True", "False"], ans: 0, exp: "Those are accepted return types for @MethodSource." },
+  { q: "What type of conversion does it use?", code: `@ParameterizedTest
+@ValueSource(strings={"1, 2", "1, 2, 3"})
+void testWithArrayOfStrings(@ConvertWith(CSVtoArray.class) String... arg) {
+    // some code
+}
+
+public static class CSVtoArray extends SimpleArgumentConverter {
+    @Override
+    protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {
+        String s = (String) source;
+        return s.split("\s*,\s*");
+    }
+}`, opts: ["Implicit Conversion", "Explicit Conversion"], ans: 1, exp: "Using @ConvertWith and a custom converter is explicit conversion." },
+  { q: "Which of the followings refers to the line annotated with comment \"line1\"?", code: `@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack<Integer> stk) {
+    assumeTrue(stk != null);   // line1
+    int oldSize = stk.size();
+    stk.push(elem);
+    assertEquals(oldSize + 1, stk.size());
+}`, opts: ["Assume", "Arrange", "Act", "Assert"], ans: 0, exp: "The line is the Assume step." },
+  { q: "We specifically listed, formulated, and tested all possible returns of observers. What guideline is this?", opts: ["Assumption first guideline", "Property first guideline"], ans: 1, exp: "That wording refers to the Property first guideline." },
+  { q: "Which test generalization step has non-primitive objects as arguments?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 0, exp: "Non-primitive objects as arguments are introduced in Parameterize." },
+  { q: "Which test generalization step uses AssumeTrue or AssumeFalse?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 2, exp: "AssumeTrue/AssumeFalse belong to Add assumptions." },
+  { q: "Which of the following is NOT a purpose of testing?", opts: ["To improve code quality", "To spot code faults", "To document code", "To guarantee code is fully correct"], ans: 3, exp: "Testing cannot guarantee a program is fully correct." },
+  { q: "Which of the following do NOT belong to the types of test activities?", opts: ["Test Design", "Test Automation", "Test Implementation", "Test Evaluation"], ans: 2, exp: "Test implementation is not one of the four named test activities here." },
+  { q: "Which of the following test activities embeds test values into executable scripts?", opts: ["Test Design", "Test Automation", "Test Implementation", "Test Execution"], ans: 1, exp: "Test automation turns test values into executable scripts." },
+  { q: "Which of the following statements about testing activities is correct?", opts: ["Designing tests requires relatively little knowledge about the domain and programs.", "In order to embed test values into executable scripts, one needs to understand the theory very well.", "It is always efficient to assign the same person for all testing activities.", "Test automation is useful to have but could also be boring to construct."], ans: 3, exp: "The final statement is the correct one." },
+  { q: "Which of the following statements about test cases is correct?", opts: ["Test cases cannot be used as documents as they are considered as two very different categories.", "Only developers can construct test case for their programs.", "The process of developing test cases can also help developers to understand the requirements."], ans: 2, exp: "Developing test cases can help clarify and understand requirements." }
 ];
 
 // Shuffle helper

@@ -15,3 +15,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
   .study-nav-group-label,.study-nav-sub{padding:8px!important;}
   #study-frame{min-height:70vh;}
 }
+
+
+@media (max-width:700px){
+  .index-main{min-height:auto;}
+  #study-frame{min-height:65vh;}
+}

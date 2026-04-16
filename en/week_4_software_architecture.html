@@ -119,6 +119,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
   vertical-align:top;
   background:transparent;
 }
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -424,7 +452,7 @@ Separate teams owning compiler front end vs. back end — matching org splits to
 <h2 class="qz-heading">Week 4 — quiz</h2>
 <div class="qz-actions">
 <button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
-<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 10</span></div>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 37</span></div>
 </div>
 </div>
 <div id="questions-container"></div>
@@ -444,7 +472,34 @@ var rawQuestions = [
   { q: "A chart, a pie chart, and a bar chart can show the same information from the database, due to which feature of MVC?", opts: ["Ability to provide multiple views", "Support for asynchronous technique", "The modification not affecting the entire model"], ans: 0, expl: ["Ability to provide multiple views — Correct. Same model, multiple views.", "Asynchronous technique — Incorrect. Not the defining reason.", "Modification not affecting entire model — Incorrect. Describes isolation, not multiple visualizations."] },
   { q: "Which of the statement about software modularity is NOT correct with respect to benefits of software modularity?", opts: ["Modules are robust", "A module can use other modules", "Modules can be separately compiled and stored in a library", "Modules are mostly dependent"], ans: 3, expl: ["Robust — correct benefit.", "A module can use other modules — correct benefit.", "Separately compiled in a library — correct benefit.", "Mostly dependent — NOT correct; modules should be mostly independent."] },
   { q: "Which of the following is the worst type of module cohesion among the following options?", opts: ["Logical Cohesion", "Temporal Cohesion", "Functional Cohesion", "Coincidental Cohesion"], ans: 3, expl: ["Logical — not the worst.", "Temporal — not the worst.", "Functional — best cohesion, not worst.", "Coincidental Cohesion — worst; no meaningful relationship between grouped functions."] }
-];
+,
+  {q:  "What is the role of software design?", opts:  ["Exposing certain properties of the software system before implementation", "Helping developers reason about the capability of the software system to satisfy certain requirements", "Acting as a design for software system construction", "All of them"], ans:  3, expl:  ["Exposing properties before implementation — correct.", "Helping developers reason about requirements satisfaction — correct.", "Acting as a blueprint for construction — correct.", "All of them — Correct. Software design serves all of these roles."]},
+  {q:  "Which of the following is NOT an aspect of software architecture?", opts:  ["The structure of the system", "The interactions among components within the system", "A component's internal details that are unrelated to its interactions with other components", "Design decisions about the system"], ans:  2, expl:  ["The structure of the system — architecture covers this.", "Interactions among components — architecture covers this.", "Internal details unrelated to interactions — Correct. Those are implementation details, not architectural aspects.", "Design decisions about the system — architecture includes major design decisions."]},
+  {q:  "Which of the following is wrong?", opts:  ["A prescriptive architecture refers to the architecture defined before the system is constructed", "A descriptive architecture refers to the architecture as it exists after the system is built", "When there is a conflict between the prescriptive architecture and the descriptive architecture, we should always modify the descriptive architecture only", "Either the prescriptive architecture or the descriptive architecture can evolve over time"], ans:  2, expl:  ["Prescriptive architecture = as-designed before construction — correct.", "Descriptive architecture = as-built / as-implemented — correct.", "Always modify the descriptive architecture only — Correct as the wrong statement. In practice either may need to change.", "Either one can evolve over time — correct."]},
+  {q:  "Which of the following is NOT a benefit of software architecture?", opts:  ["Allowing developers to have a better understanding of the essential part of the system", "Making your software scalable", "Better code maintainability", "All of the above are benefits"], ans:  3, expl:  ["Better understanding — a real benefit.", "Scalability — architecture strongly influences this.", "Maintainability — architecture supports this.", "All of the above are benefits — Correct, so this is NOT a missing benefit."]},
+  {q:  "What is NOT true about a qualified software architect?", opts:  ["Have expertise in design and pick the best option among design options", "Be a master in system development", "Be able to complete all work independently"], ans:  2, expl:  ["Design expertise — true for a software architect.", "Being strong in system development — true.", "Be able to complete all work independently — Correct as the NOT true statement. Architecture is collaborative."]},
+  {q:  "What is the best way for a good software architect to allocate percentage of time on internal focus, inwards activities, and outwards activities?", opts:  ["20%, 40%, 40%", "70%, 10%, 20%", "50%, 25%, 25%", "50%, 40%, 10%"], ans:  2, expl:  ["20, 40, 40 — incorrect.", "70, 10, 20 — incorrect.", "50, 25, 25 — Correct.", "50, 40, 10 — incorrect."]},
+  {q:  "True or False: There will always be a serious problem if a software architect allocates very little time to work directly on the software architecture.", opts:  ["True", "False"], ans:  1, expl:  ["True — Incorrect.", "False — Correct. It is not automatically a serious problem in every situation."]},
+  {q:  "Which of the following is NOT an example of abstraction?", opts:  ["Ignoring specific details", "Generalizing common properties", "Focusing on individual instances"], ans:  2, expl:  ["Ignoring specific details — this is abstraction.", "Generalizing common properties — this is abstraction.", "Focusing on individual instances — Correct. Abstraction moves away from individual instances."]},
+  {q:  "True or False: There are NO undesirable side effects on runtime performance when introducing abstraction in software design.", opts:  ["True", "False"], ans:  1, expl:  ["True — Incorrect.", "False — Correct. Abstraction can introduce overhead and affect runtime performance."]},
+  {q:  "True or False: A file descriptor serves as an abstraction when it is used to inform the kernel which file to access, instead of using the file's actual name.", opts:  ["True", "False"], ans:  0, expl:  ["True — Correct. A file descriptor abstracts the underlying file identity/details.", "False — Incorrect."]},
+  {q:  "Making a Python class object is ________.", opts:  ["Control abstraction", "Data abstraction", "Procedural abstraction"], ans:  1, expl:  ["Control abstraction — incorrect.", "Data abstraction — Correct. A class packages state and behavior into an abstract data type.", "Procedural abstraction — incorrect."]},
+  {q:  "Measuring the degree to which one module depends on others refers to the degree of ______.", opts:  ["Cohesion", "Coupling"], ans:  1, expl:  ["Cohesion — measures how strongly elements within a module belong together.", "Coupling — Correct. Coupling measures interdependence between modules."]},
+  {q:  "If functions in a module can receive different kinds of inputs but produce the same output, then this module exhibits ______.", opts:  ["Coincidental cohesion", "Communicational cohesion", "Logical cohesion", "Temporal cohesion"], ans:  1, expl:  ["Coincidental cohesion — incorrect.", "Communicational cohesion — Correct.", "Logical cohesion — incorrect here.", "Temporal cohesion — incorrect."]},
+  {q:  "According to Conway's Law, when assigning team members to a group working on the same module, it's better to:", opts:  ["Assign team members from the same geo location", "Assign team members randomly"], ans:  0, expl:  ["Assign team members from the same geo location — Correct. Communication structure influences system structure.", "Assign team members randomly — incorrect."]},
+  {q:  "True or False: Refactoring is a good way to achieve high modularity.", opts:  ["True", "False"], ans:  0, expl:  ["True — Correct. Refactoring can improve modularity without changing external behavior.", "False — Incorrect."]},
+  {q:  "Which of the following is NOT a component of a compiler's software architecture?", opts:  ["Front end component", "Modular component", "Middle-end component", "Back end component"], ans:  1, expl:  ["Front end component — real compiler architecture component.", "Modular component — Correct. This is too generic and not one of the standard compiler parts here.", "Middle-end component — real compiler architecture component.", "Back end component — real compiler architecture component."]},
+  {q:  "The backend component does NOT pass machine code to which of the following?", opts:  ["ARM", "Sparc", "PowerPC", "Ada"], ans:  3, expl:  ["ARM — target architecture.", "Sparc — target architecture.", "PowerPC — target architecture.", "Ada — Correct. Ada is a programming language, not a machine-code target here."]},
+  {q:  "If a part in a software system can provide a specific functional feature, then it is a ____.", opts:  ["component", "connector"], ans:  0, expl:  ["component — Correct. Components provide functionality.", "connector — incorrect. Connectors mediate interaction between components."]},
+  {q:  "A procedure call is a ________.", opts:  ["component", "connector"], ans:  1, expl:  ["component — incorrect.", "connector — Correct. A procedure call is a mechanism for interaction between components."]},
+  {q:  "In the client-server style, which of the following is NOT true about the server?", opts:  ["Dealing with requests from clients", "Knowing the identity of each client", "Using the same protocol with the client for communication"], ans:  1, expl:  ["Dealing with requests from clients — true.", "Knowing the identity of each client — Correct as the NOT true statement.", "Using the same protocol for communication — true."]},
+  {q:  "SVN primarily uses the ________ architectural style.", opts:  ["layered/tiered style", "client-server style", "pipe and filter style"], ans:  1, expl:  ["Layered/tiered style — incorrect.", "Client-server style — Correct.", "Pipe and filter style — incorrect."]},
+  {q:  "If a software architecture separates its functionalities into multiple tiers, then it follows the ________.", opts:  ["layered/tiered style", "client-server style", "pipe and filter style"], ans:  0, expl:  ["Layered/tiered style — Correct.", "Client-server style — incorrect.", "Pipe and filter style — incorrect."]},
+  {q:  "In the model-view-controller (MVC) architecture, the model component defines the ______.", opts:  ["Data access layer", "Presentation layer", "Business logic layer", "Interface layer"], ans:  0, expl:  ["Data access layer — Correct.", "Presentation layer — view.", "Business logic layer — not the selected answer in this quiz.", "Interface layer — view/controller side."]},
+  {q:  "The component in MVC for sending out state queries is named ________.", opts:  ["model", "view", "controller"], ans:  1, expl:  ["model — incorrect.", "view — Correct.", "controller — incorrect."]},
+  {q:  "When a client hits the button on GUI to request information from a database, what mode is that?", opts:  ["Pull", "Push"], ans:  0, expl:  ["Pull — Correct. The client explicitly requests the information.", "Push — incorrect."]},
+  {q:  "Adding a new controller class can benefit from MVC in what way?", opts:  ["Ability to provide multiple views", "Support for asynchronous technique", "Modification not affecting the entire model"], ans:  2, expl:  ["Ability to provide multiple views — not the intended benefit here.", "Support for asynchronous technique — not the intended answer here.", "Modification not affecting the entire model — Correct. MVC helps isolate changes."]},
+  {q:  "True or False: Compared to an architecture style, an architecture pattern is typically more general.", opts:  ["True", "False"], ans:  1, expl:  ["True — Incorrect.", "False — Correct."]}];
 
 var questions = rawQuestions.map(function (rq, idx) {
   return { num: idx + 1, text: rq.q, options: rq.opts, correct: rq.ans, expItems: rq.expl };

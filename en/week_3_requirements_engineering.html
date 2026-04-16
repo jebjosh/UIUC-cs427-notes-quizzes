@@ -97,6 +97,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 .summary-cell .sc-label{font-family:'Source Code Pro',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px;}
 .summary-cell .sc-label-warn{color:var(--red);}
 .summary-cell .sc-val{font-size:0.87rem;font-weight:600;color:var(--text);line-height:1.4;}
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -587,7 +615,7 @@ var questions = [
   {
     num: 8,
     text: "Refer to the schedule below. What is the maximum number of tasks that are in progress on the same day at any time?",
-    figureSrc: "assets/quiz2-q8-gantt.png",
+    figureSrc: "../assets/quiz2-q8-gantt.png",
     options: ["1", "2", "3", "4"],
     correct: 2,
     explanations: [
@@ -600,7 +628,7 @@ var questions = [
   {
     num: 9,
     text: "Refer to the directed graph below. Each edge weight is an execution time. What is the total latency of the critical path from A to E?",
-    figureSrc: "assets/quiz2-q9-graph.png",
+    figureSrc: "../assets/quiz2-q9-graph.png",
     options: ["16", "18", "21", "24"],
     correct: 2,
     explanations: [
@@ -711,7 +739,341 @@ var questions = [
       "❌ Poor structuring — Poor structuring refers to requirements that are written in a confusing or disorganized way. This sentence is clearly structured, just unmeasurable.",
       "❌ Inadequacy — Inadequacy refers to missing or incomplete requirements. The flaw here is not incompleteness but the lack of a measurable criterion."
     ]
-  }
+  },
+{
+  num: 16,
+  text: "Which of the following options are/is an example of target quality factors of requirements? Select all that apply.",
+  options: [
+    "Completeness",
+    "Consistency",
+    "Feasibility",
+    "Measurability",
+    "Opacity"
+  ],
+  correct: [
+    0,
+    1,
+    2,
+    3
+  ],
+  explanations: [
+    "✅ Completeness — Completeness is a core target quality factor: the requirement set should cover all necessary behavior and constraints.",
+    "✅ Consistency — Consistency is a target quality factor because requirements should not conflict with one another.",
+    "✅ Feasibility — Feasibility is a target quality factor: requirements should be realistic and achievable within constraints.",
+    "✅ Measurability — Measurability is a target quality factor because requirements should be testable and verifiable.",
+    "❌ Opacity — Opacity is not a target quality factor; good requirements should be clear rather than opaque."
+  ]
+},
+{
+  num: 17,
+  text: "\"All doors should be opened as soon as the train is stopped at the terminal\". The requirement above, also mentioned in the lecture video, shows which of the following common flaws in requirement?",
+  options: [
+    "Ambiguity",
+    "Unmeasurability",
+    "Contradiction",
+    "Poor structuring"
+  ],
+  correct: 0,
+  explanations: [
+    "✅ Ambiguity — \"as soon as\" is vague and can be interpreted differently, so the requirement is ambiguous.",
+    "❌ Unmeasurability — The bigger issue here is ambiguity in wording, not a missing metric alone.",
+    "❌ Contradiction — The statement does not directly conflict with another requirement here.",
+    "❌ Poor structuring — The sentence is structurally readable; the main flaw is ambiguity."
+  ]
+},
+{
+  num: 18,
+  text: "\"The login page shall be user-friendly.\" The requirement above, also mentioned in the lecture video, shows which of the following common flaws in a requirement?",
+  options: [
+    "Unmeasurability",
+    "Contradiction",
+    "Inadequacy",
+    "Poor structuring"
+  ],
+  correct: 0,
+  explanations: [
+    "✅ Unmeasurability — \"user-friendly\" is subjective and not directly testable without a measurable criterion.",
+    "❌ Contradiction — There is no conflicting statement shown here.",
+    "❌ Inadequacy — The key problem is not missing scope but lack of measurable wording.",
+    "❌ Poor structuring — The sentence is simple; the real flaw is that it cannot be objectively verified."
+  ]
+},
+{
+  num: 19,
+  text: "Is the following statement true or false? Requirements describe software engineers' need in order to build the desired system, e.g. what software engineering tools they need for development.",
+  options: [
+    "False",
+    "True"
+  ],
+  correct: 0,
+  explanations: [
+    "✅ False — Requirements are about expressing stakeholders' needs to achieve goals in the problem domain, not about what tools software engineers need.",
+    "❌ True — This confuses requirements with implementation or development-process needs."
+  ]
+},
+{
+  num: 20,
+  text: "In the following options, which are/is among the reasons to write requirements according to the lecture video? Select all that apply.",
+  options: [
+    "Testers could test the software developed against the requirements.",
+    "Managers could use requirements to allocate resources and manage the development",
+    "Developers could implement the system according to requirements"
+  ],
+  correct: [
+    0,
+    1,
+    2
+  ],
+  explanations: [
+    "✅ Testers could test the software developed against the requirements. — Requirements are used as a basis for validation and acceptance testing.",
+    "✅ Managers could use requirements to allocate resources and manage the development — Requirements support planning, coordination, and management decisions.",
+    "✅ Developers could implement the system according to requirements — Requirements guide what the system should do during implementation."
+  ]
+},
+{
+  num: 21,
+  text: "When writing mandatory requirements for a rocket project, you wrote \"The main engine control unit ______ stop once the aircraft returns to the earth atmosphere.\"",
+  options: [
+    "shall",
+    "will",
+    "should"
+  ],
+  correct: 0,
+  explanations: [
+    "✅ shall — \"Shall\" is the standard wording for a mandatory requirement.",
+    "❌ will — \"Will\" describes future behavior or expectation, not a formal mandatory requirement.",
+    "❌ should — \"Should\" indicates recommendation, not obligation."
+  ]
+},
+{
+  num: 22,
+  text: "Which are/is a purpose of requirements specification? Select all that apply.",
+  options: [
+    "Serve as communication media among the stakeholders",
+    "Evaluate whether the developed system satisfies the requirements",
+    "Serve as contracts that can be legally binding between the customers and the project teams"
+  ],
+  correct: [
+    0,
+    1,
+    2
+  ],
+  explanations: [
+    "✅ Serve as communication media among the stakeholders — Specifications provide a common reference point for stakeholders.",
+    "✅ Evaluate whether the developed system satisfies the requirements — They are used to validate whether the final system meets expectations.",
+    "✅ Serve as contracts that can be legally binding between the customers and the project teams — In some settings, requirements documents serve contractual purposes."
+  ]
+},
+{
+  num: 23,
+  text: "Which of the following can be used as notations for requirement specifications? Select all that apply.",
+  options: [
+    "Data flow diagram",
+    "UML",
+    "Finite state machine",
+    "User stories",
+    "Pseudocode"
+  ],
+  correct: [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  explanations: [
+    "✅ Data flow diagram — A valid notation for modeling flows of data in the problem domain or system.",
+    "✅ UML — UML is widely used for requirement-related modeling.",
+    "✅ Finite state machine — FSMs can be used to specify state-based behavior requirements.",
+    "✅ User stories — User stories are common lightweight requirement-specification notations in agile contexts.",
+    "✅ Pseudocode — Pseudocode can be used to describe requirement logic in a structured way."
+  ]
+},
+{
+  num: 24,
+  text: "Which of the following statements is correct?",
+  options: [
+    "A \"system-as-is\" is a set of interacting components in the problem world to satisfy some global objectives.",
+    "A \"system-as-is\" describes the system as it should be when the machine will be built and operated in it.",
+    "A \"system-as-is\" describes the system as it exists before the machine is built into it."
+  ],
+  correct: 2,
+  explanations: [
+    "❌ A \"system-as-is\" is a set of interacting components in the problem world to satisfy some global objectives. — That describes the broader problem world/system concept, not specifically the as-is view.",
+    "❌ A \"system-as-is\" describes the system as it should be when the machine will be built and operated in it. — That refers more to a future/to-be perspective.",
+    "✅ A \"system-as-is\" describes the system as it exists before the machine is built into it. — This is the current-state view used before introducing the software solution."
+  ]
+},
+{
+  num: 25,
+  text: "Which of the following options could we investigate in \"system-as-is\"? Select all that apply.",
+  options: [
+    "What problems are in the \"system-as-is\"?",
+    "What opportunities are in the \"system-as-is\"?",
+    "What domain knowledge is in the \"system-as-is\"?"
+  ],
+  correct: [
+    0,
+    1,
+    2
+  ],
+  explanations: [
+    "✅ What problems are in the \"system-as-is\"? — Current pain points are a major reason to analyze the as-is system.",
+    "✅ What opportunities are in the \"system-as-is\"? — Improvement opportunities are also investigated.",
+    "✅ What domain knowledge is in the \"system-as-is\"? — Domain knowledge is captured from the existing environment and process."
+  ]
+},
+{
+  num: 26,
+  text: "Which of the following are/is an example of elicitation techniques? Select all that apply.",
+  options: [
+    "Questionnaires, surveys, and interviews.",
+    "Brainstorming and focus group.",
+    "Early feedback gathering from stakeholders.",
+    "Protocol analysis and card sorting."
+  ],
+  correct: [
+    0,
+    1,
+    2,
+    3
+  ],
+  explanations: [
+    "✅ Questionnaires, surveys, and interviews. — Standard elicitation techniques.",
+    "✅ Brainstorming and focus group. — Common group-based elicitation techniques.",
+    "✅ Early feedback gathering from stakeholders. — Early feedback is part of elicitation and refinement.",
+    "✅ Protocol analysis and card sorting. — Both are recognized elicitation techniques."
+  ]
+},
+{
+  num: 27,
+  text: "Which of the following statements are/is an example of key information to be elicited? Select all that apply.",
+  options: [
+    "Who are the individuals or organizations that stand to gain or lose from the success or failure of a system?",
+    "What might prevent us from solving the problem?",
+    "What problem needs to be solved?"
+  ],
+  correct: [
+    0,
+    1,
+    2
+  ],
+  explanations: [
+    "✅ Who are the individuals or organizations that stand to gain or lose from the success or failure of a system? — This identifies stakeholders.",
+    "✅ What might prevent us from solving the problem? — Constraints and risks are key elicitation targets.",
+    "✅ What problem needs to be solved? — Clarifying the real problem is fundamental to elicitation."
+  ]
+},
+{
+  num: 28,
+  text: "Which of the following statements is true about requirements elicitation?",
+  options: [
+    "It is about discovering stakeholder expectations and adjusting the expectations",
+    "It is about guiding the developers to produce correct products according to the requirements",
+    "It is about making sure that the stakeholders understand how the project's functionalities are implemented.",
+    "It is about making sure that the tasks given by the product manager are correct"
+  ],
+  correct: 0,
+  explanations: [
+    "✅ It is about discovering stakeholder expectations and adjusting the expectations — This best matches the purpose of requirements elicitation.",
+    "❌ It is about guiding the developers to produce correct products according to the requirements — That is more about implementation and verification than elicitation.",
+    "❌ It is about making sure that the stakeholders understand how the project's functionalities are implemented. — Elicitation focuses on needs, not implementation details.",
+    "❌ It is about making sure that the tasks given by the product manager are correct — Too narrow and not the core meaning of elicitation."
+  ]
+},
+{
+  num: 29,
+  text: "Which of the following statements is not true about Actors?",
+  options: [
+    "Actors are part of the system and interact with the system.",
+    "Actors can both provide inputs and receive outputs from the system.",
+    "Actors can receive outputs from the system.",
+    "Actors can provide inputs to the system."
+  ],
+  correct: 0,
+  explanations: [
+    "✅ Actors are part of the system and interact with the system. — This is not true; actors are outside the system boundary.",
+    "❌ Actors can both provide inputs and receive outputs from the system. — True.",
+    "❌ Actors can receive outputs from the system. — True.",
+    "❌ Actors can provide inputs to the system. — True."
+  ]
+},
+{
+  num: 30,
+  text: "Which of the following statements is not true about Use Case?",
+  options: [
+    "A use case describes a sequence of events that happen when the system responds to an action.",
+    "The description of a use case needs to be a major piece of functionalities being complete from the beginning to end.",
+    "The description of a use case needs to be easy to read, short but still tell a story.",
+    "A use case can deliver no value for any of the actors."
+  ],
+  correct: 3,
+  explanations: [
+    "❌ A use case describes a sequence of events that happen when the system responds to an action. — True.",
+    "❌ The description of a use case needs to be a major piece of functionalities being complete from the beginning to end. — True.",
+    "❌ The description of a use case needs to be easy to read, short but still tell a story. — True.",
+    "✅ A use case can deliver no value for any of the actors. — Not true; a meaningful use case should provide value to at least one actor."
+  ]
+},
+{
+  num: 31,
+  text: "Which of the following Use Cases are/is used for helping decide design scope? Select all that apply.",
+  options: [
+    "Casual use cases",
+    "Fully dressed use cases",
+    "Actor-goal list",
+    "Use case brief"
+  ],
+  correct: [
+    2,
+    3
+  ],
+  explanations: [
+    "❌ Casual use cases — Useful for narrative detail, but not the primary scoping choice here.",
+    "❌ Fully dressed use cases — Too detailed for initial scope decisions.",
+    "✅ Actor-goal list — A high-level scoping aid.",
+    "✅ Use case brief — Also useful for helping determine design scope at an early level."
+  ]
+},
+{
+  num: 32,
+  text: "Which statement about the Actor-goal list is NOT correct?",
+  options: [
+    "A goal can be on different levels at the same time.",
+    "A primary actor shall always have a goal.",
+    "We must pick the right level for goals.",
+    "We can sort goals based on the priority to the designer of the system."
+  ],
+  correct: 0,
+  explanations: [
+    "✅ A goal can be on different levels at the same time. — Not correct in this framing; goals should be stated at an intentional and appropriate level for analysis.",
+    "❌ A primary actor shall always have a goal. — This is correct.",
+    "❌ We must pick the right level for goals. — Also correct.",
+    "❌ We can sort goals based on the priority to the designer of the system. — This is acceptable in the provided quiz framing."
+  ]
+},
+{
+  num: 33,
+  text: "Which of the following statements is correct for Casual and Fully Dressed use cases? Select all that apply.",
+  options: [
+    "Casual use cases consist of normal paragraphs but fully dressed use cases have labeled sections.",
+    "Casual and fully dressed use cases emphasize \"main success scenarios\".",
+    "Casual and fully dressed use cases are used to tell developers what to build.",
+    "Casual and fully dressed use cases should also include how to deal with failures."
+  ],
+  correct: [
+    0,
+    1,
+    2,
+    3
+  ],
+  explanations: [
+    "✅ Casual use cases consist of normal paragraphs but fully dressed use cases have labeled sections. — Correct structural distinction.",
+    "✅ Casual and fully dressed use cases emphasize \"main success scenarios\". — Correct.",
+    "✅ Casual and fully dressed use cases are used to tell developers what to build. — Correct: they communicate required behavior, not detailed implementation technique.",
+    "✅ Casual and fully dressed use cases should also include how to deal with failures. — Correct: alternative and failure flows matter."
+  ]
+}
 ];
 </script>
 <script src="../js/quiz-pane.js?v=20260416"></script>

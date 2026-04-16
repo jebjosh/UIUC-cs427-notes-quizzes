@@ -87,6 +87,34 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 .green-box .note-label{color:var(--accent);font-family:'Source Code Pro',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
 .blue-box{background:var(--blue-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
 .blue-box .note-label{color:var(--blue);font-family:'Source Code Pro',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+
+/* responsive-phone-patch */
+@media (max-width:700px){
+  .pane{padding:16px 12px 28px;overflow:visible;}
+  header{margin-bottom:16px;}
+  header h1{font-size:1.2rem;line-height:1.25;}
+  .tab-nav{flex-wrap:nowrap;overflow-x:auto;gap:0;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 12px;font-size:0.8rem;}
+  .card{padding:18px 16px;margin-bottom:12px;}
+  .card-title{font-size:0.98rem;margin-bottom:10px;}
+  .card-body,.blist li,td,.summary-cell .sc-val{font-size:0.92rem;line-height:1.55;}
+  .keywords{gap:5px;margin-bottom:12px;}
+  .kw{font-size:0.7rem;padding:4px 8px;}
+  .tbl-wrap{margin:0 -4px 12px;}
+  table{min-width:560px;font-size:0.82rem;}
+  th,td{padding:8px 10px;}
+  .summary-grid{grid-template-columns:1fr;gap:8px;}
+  .mm-iframe-wrap{height:min(62vh,700px);min-height:340px;margin:0;width:100%;}
+}
+@media (max-width:420px){
+  .pane{padding:14px 10px 24px;}
+  header h1{font-size:1.1rem;}
+  .tab-btn{padding:8px 10px;font-size:0.77rem;}
+  .card{padding:16px 14px;}
+  .kw{font-size:0.68rem;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -274,7 +302,7 @@ On the critical path, slack is 0. Activities off that path can have positive sla
 <h2 class="qz-heading">Week 2 — quiz</h2>
 <div class="qz-actions">
 <button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
-<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 15</span></div>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 47</span></div>
 </div>
 </div>
 <div id="questions-container"></div>
@@ -482,6 +510,379 @@ const questions = [
       "❌ Sequential pair programming typically increases total man-hours."
     ]
   }
+  ,
+  {
+    num: 16,
+    text: "What is risk exposure?",
+    options: ["Expected value of loss", "Maximum loss possible", "Cost of the project", "Probability of the loss"],
+    correct: 0,
+    explanations: [
+      "✅ Risk exposure is the expected value of loss, typically probability × impact.",
+      "❌ Maximum loss possible is just the worst-case impact, not the exposure.",
+      "❌ Project cost is not the definition of risk exposure.",
+      "❌ Probability alone is only part of the formula."
+    ]
+  },
+  {
+    num: 17,
+    text: "True or False: Risk management reduces the loss of risk items after the loss happens.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ Risk management aims to anticipate, avoid, reduce, or prepare for risks before they cause damage.",
+      "✅ Correct — risk management is mainly proactive rather than something that only acts after loss happens."
+    ]
+  },
+  {
+    num: 18,
+    text: "Which of the following are strategies of risk planning? Select all that apply.",
+    options: ["Information Buying", "Contingency Plans", "Risk Reduction", "Risk Acceptance", "Risk Avoidance"],
+    correct: [0,1,2,3],
+    explanations: [
+      "✅ Information buying reduces uncertainty by gathering more knowledge.",
+      "✅ Contingency plans prepare fallback actions if a risk occurs.",
+      "✅ Risk reduction lowers the probability or impact of a risk.",
+      "✅ Risk acceptance means consciously choosing to tolerate a risk.",
+      "❌ Risk avoidance is commonly treated as a mitigation response, but it was not marked as correct in this quiz set."
+    ]
+  },
+  {
+    num: 19,
+    text: "Which of the following are actions to mitigate risks of changing requirements? Select all that apply.",
+    options: ["Iterative development", "On-site customer", "Detailed documentations", "Pair programming"],
+    correct: [0,1],
+    explanations: [
+      "✅ Iterative development helps teams adapt to requirement changes over time.",
+      "✅ An on-site customer gives fast clarification and feedback when requirements evolve.",
+      "❌ Detailed documentation alone does not mitigate changing requirements effectively.",
+      "❌ Pair programming is valuable, but it is not specifically aimed at requirement volatility."
+    ]
+  },
+  {
+    num: 20,
+    text: "Which of the following is not part of project management?",
+    options: ["Project initiation", "Project planning", "Project monitoring and control", "Requirements solicitation"],
+    correct: 3,
+    explanations: [
+      "❌ Project initiation is part of project management.",
+      "❌ Project planning is part of project management.",
+      "❌ Project monitoring and control is part of project management.",
+      "✅ Requirements solicitation belongs to requirements work, not project management."
+    ]
+  },
+  {
+    num: 21,
+    text: "Which of the following belongs to post-development activities? Select all that apply.",
+    options: ["Installation", "Maintenance", "Retirement", "Operation and support"],
+    correct: [0,1,2,3],
+    explanations: [
+      "✅ Installation is a post-development activity.",
+      "✅ Maintenance is a post-development activity.",
+      "✅ Retirement is a post-development activity.",
+      "✅ Operation and support is a post-development activity."
+    ]
+  },
+  {
+    num: 22,
+    text: "In which activity group is software requirements defined?",
+    options: ["Development", "Pre-development", "Project management", "Support"],
+    correct: 0,
+    explanations: [
+      "✅ Requirements definition is grouped under development activities in this course framing.",
+      "❌ Pre-development is not the selected answer in this quiz set.",
+      "❌ Project management is not where requirements are defined here.",
+      "❌ Support activities happen later in the lifecycle."
+    ]
+  },
+  {
+    num: 23,
+    text: "Which of the following is an Agile process?",
+    options: ["eXtreme programming", "Waterfall", "RUP", "Bazaar"],
+    correct: 0,
+    explanations: [
+      "✅ eXtreme Programming (XP) is an Agile process.",
+      "❌ Waterfall is plan-driven, not Agile.",
+      "❌ RUP is iterative but not the selected Agile answer here.",
+      "❌ Bazaar is not the intended answer in this context."
+    ]
+  },
+  {
+    num: 24,
+    text: "True or False: In a waterfall process, one should move to the next phase only when its preceding phase is reviewed and verified.",
+    options: ["True", "False"],
+    correct: 0,
+    explanations: [
+      "✅ Correct — Waterfall expects phase completion and review before moving on.",
+      "❌ False does not match the waterfall model's sequential nature."
+    ]
+  },
+  {
+    num: 25,
+    text: "True or False: Unit testing is part of Integration phase in the modified waterfall process.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ Unit testing is not part of the integration phase.",
+      "✅ Correct — unit testing happens before integration testing."
+    ]
+  },
+  {
+    num: 26,
+    text: "Which of the following process model is a risk-driven one?",
+    options: ["Waterfall", "Spiral", "RUP"],
+    correct: 1,
+    explanations: [
+      "❌ Waterfall is sequential, not risk-driven.",
+      "✅ Spiral is the classic risk-driven process model.",
+      "❌ RUP is iterative, but Spiral is the risk-driven answer here."
+    ]
+  },
+  {
+    num: 27,
+    text: "When is the initial version built in RUP?",
+    options: ["Inception", "Elaboration", "Construction", "Transition"],
+    correct: 1,
+    explanations: [
+      "❌ Inception focuses on scope and feasibility.",
+      "✅ Elaboration builds the initial version / architecture baseline in this quiz framing.",
+      "❌ Construction focuses on further feature development.",
+      "❌ Transition is for deployment and release."
+    ]
+  },
+  {
+    num: 28,
+    text: "Which of the following is not an XP practice?",
+    options: ["Frequently rewriting code without changing behavior", "Pair programming", "Write formal specifications after implementations", "Plan each iteration at the beginning of the iteration"],
+    correct: 2,
+    explanations: [
+      "❌ Refactoring is an XP practice.",
+      "❌ Pair programming is an XP practice.",
+      "✅ Writing formal specifications after implementation is not an XP practice.",
+      "❌ Iteration planning is part of XP."
+    ]
+  },
+  {
+    num: 29,
+    text: "True or False: The more experienced programmer should take the role of driver in pair programming.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ The more experienced person should not always be the driver.",
+      "✅ Correct — roles should be shared and switched."
+    ]
+  },
+  {
+    num: 30,
+    text: "Which of the following are true about pair programming? Select all that apply.",
+    options: ["Pair programming produces higher quality code", "Pair programming costs fewer man-hours to finish a project", "Pair should work on the same computer", "The roles of driver and observer should be periodically switched"],
+    correct: [0,2,3],
+    explanations: [
+      "✅ Pair programming often improves code quality.",
+      "❌ It does not usually reduce total man-hours.",
+      "✅ Pairs typically work together at one computer.",
+      "✅ Driver and observer/navigator roles should be switched periodically."
+    ]
+  },
+  {
+    num: 31,
+    text: "Which of the following is a reason for NOT choosing the Scrum process?",
+    options: ["Product features have high inter-dependencies and are difficult to be split into potentially shippable increments", "Team members have very high skills", "Customers have changing requirements", "Requirement changes are unpredictable"],
+    correct: 0,
+    explanations: [
+      "✅ Scrum works best with incrementally shippable work; heavy interdependencies make that difficult.",
+      "❌ Highly skilled teams often fit Scrum well.",
+      "❌ Changing requirements often support Scrum.",
+      "❌ Unpredictable changes are not the selected reason here."
+    ]
+  },
+  {
+    num: 32,
+    text: "Which of the following are factors to consider when choosing a software process? Select all that apply.",
+    options: ["Size", "Criticality", "Dynamism", "Personnel", "Culture"],
+    correct: [0,1,2,3,4],
+    explanations: [
+      "✅ Size matters when choosing a process.",
+      "✅ Criticality matters when choosing a process.",
+      "✅ Dynamism matters when choosing a process.",
+      "✅ Personnel matters when choosing a process.",
+      "✅ Culture matters when choosing a process."
+    ]
+  },
+  {
+    num: 33,
+    text: "Which process should a startup company developing a new web app for music-composition gamification choose?",
+    options: ["Agile methodology", "Plan-driven methodology"],
+    correct: 0,
+    explanations: [
+      "✅ A startup building a novel web app is a strong fit for Agile.",
+      "❌ Plan-driven methodology is less suitable for this highly dynamic context."
+    ]
+  },
+  {
+    num: 34,
+    text: "Which of the following process is suitable for developing a control module for a nuclear power plant?",
+    options: ["eXtreme programming", "Waterfall", "Scrum"],
+    correct: 1,
+    explanations: [
+      "❌ XP is usually not preferred for highly critical regulated systems.",
+      "✅ Waterfall / plan-driven process is the suitable answer here.",
+      "❌ Scrum is not the preferred answer for this critical context."
+    ]
+  },
+  {
+    num: 35,
+    text: "True or False: Agile development is more tolerant toward a team with mostly novice programmers.",
+    options: ["True", "False"],
+    correct: 1,
+    explanations: [
+      "❌ Agile generally expects stronger self-management and communication skills.",
+      "✅ False — Agile is usually less tolerant of mostly novice teams."
+    ]
+  },
+  {
+    num: 36,
+    text: "Who are the most common writers for user stories?",
+    options: ["Users", "Developers", "Customers"],
+    correct: 2,
+    explanations: [
+      "❌ Users are important stakeholders, but not the selected answer here.",
+      "❌ Developers may refine stories, but they are not the most common writers in this quiz.",
+      "✅ Customers commonly write or provide user stories."
+    ]
+  },
+  {
+    num: 37,
+    text: "Who typically estimates the time for user stories?",
+    options: ["Users", "Developers", "Customers"],
+    correct: 1,
+    explanations: [
+      "❌ Users do not usually estimate implementation effort.",
+      "✅ Developers typically estimate the effort for user stories.",
+      "❌ Customers provide value and priorities, not the implementation estimate."
+    ]
+  },
+  {
+    num: 38,
+    text: "What is a desirable unit used to estimate time/effort of a user story?",
+    options: ["Hour", "Man-hour", "Story point", "Linus"],
+    correct: 2,
+    explanations: [
+      "❌ Hours are less desirable for early Agile estimation.",
+      "❌ Man-hours are not the preferred abstract estimate here.",
+      "✅ Story points are the desirable estimation unit.",
+      "❌ Linus is not an estimation unit."
+    ]
+  },
+  {
+    num: 39,
+    text: "Which of the following are possible ways to estimate story points? Select all that apply.",
+    options: ["Expert opinion", "Analogy", "Planning Poker", "Planning Dice", "Disaggregation"],
+    correct: [0,1,2,4],
+    explanations: [
+      "✅ Expert opinion is a valid approach.",
+      "✅ Analogy is a valid approach.",
+      "✅ Planning Poker is a valid approach.",
+      "❌ Planning Dice is not a standard method here.",
+      "✅ Disaggregation is a valid approach."
+    ]
+  },
+  {
+    num: 40,
+    text: "Which of the following are major reasons to choose a PERT chart over a Gantt chart?",
+    options: ["Need to find a critical path", "Managing tasks while project is happening", "Need to show dependencies", "Project has few dependencies"],
+    correct: 0,
+    explanations: [
+      "✅ PERT is especially useful when you need to identify the critical path.",
+      "❌ Gantt charts are often stronger for ongoing task management.",
+      "❌ Showing dependencies can be done in both, but the quiz marks critical path as the key reason.",
+      "❌ Few dependencies are not a reason to prefer PERT."
+    ]
+  },
+  {
+    num: 41,
+    text: "When is a programming task completed in XP?",
+    options: ["When refactoring completes", "When the task is marked as done on the task board", "When an initial version is written", "When all tests pass"],
+    correct: 3,
+    explanations: [
+      "❌ Refactoring alone does not define task completion.",
+      "❌ A task board mark alone is insufficient.",
+      "❌ An initial version is not enough.",
+      "✅ In XP, a programming task is completed when all tests pass."
+    ]
+  },
+  {
+    num: 42,
+    text: "How do you calculate slack time? (ES = earliest start, LS = latest start, LF = latest finish, CR = critical path length)",
+    options: ["LF - ES", "LS - ES", "LS + ES", "CR - (LS - ES)"],
+    correct: 1,
+    explanations: [
+      "❌ LF - ES is not the slack formula used here.",
+      "✅ Slack time = LS - ES.",
+      "❌ LS + ES is not a slack formula.",
+      "❌ This expression is not the standard slack calculation."
+    ]
+  },
+  {
+    num: 43,
+    text: "What tasks should you give highest priority to optimize?",
+    options: ["Tasks with longest slack", "Tasks with shortest slack", "Tasks on the critical path", "Longest tasks"],
+    correct: 2,
+    explanations: [
+      "❌ Tasks with long slack are less urgent.",
+      "❌ Short slack matters, but the highest priority is the critical path.",
+      "✅ Tasks on the critical path should get the highest optimization priority.",
+      "❌ Longest tasks are not always the right answer."
+    ]
+  },
+  {
+    num: 44,
+    text: "Which of the following is a situation under which using a waterfall model may be undesirable?",
+    options: ["Frequently changing requirements", "Mission critical use case", "Customer with clear objective", "Large development team"],
+    correct: 0,
+    explanations: [
+      "✅ Frequently changing requirements make Waterfall undesirable.",
+      "❌ Mission-critical systems can fit plan-driven methods.",
+      "❌ Clear objectives can fit Waterfall.",
+      "❌ Large development teams are not by themselves a reason Waterfall is undesirable."
+    ]
+  },
+  {
+    num: 45,
+    text: "The Elaboration stage in the Rational Unified Process includes which of the following activities:",
+    options: ["Implement further improvement from initial version", "Implement initial version", "Determining features", "Testing/using the software"],
+    correct: 1,
+    explanations: [
+      "❌ Further improvement is more aligned with later work.",
+      "✅ Implementing the initial version is the marked answer.",
+      "❌ Determining features is earlier.",
+      "❌ Testing/using the software is later."
+    ]
+  },
+  {
+    num: 46,
+    text: "A team of 6 developers has been assigned to develop a web application to monitor statuses of the used 3rd party services with frequently changing requirements and low risk. Which software development models best suits the purpose?",
+    options: ["Waterfall Model", "Spiral Model", "Scrum Model", "Chaos Model"],
+    correct: 2,
+    explanations: [
+      "❌ Waterfall is a poor fit for frequent changes.",
+      "❌ Spiral is too heavyweight for this low-risk project.",
+      "✅ Scrum Model best fits a small team with changing requirements in a low-risk context.",
+      "❌ Chaos Model is not the intended methodology."
+    ]
+  },
+  {
+    num: 47,
+    text: "Extreme Programming (XP) has which of the following advantages?",
+    options: ["Comprehensive documentation is prepared throughout the process.", "The customers are closely engaged throughout the process, not just only the beginning.", "All features are released at once", "The resulting software has high fault tolerance."],
+    correct: 1,
+    explanations: [
+      "❌ XP does not emphasize comprehensive documentation.",
+      "✅ XP keeps customers closely engaged throughout the process.",
+      "❌ XP releases incrementally, not all at once.",
+      "❌ High fault tolerance is not a guaranteed direct advantage of XP."
+    ]
+  }
+
 ];
 </script>
 <script src="../js/quiz-pane.js?v=20260416"></script>

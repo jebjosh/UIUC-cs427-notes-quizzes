@@ -11,9 +11,19 @@ Static study site for **CS 427: Software Engineering** (UIUC)—weekly notes wit
 
 ## Run locally
 
-No build step. Open `index.html` in your browser (double-click the file or drag it into a tab).
+There is no build step. Use the no-cache dev server from the repo root:
 
-If anything fails under `file://` in your environment, run a static server from the repo root instead, e.g. `python3 -m http.server 8080`, then visit `http://localhost:8080/index.html`.
+```bash
+python dev_server.py
+```
+
+Then open `http://localhost:5799/index.html`.
+
+Why this is recommended:
+- disables caching during development so HTML/CSS/JS changes show up immediately
+- avoids the stale-page behavior you can get with `python -m http.server`
+
+If the browser still shows old content, do a hard refresh with `Ctrl + Shift + R`, or keep DevTools open and enable **Disable cache** in the Network tab.
 
 ## Project layout
 

@@ -51,6 +51,10 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .qz-options{display:flex;flex-direction:column;gap:6px;}
 .qz-opt{font-family:'Source Sans 3',sans-serif;font-size:0.88rem;padding:9px 13px;border:none;border-radius:4px;background:var(--surface2);color:var(--text);cursor:pointer;text-align:left;line-height:1.45;}
 .qz-opt:hover:not([disabled]){background:var(--accent-light);color:var(--accent);}
+.qz-opt.qz-opt-selected{outline:2px solid var(--blue);background:var(--blue-light);color:var(--blue);}
+.qz-submit{margin-top:10px;padding:10px 14px;border:none;border-radius:8px;background:var(--surface2);color:var(--text);font:inherit;font-weight:600;cursor:pointer;align-self:flex-start;}
+.qz-submit:hover:not([disabled]){background:var(--tag-bg);}
+.qz-submit:disabled{opacity:.65;cursor:default;}
 .qz-opt[disabled]{cursor:default;}
 .qz-opt-correct{background:var(--correct-bg)!important;color:var(--correct-text)!important;font-weight:600;border:none;border-radius:4px;padding:9px 13px;text-align:left;line-height:1.45;cursor:default;}
 .qz-opt-wrong{background:var(--wrong-bg)!important;color:var(--wrong-text)!important;border:none;border-radius:4px;padding:9px 13px;text-align:left;line-height:1.45;cursor:default;}
@@ -61,6 +65,68 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .progress-bar{height:4px;background:var(--surface2);border-radius:2px;margin-bottom:24px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s ease;}
 .empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:0.9rem;}
+
+.multi-hint{margin:0 0 10px 0;font-size:0.8rem;color:var(--blue);font-weight:600;}
+.timer-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.timer-controls input{width:84px;font-family:'Source Sans 3',sans-serif;font-size:0.85rem;padding:6px 10px;border:none;border-radius:4px;background:var(--surface2);color:var(--text);}
+.floating-controls{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:10px;z-index:1000;}
+.fab-btn{width:48px;height:48px;border:none;border-radius:999px;background:var(--accent);color:#fff;font-family:'Source Code Pro',monospace;font-size:0.82rem;font-weight:600;box-shadow:0 10px 24px rgba(0,0,0,0.14);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fab-btn:hover{opacity:.9;transform:translateY(-1px);}
+.fab-btn:active{transform:translateY(0);}
+.floating-hud{position:fixed;left:16px;bottom:16px;display:flex;flex-direction:column;gap:10px;z-index:999;}
+.hud-pill{min-width:140px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);box-shadow:0 10px 24px rgba(0,0,0,0.10);font-family:'Source Code Pro',monospace;font-size:0.8rem;color:var(--text);}
+.hud-pill strong{color:var(--accent);}
+.q-card.is-next-target{outline:2px solid var(--blue);scroll-margin-top:96px;}
+@media (max-width: 900px){
+  .exam-shell{padding:22px 16px 100px;}
+  .exam-toolbar{position:sticky;top:0;z-index:20;border:1px solid var(--border);padding:14px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);}
+}
+@media (max-width: 720px){
+  .exam-shell{padding:18px 12px 120px;}
+  .exam-header h1{font-size:1.35rem;}
+  .exam-header p,.q-text,.qz-opt,.qz-explanation{font-size:0.95rem;}
+  .q-card{padding:18px 16px;}
+  .score-bar{width:100%;margin-left:0;justify-content:flex-start;}
+  .timer-controls{width:100%;}
+  .timer-controls input{width:72px;}
+  .floating-controls{right:10px;bottom:12px;gap:8px;}
+  .fab-btn{width:42px;height:42px;font-size:0.74rem;}
+  .floating-hud{left:10px;bottom:12px;gap:8px;}
+  .hud-pill{min-width:112px;padding:8px 10px;font-size:0.72rem;}
+}
+
+
+/* responsive-final-phone-patch */
+@media (max-width:700px){
+  .exam-shell{padding:18px 10px 96px;}
+  .exam-header{margin-bottom:18px;}
+  .exam-header h1{font-size:1.3rem;line-height:1.25;}
+  .exam-header p{font-size:0.92rem;line-height:1.55;}
+  .exam-toolbar{position:sticky;top:0;z-index:40;padding:12px 10px;gap:8px;margin-bottom:16px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);}
+  .exam-toolbar label{font-size:0.8rem;}
+  .exam-toolbar select,.btn-primary,.btn-secondary{min-height:40px;}
+  .btn-primary,.btn-secondary{padding:9px 12px;font-size:0.76rem;}
+  .score-bar{width:100%;margin-left:0;justify-content:space-between;}
+  .week-filter{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none;}
+  .week-filter::-webkit-scrollbar{display:none;}
+  .wf-btn{padding:8px 10px;font-size:0.72rem;white-space:nowrap;}
+  .q-card{padding:18px 14px;margin-bottom:12px;scroll-margin-top:110px;}
+  .q-text{font-size:0.95rem;line-height:1.55;}
+  .qz-opt,.qz-opt-correct,.qz-opt-wrong,.qz-opt-reveal,.qz-opt-neutral{font-size:0.9rem;padding:11px 12px;}
+  .q-code{padding:10px 12px;}
+  .q-code code{font-size:0.74rem;line-height:1.45;}
+  #floating-controls{right:10px;bottom:10px;gap:6px;}
+  #floating-controls button{width:44px;height:44px;font-size:0.9rem;}
+  #floating-hud{left:10px;right:10px;top:auto;bottom:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  #floating-hud .hud-box{min-width:0;padding:9px 10px;}
+}
+@media (max-width:420px){
+  .exam-shell{padding:16px 8px 100px;}
+  .exam-header h1{font-size:1.18rem;}
+  .exam-toolbar{padding:10px 8px;}
+  .q-card{padding:16px 12px;}
+}
+
 </style>
 <link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
 <script src="../js/study-week-common.js?v=20260416"></script>
@@ -83,6 +149,10 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
       <option value="50">50</option>
       <option value="all">All</option>
     </select>
+    <div class="timer-controls">
+      <label for="timer-minutes">Timer (min, 0 = unlimited):</label>
+      <input id="timer-minutes" min="0" step="1" type="number" value="0"/>
+    </div>
     <button class="btn-primary" id="btn-start" onclick="startExam()">🔀 Shuffle &amp; Start</button>
     <button class="btn-secondary" onclick="resetExam()">Reset</button>
     <div class="score-bar">Score: <span class="score-pill" id="score-display">— / —</span></div>
@@ -105,6 +175,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
   <div id="questions-container"></div>
+
+  <div class="floating-controls" aria-label="Floating navigation controls">
+    <button class="fab-btn" onclick="scrollToNextQuestion()" title="Next question">Next</button>
+    <button class="fab-btn" onclick="pageUpExam()" title="Page up">Up</button>
+    <button class="fab-btn" onclick="pageDownExam()" title="Page down">Dn</button>
+    <button class="fab-btn" onclick="goTopExam()" title="Go to top">Top</button>
+    <button class="fab-btn" onclick="goBottomExam()" title="Go to bottom">Bot</button>
+  </div>
+
+  <div class="floating-hud" aria-label="Exam status">
+    <div class="hud-pill">Time: <strong id="floating-timer">∞</strong></div>
+    <div class="hud-pill">Score: <strong id="floating-score">— / —</strong></div>
+  </div>
 </div>
 </div>
 
@@ -196,6 +279,28 @@ var BANK = [
     exp: "The classical competing goals are time, cost, and quality. Market share is a business outcome, not one of the standard project trade-off dimensions."
   },
 
+
+  {w:1, q:'Which of the following is not a part of Software Development Cycle?', opts:['Conception Phase','Requirements Phase','Design Phase','Implementation Phase'], ans:0, exp:'The provided Week 1 source marks Conception Phase as the correct answer for this question.'},
+  {w:1, q:'Which of the following is not a part of the considerations when defining software engineering? Select the best answer.', opts:['Systematic application of process for developing, operating, and maintaining software','Practical, economic value provided by the software, being developed in a practical and economical way','High quality of the software being developed','High quality of the software engineers in the software project team'], ans:3, exp:'The definition focuses on process, economic practicality, and software quality rather than the quality of individual engineers as the defining element.'},
+  {w:1, q:'What does the Design phase of the Software Development cycle involve?', opts:["Specification of individual modules\' interfaces",'Specification of overall structure of modules','Checking conformance of design to requirements','All of the above'], ans:3, exp:'The design phase covers interfaces, overall structure, and checking that the design conforms to requirements.'},
+  {w:1, q:'What is Unit Testing?', opts:['Testing of individual modules','Testing of the entire system','Testing after the integration of two modules','Testing of user interface'], ans:0, exp:'Unit testing focuses on individual modules or units.'},
+  {w:1, q:'Is the following statement True or False? The 1968 NATO conference was started to address only the issue of defining the field of software engineering.', opts:['True','False'], ans:1, exp:'False — the conference also addressed the software crisis, not only the definition of the field.'},
+  {w:1, q:'Software Engineering involves which of the following? Select all that apply.', opts:['Multi-person development','Multiple-version programs','None of the above'], ans:[0,1], exp:'Software engineering is concerned with team-based development and software that evolves across multiple versions.'},
+  {w:1, q:'Pick the INCORRECT statement from the following.', opts:['Software engineering involves a Multi-Person development process','Information hiding eases future extension of a program','Programming involves multiple versions of a program','Software engineering and programming are two different concepts'], ans:2, exp:'The incorrect statement is that programming involves multiple versions of a program; that broader concern belongs to software engineering.'},
+  {w:1, q:'Is the following statement True or False? A good programmer always makes a good software engineer.', opts:['True','False'], ans:1, exp:'False — software engineering also requires collaboration, process, communication, and design skills.'},
+  {w:1, q:'Which of the following properties define Software? Select all that apply.', opts:['Malleable','Complex','Constant','None of the above'], ans:[0,1], exp:'Software is malleable and complex; it is not constant.'},
+  {w:1, q:'Software systems vary in which of the following aspects? Select the best answer.', opts:['Cost','Size','Requirements Stability','All of the above'], ans:3, exp:'Software systems vary in cost, size, and requirements stability.'},
+  {w:1, q:'What does interactiveness in a software system indicate?', opts:['Interaction of components within the software','Interaction of humans with software','All of the above','None of the above'], ans:1, exp:'Here, interactiveness refers to interaction of humans with software.'},
+  {w:1, q:'Is the following statement True or False? Software is only used in the information technology industry.', opts:['True','False'], ans:1, exp:'False — software is used across many industries.'},
+  {w:1, q:'Which of the following belong/belongs to major stakeholders in a software project? Select the best answer.', opts:['Users','Customers','Developers','All of the above'], ans:3, exp:'Users, customers, and developers are all major stakeholders.'},
+  {w:1, q:'John is responsible to support Product A after the development of the product. Is John a stakeholder in the project?', opts:['Yes','No'], ans:0, exp:'Yes — someone responsible for product support is a stakeholder.'},
+  {w:1, q:'Which of the following are components of the trinity of a software project?', opts:['Software System, Code, Users','Software System, Software Users, Software Development Process','Requirements, Development, Evaluation','None of the above'], ans:1, exp:'The trinity is Software System, Software Users, and Software Development Process.'},
+  {w:1, q:'Is the following statement True or False? Users are different from customers.', opts:['True','False'], ans:0, exp:'True — the users and the paying customers can be different.'},
+  {w:1, q:'Anna is responsible for continuously testing Product A during the development process. Which of the following roles most closely fits Anna\'s responsibilities?', opts:['Evaluator','Tester','Requirements engineer','None of the above'], ans:1, exp:'A person continuously testing the product during development is acting as a tester.'},
+  {w:1, q:'Is the following statement True or False? Software is large but usually constant.', opts:['True','False'], ans:1, exp:'False — software evolves, so it is not usually constant.'},
+  {w:1, q:'Is the following statement True or False? Requirements for a software system in real world are usually ambiguous and evolving.', opts:['True','False'], ans:0, exp:'True — real-world requirements are often ambiguous and change over time.'},
+  {w:1, q:'Which of the following attributes make a good software engineer?', opts:['Good programmer','Good team player','Open minded personality','All of the above'], ans:3, exp:'A good software engineer benefits from all of these attributes.'},
+
   // ══════════════ WEEK 2 — Software Process ══════════════
   {w:2, q:'Which of the following is NOT one of the 5 sections of IEEE 1074?', opts:['Project Management','Pre-Development','Testing Validation','Support'], ans:2, exp:'The 5 sections are Project Management, Pre-Development, Development, Post-Development, and Support. Testing Validation is not a section.'},
   {w:2, q:'In the Spiral model, which quadrant immediately follows "Determine Objectives"?', opts:['Development and Test','Plan the next iteration','Identify and Resolve Risks','Deployment'], ans:2, exp:'The four Spiral quadrants in order are: Determine Objectives → Identify and Resolve Risks → Development and Test → Plan Next Iteration.'},
@@ -210,6 +315,41 @@ var BANK = [
   {w:2, q:'In RUP, which phase answers "Should we build it?"', opts:['Inception','Elaboration','Construction','Transition'], ans:0, exp:'Inception establishes feasibility and the go/no-go decision.'},
   {w:2, q:'Story points measure:', opts:['Hours of work','The overall size of a user story (effort + complexity + uncertainty)','Lines of code needed','Number of tests required'], ans:1, exp:'Story points are abstract size units that combine effort, complexity, and uncertainty.'},
 
+
+  {w:2, q:'What is risk exposure?', opts:['Expected value of loss','Maximum loss possible','Cost of the project','Probability of the loss'], ans:0, exp:'Risk exposure is the expected value of loss, typically probability × impact.'},
+  {w:2, q:'True or False: Risk management reduces the loss of risk items after the loss happens.', opts:['True','False'], ans:1, exp:'Risk management is mainly proactive — it aims to reduce probability/impact before loss occurs.'},
+  {w:2, q:'Which of the following are strategies of risk planning? Select all that apply.', opts:['Information Buying','Contingency Plans','Risk Reduction','Risk Acceptance','Risk Avoidance'], ans:[0,1,2,3], exp:'This quiz set marks Information Buying, Contingency Plans, Risk Reduction, and Risk Acceptance as correct.'},
+  {w:2, q:'Which of the following are actions to mitigate risks of changing requirements? Select all that apply.', opts:['Iterative development','On-site customer','Detailed documentations','Pair programming'], ans:[0,1], exp:'Iterative development and an on-site customer both help handle changing requirements.'},
+  {w:2, q:'Which of the following is not part of project management?', opts:['Project initiation','Project planning','Project monitoring and control','Requirements solicitation'], ans:3, exp:'Requirements solicitation belongs to requirements work, not project management.'},
+  {w:2, q:'Which of the following belongs to post-development activities? Select all that apply.', opts:['Installation','Maintenance','Retirement','Operation and support'], ans:[0,1,2,3], exp:'All four listed items are post-development activities in this course framing.'},
+  {w:2, q:'In which activity group is software requirements defined?', opts:['Development','Pre-development','Project management','Support'], ans:0, exp:'This quiz set places software requirements definition under Development.'},
+  {w:2, q:'Which of the following is an Agile process?', opts:['eXtreme programming','Waterfall','RUP','Bazaar'], ans:0, exp:'eXtreme Programming (XP) is the Agile process among these options.'},
+  {w:2, q:'True or False: In a waterfall process, one should move to the next phase only when its preceding phase is reviewed and verified.', opts:['True','False'], ans:0, exp:'Waterfall is sequential: the prior phase is reviewed and verified before moving on.'},
+  {w:2, q:'True or False: Unit testing is part of Integration phase in the modified waterfall process.', opts:['True','False'], ans:1, exp:'Unit testing is not part of the integration phase.'},
+  {w:2, q:'Which of the following process model is a risk-driven one?', opts:['Waterfall','Spiral','RUP'], ans:1, exp:'Spiral is the classic risk-driven process model.'},
+  {w:2, q:'When is the initial version built in RUP?', opts:['Inception','Elaboration','Construction','Transition'], ans:1, exp:'This quiz set marks Elaboration as the phase where the initial version is built.'},
+  {w:2, q:'Which of the following is not an XP practice?', opts:['Frequently rewriting code without changing behavior','Pair programming','Write formal specifications after implementations','Plan each iteration at the beginning of the iteration'], ans:2, exp:'Writing formal specifications after implementation is not an XP practice.'},
+  {w:2, q:'True or False: The more experienced programmer should take the role of driver in pair programming.', opts:['True','False'], ans:1, exp:'Roles should be shared and switched; the more experienced person should not always be the driver.'},
+  {w:2, q:'Which of the following are true about pair programming? Select all that apply.', opts:['Pair programming produces higher quality code','Pair programming costs fewer man-hours to finish a project','Pair should work on the same computer','The roles of driver and observer should be periodically switched'], ans:[0,2,3], exp:'This quiz set marks higher quality code, same computer, and periodic role switching as correct.'},
+  {w:2, q:'Which of the following is a reason for NOT choosing the Scrum process?', opts:['Product features have high inter-dependencies and are difficult to be split into potentially shippable increments','Team members have very high skills','Customers have changing requirements','Requirement changes are unpredictable'], ans:0, exp:'If work cannot be split into shippable increments, Scrum is a worse fit.'},
+  {w:2, q:'Which of the following are factors to consider when choosing a software process? Select all that apply.', opts:['Size','Criticality','Dynamism','Personnel','Culture'], ans:[0,1,2,3,4], exp:'All five are Boehm-Turner style factors used to choose a process.'},
+  {w:2, q:'Which process should a startup company that is developing a web app (which is a totally new kind in the market for gamification of music composition) choose?', opts:['Agile methodology','Plan-driven methodology'], ans:0, exp:'A startup building a novel web app is a strong fit for Agile.'},
+  {w:2, q:'Which of the following process is suitable for developing a control module for a nuclear power plant?', opts:['eXtreme programming','Waterfall','Scrum'], ans:1, exp:'This highly critical context favors a plan-driven approach such as Waterfall.'},
+  {w:2, q:'True or False: Agile development is more tolerant toward a team with mostly novice programmers.', opts:['True','False'], ans:1, exp:'Agile is usually less tolerant of mostly novice teams because it expects strong self-management and communication.'},
+  {w:2, q:'Who are the most common writers for user stories?', opts:['Users','Developers','Customers'], ans:2, exp:'This quiz set marks customers as the most common writers for user stories.'},
+  {w:2, q:'Who typically estimates the time for user stories?', opts:['Users','Developers','Customers'], ans:1, exp:'Developers usually estimate the implementation effort for user stories.'},
+  {w:2, q:'What is a desirable unit used to estimate time/effort of a user story?', opts:['Hour','Man-hour','Story point','Linus'], ans:2, exp:'Story points are the desirable abstract unit for estimating user stories.'},
+  {w:2, q:'Which of the following are possible ways to estimate story points? Select all that apply.', opts:['Expert opinion','Analogy','Planning Poker','Planning Dice','Disaggregation'], ans:[0,1,2,4], exp:'This quiz set marks Expert opinion, Analogy, Planning Poker, and Disaggregation as valid approaches.'},
+  {w:2, q:'Which of the following are major reasons to choose a PERT chart over a Gantt chart?', opts:['Need to find a critical path','Managing tasks while project is happening','Need to show dependencies','Project has few dependencies'], ans:0, exp:'PERT is especially useful when you need to identify the critical path.'},
+  {w:2, q:'When is a programming task completed in XP?', opts:['When refactoring completes','When the task is marked as done on the task board','When an initial version is written','When all tests pass'], ans:3, exp:'In XP, a programming task is completed when all tests pass.'},
+  {w:2, q:'How to calculate slack time? (ES = earliest time when the activity can be started. LS = latest time when the activity must be started. CR = Critical path length. LF = earliest finish time)', opts:['LF - ES','LS - ES','LS + ES','CR - (LS - ES)'], ans:1, exp:'Slack time = LS - ES.'},
+  {w:2, q:'What tasks should you give highest priority to optimize?', opts:['Tasks with longest slack','Tasks with shortest slack','Tasks on the critical path','Longest tasks'], ans:2, exp:'Tasks on the critical path have the highest priority to optimize.'},
+  {w:2, q:'Which of the following is a situation under which using a waterfall model may be undesirable?', opts:['Frequently changing requirements','Mission critical use case','Customer with clear objective','Large development team'], ans:0, exp:'Frequent requirement changes make Waterfall undesirable.'},
+  {w:2, q:'The Elaboration stage in the Rational Unified Process includes which of the following activities:', opts:['Implement further improvement from initial version','Implement initial version','Determining features','Testing/using the software'], ans:1, exp:'This quiz set marks implementing the initial version as the Elaboration-stage activity.'},
+  {w:2, q:'A team of 6 developers have been assigned to develop a web application to monitor statuses of the used 3rd party services (whose requirements can be updated frequently and which are not mission/financial/safety-critical ones). Which of the following software development models best suits the purpose?', opts:['Waterfall Model','Spiral Model','Scrum Model','Chaos Model'], ans:2, exp:'Scrum fits a small team with frequently changing requirements in a low-risk context.'},
+  {w:2, q:'Extreme Programming (XP) has which of the following advantages?', opts:['Comprehensive documentation is prepared throughout the process.','The customers are closely engaged throughout the process, not just only the beginning.','All features are released at once','The resulting software has high fault tolerance.'], ans:1, exp:'A key XP advantage is that customers stay closely engaged throughout the process.'},
+  {w:2, q:'Scrum Process does not include which of the following activities?', opts:['Daily Scrum Meeting','Quarterly Team Reflection','Prioritizing Product Backlog Tasks','Delivering Product Increment After a Sprint'], ans:1, exp:'Quarterly Team Reflection is not a standard Scrum activity in this quiz set.'},
+
   // ══════════════ WEEK 3 — Requirements Engineering ══════════════
   {w:3, q:'According to IEEE 2014, "shall" in a requirement means:', opts:['Is recommended that','Is a future reference not under system control','Is required to (mandatory)','Depends on context'], ans:2, exp:'"Shall" = mandatory requirement. "Should" = recommended. "Will" = future reference outside system control.'},
   {w:3, q:'A descriptive statement in requirements is one that:', opts:['Holds only when the system enforces it','Holds regardless of how the system behaves (e.g., physical law)','Is desirable but optional','Describes the user interface'], ans:1, exp:'Descriptive statements hold due to domain reality/physics, not software enforcement.'},
@@ -220,6 +360,27 @@ var BANK = [
   {w:3, q:'In the health claims system, which informal requirement involves OCR processing?', opts:['R1','R2','R5','R7'], ans:1, exp:'R2: Scanned paper and fax are processed by OCR after form dropout, deskewing, despeckling.'},
   {w:3, q:'The "Neutralize" step in tracking/reproducing removes:', opts:['System configuration data','Negative and emotional language from the description','Steps that cannot be reproduced','Duplicate entries'], ans:1, exp:'Neutralize removes emotional wording ("nasty bug wasted my time") leaving only technical facts.'},
 
+  {w:3, q:"Which of the following options are/is an example of target quality factors of requirements? Select all that apply.", opts:["Completeness","Consistency","Feasibility","Measurability","Opacity"], ans:[0,1,2,3], exp:"Completeness — Completeness is a core target quality factor: the requirement set should cover all necessary behavior and constraints."},
+  {w:3, q:"\"All doors should be opened as soon as the train is stopped at the terminal\". The requirement above, also mentioned in the lecture video, shows which of the following common flaws in requirement?", opts:["Ambiguity","Unmeasurability","Contradiction","Poor structuring"], ans:0, exp:"Ambiguity — \"as soon as\" is vague and can be interpreted differently, so the requirement is ambiguous."},
+  {w:3, q:"\"The login page shall be user-friendly.\" The requirement above, also mentioned in the lecture video, shows which of the following common flaws in a requirement?", opts:["Unmeasurability","Contradiction","Inadequacy","Poor structuring"], ans:0, exp:"Unmeasurability — \"user-friendly\" is subjective and not directly testable without a measurable criterion."},
+  {w:3, q:"Is the following statement true or false? Requirements describe software engineers' need in order to build the desired system, e.g. what software engineering tools they need for development.", opts:["False","True"], ans:0, exp:"False — Requirements are about expressing stakeholders' needs to achieve goals in the problem domain, not about what tools software engineers need."},
+  {w:3, q:"In the following options, which are/is among the reasons to write requirements according to the lecture video? Select all that apply.", opts:["Testers could test the software developed against the requirements.","Managers could use requirements to allocate resources and manage the development","Developers could implement the system according to requirements"], ans:[0,1,2], exp:"Testers could test the software developed against the requirements. — Requirements are used as a basis for validation and acceptance testing."},
+  {w:3, q:"When writing mandatory requirements for a rocket project, you wrote \"The main engine control unit ______ stop once the aircraft returns to the earth atmosphere.\"", opts:["shall","will","should"], ans:0, exp:"shall — \"Shall\" is the standard wording for a mandatory requirement."},
+  {w:3, q:"Which are/is a purpose of requirements specification? Select all that apply.", opts:["Serve as communication media among the stakeholders","Evaluate whether the developed system satisfies the requirements","Serve as contracts that can be legally binding between the customers and the project teams"], ans:[0,1,2], exp:"Serve as communication media among the stakeholders — Specifications provide a common reference point for stakeholders."},
+  {w:3, q:"Which of the following can be used as notations for requirement specifications? Select all that apply.", opts:["Data flow diagram","UML","Finite state machine","User stories","Pseudocode"], ans:[0,1,2,3,4], exp:"Data flow diagram — A valid notation for modeling flows of data in the problem domain or system."},
+  {w:3, q:"Which of the following statements of requirements engineering is NOT correct?", opts:["Requirements engineering is about discovering stakeholders' needs along with adjusting their expectations.","Requirements engineering is concerned with real-world goals for functions of a software system and constraints on the software system.","Requirements engineering helps engineers understand and adjust requirements.","Requirements engineering is only about one single version of a software system at a specific time."], ans:3, exp:"Requirements engineering is about discovering stakeholders' needs along with adjusting their expectations. — This is correct and central to elicitation."},
+  {w:3, q:"Which of the following statements is correct?", opts:["A \"system-as-is\" is a set of interacting components in the problem world to satisfy some global objectives.","A \"system-as-is\" describes the system as it should be when the machine will be built and operated in it.","A \"system-as-is\" describes the system as it exists before the machine is built into it."], ans:2, exp:"A \"system-as-is\" is a set of interacting components in the problem world to satisfy some global objectives. — That describes the broader problem world/system concept, not specifically the as-is view."},
+  {w:3, q:"Which of the following options could we investigate in \"system-as-is\"? Select all that apply.", opts:["What problems are in the \"system-as-is\"?","What opportunities are in the \"system-as-is\"?","What domain knowledge is in the \"system-as-is\"?"], ans:[0,1,2], exp:"What problems are in the \"system-as-is\"? — Current pain points are a major reason to analyze the as-is system."},
+  {w:3, q:"Which of the following are/is an example of elicitation techniques? Select all that apply.", opts:["Questionnaires, surveys, and interviews.","Brainstorming and focus group.","Early feedback gathering from stakeholders.","Protocol analysis and card sorting."], ans:[0,1,2,3], exp:"Questionnaires, surveys, and interviews. — Standard elicitation techniques."},
+  {w:3, q:"Which of the following statements are/is an example of key information to be elicited? Select all that apply.", opts:["Who are the individuals or organizations that stand to gain or lose from the success or failure of a system?","What might prevent us from solving the problem?","What problem needs to be solved?"], ans:[0,1,2], exp:"Who are the individuals or organizations that stand to gain or lose from the success or failure of a system? — This identifies stakeholders."},
+  {w:3, q:"Which of the following statements is true about requirements elicitation?", opts:["It is about discovering stakeholder expectations and adjusting the expectations","It is about guiding the developers to produce correct products according to the requirements","It is about making sure that the stakeholders understand how the project's functionalities are implemented.","It is about making sure that the tasks given by the product manager are correct"], ans:0, exp:"It is about discovering stakeholder expectations and adjusting the expectations — This best matches the purpose of requirements elicitation."},
+  {w:3, q:"Which of the following is NOT a main component for use case requirements?", opts:["Use case diagrams.","Use case.","Stakeholders.","Actors."], ans:2, exp:"Use case diagrams. — A main component of use case requirements."},
+  {w:3, q:"Which of the following statements is not true about Actors?", opts:["Actors are part of the system and interact with the system.","Actors can both provide inputs and receive outputs from the system.","Actors can receive outputs from the system.","Actors can provide inputs to the system."], ans:0, exp:"Actors are part of the system and interact with the system. — This is not true; actors are outside the system boundary."},
+  {w:3, q:"Which of the following statements is not true about Use Case?", opts:["A use case describes a sequence of events that happen when the system responds to an action.","The description of a use case needs to be a major piece of functionalities being complete from the beginning to end.","The description of a use case needs to be easy to read, short but still tell a story.","A use case can deliver no value for any of the actors."], ans:3, exp:"A use case describes a sequence of events that happen when the system responds to an action. — True."},
+  {w:3, q:"Which of the following Use Cases are/is used for helping decide design scope? Select all that apply.", opts:["Casual use cases","Fully dressed use cases","Actor-goal list","Use case brief"], ans:[2,3], exp:"Casual use cases — Useful for narrative detail, but not the primary scoping choice here."},
+  {w:3, q:"Which statement about the Actor-goal list is NOT correct?", opts:["A goal can be on different levels at the same time.","A primary actor shall always have a goal.","We must pick the right level for goals.","We can sort goals based on the priority to the designer of the system."], ans:0, exp:"A goal can be on different levels at the same time. — Not correct in this framing; goals should be stated at an intentional and appropriate level for analysis."},
+  {w:3, q:"Which of the following statements is correct for Casual and Fully Dressed use cases? Select all that apply.", opts:["Casual use cases consist of normal paragraphs but fully dressed use cases have labeled sections.","Casual and fully dressed use cases emphasize \"main success scenarios\".","Casual and fully dressed use cases are used to tell developers what to build.","Casual and fully dressed use cases should also include how to deal with failures."], ans:[0,1,2,3], exp:"Casual use cases consist of normal paragraphs but fully dressed use cases have labeled sections. — Correct structural distinction."},
+
   // ══════════════ WEEK 4 — Software Architecture ══════════════
   {w:4, q:'Tony Hoare\'s quote says good software design should be:', opts:['Complicated enough to hide deficiencies','Simple enough that deficiencies are obvious','Both simple and complicated','Abstracted at every level'], ans:1, exp:'"Make it so simple that there are obviously no deficiencies" — simplicity, not complexity.'},
   {w:4, q:'Prescriptive architecture is also called:', opts:['As-implemented architecture','As-designed architecture','As-tested architecture','As-deployed architecture'], ans:1, exp:'Prescriptive = as-designed; Descriptive = as-implemented. Drift between them is architectural drift.'},
@@ -229,7 +390,34 @@ var BANK = [
   {w:4, q:'In the Pipe-and-Filter architectural style, what are the connectors?', opts:['Filters','Pipes','Events','Procedure calls'], ans:1, exp:'Pipes are the connectors; filters are the components that transform data.'},
   {w:4, q:'The Gold Plating anti-pattern for software architects means:', opts:['The architect never attends team meetings','The architect over-designs, adding unnecessary complexity','The architect is absent after handing over the design','The architect only gives advice but produces nothing'], ans:1, exp:'Gold Plating: spending too much time on unnecessary complexity or future-proofing that isn\'t needed.'},
   {w:4, q:'Which type of coupling (cohesion ranking weakest to strongest) comes right after "Temporal"?', opts:['Logical','Procedural','Communicational','Sequential'], ans:1, exp:'Weakest to strongest: Coincidental < Logical < Temporal < Procedural < Communicational < Sequential < Functional.'},
-  {w:4, q:'In MVC, which component notifies views of state changes?', opts:['View','Controller','Model','All three equally'], ans:2, exp:'The Model stores state and notifies all registered Views when state changes via event/observer notification.'},
+  {w:4, q:'In MVC, which component notifies views of state changes?', opts:['View','Controller','Model','All three equally'], ans:2, exp:'The Model stores state and notifies all registered Views when state changes via event/observer notification.'},  {w:4, q:"What is the role of software design?", opts:["Exposing certain properties of the software system before implementation", "Helping developers reason about the capability of the software system to satisfy certain requirements", "Acting as a design for software system construction", "All of them"], ans:3, exp:"Software design exposes key properties before implementation, helps developers reason about requirement satisfaction, and acts as a blueprint for construction."},
+  {w:4, q:"Which of the following is NOT an aspect of software architecture?", opts:["The structure of the system", "The interactions among components within the system", "A component's internal details that are unrelated to its interactions with other components", "Design decisions about the system"], ans:2, exp:"Architecture focuses on structure, interactions, and major design decisions, not internal implementation details that do not affect interactions."},
+  {w:4, q:"Which of the following is wrong?", opts:["A prescriptive architecture refers to the architecture defined before the system is constructed", "A descriptive architecture refers to the architecture as it exists after the system is built", "When there is a conflict between the prescriptive architecture and the descriptive architecture, we should always modify the descriptive architecture only", "Either the prescriptive architecture or the descriptive architecture can evolve over time"], ans:2, exp:"Prescriptive and descriptive architectures can both evolve; conflict does not mean you always change only the descriptive architecture."},
+  {w:4, q:"Which of the following is NOT a benefit of software architecture?", opts:["Allowing developers to have a better understanding of the essential part of the system", "Making your software scalable", "Better code maintainability", "All of the above are benefits"], ans:3, exp:"All listed items are recognized benefits of software architecture."},
+  {w:4, q:"What is NOT true about a qualified software architect?", opts:["Have expertise in design and pick the best option among design options", "Be a master in system development", "Be able to complete all work independently"], ans:2, exp:"Software architects do not work in isolation; architecture is collaborative."},
+  {w:4, q:"What is the best way for a good software architect to allocate percentage of time on internal focus, inwards activities, and outwards activities?", opts:["20%, 40%, 40%", "70%, 10%, 20%", "50%, 25%, 25%", "50%, 40%, 10%"], ans:2, exp:"The expected distribution in this material is 50%, 25%, 25%."},
+  {w:4, q:"True or False: There will always be a serious problem if a software architect allocates very little time to work directly on the software architecture.", opts:["True", "False"], ans:1, exp:"Not every case becomes a serious problem automatically, so the statement is false."},
+  {w:4, q:"Which of the following is NOT an example of abstraction?", opts:["Ignoring specific details", "Generalizing common properties", "Focusing on individual instances"], ans:2, exp:"Abstraction suppresses details and generalizes patterns; focusing on individual instances is the opposite."},
+  {w:4, q:"True or False: There are NO undesirable side effects on runtime performance when introducing abstraction in software design.", opts:["True", "False"], ans:1, exp:"Abstraction can introduce overhead, so the statement is false."},
+  {w:4, q:"True or False: A file descriptor serves as an abstraction when it is used to inform the kernel which file to access, instead of using the file's actual name.", opts:["True", "False"], ans:0, exp:"A file descriptor lets a process access a file without needing the file's real name, so it is an abstraction."},
+  {w:4, q:"Making a Python class object is ________.", opts:["Control abstraction", "Data abstraction", "Procedural abstraction"], ans:1, exp:"Defining a class creates a data abstraction: it packages data and behavior behind an interface."},
+  {w:4, q:"Measuring the degree to which one module depends on others refers to the degree of ______.", opts:["Cohesion", "Coupling"], ans:1, exp:"Dependence between modules is coupling; cohesion is within a module."},
+  {w:4, q:"If functions in a module can receive different kinds of inputs but produce the same output, then this module exhibits ______.", opts:["Coincidental cohesion", "Communicational cohesion", "Logical cohesion", "Temporal cohesion"], ans:1, exp:"The expected answer in this question set is communicational cohesion."},
+  {w:4, q:"According to Conway's Law, when assigning team members to a group working on the same module, it's better to:", opts:["Assign team members from the same geo location", "Assign team members randomly"], ans:0, exp:"Because communication structure shapes system structure, colocated teams fit Conway's Law better."},
+  {w:4, q:"True or False: Refactoring is a good way to achieve high modularity.", opts:["True", "False"], ans:0, exp:"Refactoring can improve module boundaries and reduce dependency without changing behavior."},
+  {w:4, q:"Which of the following is NOT a component of a compiler's software architecture?", opts:["Front end component", "Modular component", "Middle-end component", "Back end component"], ans:1, exp:"Front end, middle-end, and back end are standard components; 'modular component' is not a standard compiler stage here."},
+  {w:4, q:"The backend component does NOT pass machine code to which of the following?", opts:["ARM", "Sparc", "PowerPC", "Ada"], ans:3, exp:"Ada is a programming language, not a machine-code target architecture."},
+  {w:4, q:"If a part in a software system can provide a specific functional feature, then it is a ____.", opts:["component", "connector"], ans:0, exp:"Components provide functionality; connectors coordinate interactions."},
+  {w:4, q:"A procedure call is a ________.", opts:["component", "connector"], ans:1, exp:"Procedure calls are connectors because they are interaction mechanisms between software parts."},
+  {w:4, q:"In the client-server style, which of the following is NOT true about the server?", opts:["Dealing with requests from clients", "Knowing the identity of each client", "Using the same protocol with the client for communication"], ans:1, exp:"A server handles requests and protocols but does not need to know each client's identity."},
+  {w:4, q:"SVN primarily uses the ________ architectural style.", opts:["layered/tiered style", "client-server style", "pipe and filter style"], ans:1, exp:"SVN is commonly modeled as a client-server system."},
+  {w:4, q:"If a software architecture separates its functionalities into multiple tiers, then it follows the ________.", opts:["layered/tiered style", "client-server style", "pipe and filter style"], ans:0, exp:"Multiple tiers indicate the layered or tiered architectural style."},
+  {w:4, q:"In the model-view-controller (MVC) architecture, the model component defines the ______.", opts:["Data access layer", "Presentation layer", "Business logic layer", "Interface layer"], ans:0, exp:"This quiz maps the model to the data access layer."},
+  {w:4, q:"The component in MVC for sending out state queries is named ________.", opts:["model", "view", "controller"], ans:1, exp:"In this quiz's terminology, the view sends out state queries."},
+  {w:4, q:"When a client hits the button on GUI to request information from a database, what mode is that?", opts:["Pull", "Push"], ans:0, exp:"That is pull mode because the client explicitly requests the data."},
+  {w:4, q:"Adding a new controller class can benefit from MVC in what way?", opts:["Ability to provide multiple views", "Support for asynchronous technique", "Modification not affecting the entire model"], ans:2, exp:"MVC isolates change so modifications do not require changing the entire model."},
+  {w:4, q:"True or False: Compared to an architecture style, an architecture pattern is typically more general.", opts:["True", "False"], ans:1, exp:"In this material, the statement is false."},
+
 
   // ══════════════ WEEK 5 — OO Design / UML ══════════════
   {w:5, q:'In a UML class diagram, the ONLY mandatory compartment is:', opts:['Attributes','Operations','Class name','Visibility modifiers'], ans:2, exp:'Only the class name is required; attributes and operations compartments are optional.'},
@@ -264,6 +452,53 @@ var BANK = [
   {w:7, q:'Loop coverage requires testing ___ pass(es) through the loop body.', opts:['Only 0 and 1','Only 1 and many','0, 1, 2, and many','Only many'], ans:2, exp:'Loop coverage: 0 passes (skip), 1 pass, 2 passes, and n>2 passes — all four cases.'},
   {w:7, q:'The PIE model explains why 100% statement coverage is necessary because:', opts:['Without it, tests are not automated','Without executing a statement, its fault can never cause a failure','100% coverage proves correctness','It satisfies the test oracle'], ans:1, exp:'PIE condition E (Execution): if a faulty statement never runs, its fault literally cannot manifest as a failure.'},
   {w:7, q:'Which activity requires "domain knowledge" as its key expertise?', opts:['Test Design','Test Automation','Test Execution','Test Evaluation'], ans:3, exp:'Test Evaluation requires domain knowledge to judge whether actual vs expected results are correct.'},
+  {w:7, q:"Which of the following is a type of code coverage measurement?", opts:["Statement coverage", "Method coverage", "Loop coverage", "All of the above"], ans:3, exp:"All listed items are types of code coverage measurements."},
+  {w:7, q:"Which of the following type of code coverage measures the lines covered by test cases?", opts:["Method coverage", "Statement coverage", "Branch/Decision coverage", "Condition/Predicate coverage"], ans:1, exp:"Statement coverage measures whether lines/statements are executed by test cases."},
+  {w:7, q:"Which of the following types of code coverage aims to ensure that each one of the possible branches from each decision point is executed at least once?", opts:["Branch/Decision coverage", "Loop coverage", "Method coverage", "Statement coverage"], ans:0, exp:"Branch/Decision coverage requires each possible branch outcome to be executed at least once."},
+  {w:7, q:"Which of the following statements about infeasible paths is NOT correct?", opts:["Infeasible paths are those paths which can't be tested and verified by any set of possible input values.", "Infeasible paths are hard to detect by automation process.", "We prefer using Black box testing to find out infeasible paths.", "It usually requires domain knowledge for programmers to identify an infeasible path."], ans:2, exp:"Black-box testing is not the preferred way to identify infeasible paths; this statement is not correct."},
+  {w:7, q:"Which of the following is NOT a purpose of testing?", opts:["To improve code quality", "To spot code faults", "To document code", "To guarantee code is fully correct"], ans:3, exp:"Testing cannot guarantee that code is fully correct."},
+  {w:7, q:"Which of the following do NOT belong to the types of test activities?", opts:["Test Design", "Test Automation", "Test Implementation", "Test Evaluation"], ans:2, exp:"Test implementation is not one of the named core test activities."},
+  {w:7, q:"Which of the following test activities embeds test values into executable scripts?", opts:["Test Design", "Test Automation", "Test Implementation", "Test Execution"], ans:1, exp:"Test automation embeds test values into executable scripts."},
+  {w:7, q:"Which of the following statements about testing activities is correct?", opts:["Designing tests requires relatively little knowledge about the domain and programs.", "In order to embed test values into executable scripts, one needs to understand the theory very well.", "It is always efficient to assign the same person for all testing activities.", "Test automation is useful to have but could also be boring to construct."], ans:3, exp:"This is the correct statement from the source material."},
+  {w:7, q:"Which of the following statements about test cases is correct?", opts:["Test cases cannot be used as documents as they are considered as two very different categories.", "Only developers can construct test case for their programs.", "The process of developing test cases can also help developers to understand the requirements."], ans:2, exp:"Constructing test cases can improve understanding of requirements."},
+  {w:7, q:"When should we write test cases?", opts:["Before code is written", "While writing code", "After code is written", "All of above"], ans:3, exp:"All of these timings are possible."},
+  {w:7, q:"Which statement about manual testing and automated testing is NOT correct?", opts:["When regression tests are conducted very often, we should prefer doing automated testing.", "To test a Graphics Interface, we should build automated tests after the interface design is stable.", "Tests that don't require re-execution should be done manually.", "Automated tests always finds more bugs than manual tests."], ans:3, exp:"Automated tests do not always find more bugs than manual tests."},
+  {w:7, q:"Which of the following statements is true about tests?", opts:["Tests must be written in the form of code", "User interfaces cannot be tested", "Projects can have more test code than source code", "Tests can always spot bugs"], ans:2, exp:"Projects can indeed have more test code than production code."},
+  {w:7, q:"Which of the following statements about writing tests as a developer is NOT correct?", opts:["Developers cannot always detect all faults even if they fully understand their implementations.", "More people are encouraged to engage in writing tests in addition to developers.", "When developers construct test suites, they may have a bias on software code or functions.", "Only QA developers should develop test cases since they are experts in testing area."], ans:3, exp:"Writing tests is not only for QA developers; this is the incorrect statement."},
+  {w:7, q:"Which of the following is true about Black box testing?", opts:["It is not feasible to thoroughly exercise all potential tests inputs.", "Tests are written with knowledge of the internal workings to thoroughly test what is happening on the inside of the code.", "Black box testing is good at finding faults of extra logic.", "Black box testing is good and better for finding crashes, out of bounds failures, and file not closed failures."], ans:2, exp:"According to the source material, black-box testing is good at finding faults of extra logic."},
+  {w:7, q:"Which of the following statements about White box testing is NOT correct?", opts:["Methods like Equivalence Class and Boundary Value Analysis can also be applied in White box testing.", "Maintaining White box test scripts could be very difficult if implementation details keep changing frequently.", "White box testing is usually very simple, so it does not require knowledge of programming and implementation"], ans:2, exp:"White-box testing does require programming and implementation knowledge; this is the incorrect statement."},
+  {w:7, q:"A developer called Math.log(5) function that was supposed to return the natural logarithm value of the input, but returns 125 instead. According to the lecture slides, this is an example of:", opts:["Error", "Failure", "Fault"], ans:2, exp:"The wrong implementation is a fault."},
+  {w:7, q:"According to the PIE model, which of the following conditions is NOT correct for a failure to be observed?", opts:["The location or locations in the program that contain the fault must be reached.", "The state of the program must be incorrect.", "The infected state must NOT propagate to cause some output of the program to be incorrect."], ans:2, exp:"Propagation IS required for a failure to be observed, so this statement is not correct."},
+  {w:7, q:"Which of the following is NOT a metric for code coverage?", opts:["Method coverage", "Branch coverage", "Statement coverage", "Parameter coverage"], ans:3, exp:"Parameter coverage is not one of the standard code coverage metrics listed here."},
+  {w:7, q:"\"Dividing input conditions into groups and testing each group of inputs\" describes which of the following techniques for Black box testing?", opts:["Boundary Value Analysis", "Equivalence Class Partitioning", "Decision Table Testing", "Use case testing"], ans:1, exp:"Equivalence class partitioning divides inputs into groups/classes."},
+  {w:7, q:"Which of the following is NOT a purpose of testing?", opts:["Determine whether the software is sufficiently qualified for the release.", "Finding faults in the software.", "Determine which parts of the software need more testing.", "Guaranteeing there are NO faults in the software."], ans:3, exp:"Testing cannot guarantee the complete absence of faults."},
+  {w:7, q:"Which of the following statements about developers writing tests is NOT correct?", opts:["Developers can always detect all faults since they understand their implementations.", "Developers may have biases when writing software code and designing functions.", "More people are encouraged to engage in writing tests in addition to developers."], ans:0, exp:"Developers cannot always detect all faults just because they know the implementation."},
+  {w:7, q:"When do we usually want to write Unit tests?", opts:["Prior to Integration phase", "Prior to designing phase", "After maintenance phase", "During requirement phase"], ans:0, exp:"Unit tests are usually written before integration, while focusing on individual units."},
+  {w:7, q:"Is the following statement True or False: Validation ensures that the new method meets the requirements for its intended use.", opts:["True", "False"], ans:0, exp:"This is true according to the source material."},
+  {w:7, q:"Is the following statement True or False: We only need to run test cases before releasing the software to our customers.", opts:["True", "False"], ans:1, exp:"Correct — testing is not only a pre-release activity."},
+  {w:7, q:"When do we prefer automated testing to manual testing?", opts:["When regression tests are conducted very often.", "Tests that don't require re-execution.", "The software GUI rarely gets updated."], ans:0, exp:"Frequent regression testing strongly favors automation."},
+  {w:7, q:"When do we prefer manual testing instead of automated testing?", opts:["When we want to use tests as documentation.", "When the software is not stable.", "When tests only gets executed once."], ans:2, exp:"Manual testing is preferred when a test will only be executed once."},
+  {w:7, q:"Which of the following is NOT an advantage of test automation?", opts:["It can help in identifying high priority test cases.", "It can be run over and over again.", "It is good for validating functional flows.", "It improves the efficiency of testing."], ans:0, exp:"Identifying high-priority test cases is not an advantage of automation itself."},
+  {w:7, q:"Which of the following statements on test cases is NOT correct?", opts:["Test cases can document faults", "Test cases can document code", "One can only build test cases for a specific program if the program is developed by him/her.", "The process of developing test cases can also help find problems in the requirements or design of an application."], ans:1, exp:"Test cases are not the same as code documentation; this is the incorrect statement."},
+  {w:7, q:"Which of the following is a type of testing activity?", opts:["Test Evaluation", "Test Design", "Test Execution", "All of them"], ans:3, exp:"All listed options are testing activities."},
+  {w:7, q:"When we conduct tests, the procedure of coming up with a set of interesting input values is considered as:", opts:["Test Evaluation", "Test Automation", "Test Execution", "Test Design"], ans:3, exp:"Choosing interesting input values is test design."},
+  {w:7, q:"When we conduct tests, the procedure of understanding the output of the execution of test cases and reporting or documenting the results is considered as:", opts:["Test Design", "Test Automation", "Test Execution", "Test Evaluation"], ans:3, exp:"Understanding outputs and documenting results is test evaluation."},
+  {w:7, q:"Which of the following statements about assigning testing personnel is NOT correct?", opts:["Conducting testing design requires the most technical knowledge", "You do not need to know how to program to conduct test automations", "In order to evaluate the test results, domain knowledge is required"], ans:0, exp:"This is the incorrect statement according to the source material."},
+  {w:7, q:"A developer mistyped a variable as \"buildf\" while he was looking for the variable \"build\". According to the lecture slides, this is an example of:", opts:["Mistake", "Failure", "Error"], ans:0, exp:"The human action is a mistake."},
+  {w:7, q:"An incorrect implementation of an algorithm results in program crashes by the test oracle. According to the lecture slides, this is an example of:", opts:["Failure", "Fault", "Error"], ans:0, exp:"A crash observed by the oracle is a failure."},
+  {w:7, q:"A developer called sqrt(5) function that was supposed to return the square root value of the input but the developer got 25 instead. According to the lecture slides, this is an example of:", opts:["Error", "Failure", "Mistake"], ans:0, exp:"The incorrect internal/computed state is an error."},
+  {w:7, q:"According to the PIE model, what conditions are necessary for a failure to be observed?", opts:["The location or locations in the program that contain the fault must be reached.", "The state of the program must be incorrect.", "The infected state must propagate to cause some output of the program to be incorrect.", "All of the above."], ans:3, exp:"All three PIE conditions are necessary."},
+  {w:7, q:"Which of the following is NOT an advantage of using Black-box testing?", opts:["Tests are done from a user's perspective and will help in finding inconsistencies between the specifications and real behavior.", "Test cases can be developed as soon as the specifications are ready.", "It can cover most of the potential execution paths.", "Testers do not need to know how the programs are implemented."], ans:2, exp:"Covering execution paths is more associated with white-box testing; this is not an advantage of black-box testing."},
+  {w:7, q:"Which of the following is a disadvantage of using Black box testing?", opts:["Maintaining test suites become harder if the implementation changes too frequently.", "It is hard to cover all the program execution paths.", "Testers need a thorough knowledge of the implementation details."], ans:1, exp:"Black-box testing does not target internal execution paths, making path coverage hard."},
+  {w:7, q:"Suppose we want to test a new generic sorting algorithm using Black box testing and we have several different sets of testing inputs. Which following set of testing values ONLY contains inputs from an equivalent class?", opts:["[1, 2, 3, 4, 5], ['a', 'b', 'c'], ['aa', 'ab', 'ac', 'bd']", "[7, 9, 5, 4, 1], ['a', 'b', 'c'], ['a', 'a', 'b', 'b', 'c', 'c']", "[4, 3, 1, 2, 5], [1, 2, 3, 5], [42, 10, 23, 1], ['3', 'B', 'c']"], ans:0, exp:"These inputs are all valid lists of comparable, unique, sorted-ish values within one intended class per set."},
+  {w:7, q:"Which of the following software testing levels do we typically NOT prefer using for Black box testing?", opts:["Acceptance Testing", "Unit Testing", "Integration Testing", "System Testing"], ans:1, exp:"Unit testing typically prefers white-box testing, so black-box is less preferred here."},
+  {w:7, q:"\"Dividing the input conditions into groups and testing each group of inputs\" describes which of the following techniques for Black box testing?", opts:["Use case testing", "Decision Table Testing", "Equivalence Class Partitioning", "Boundary Value Analysis"], ans:2, exp:"Equivalence class partitioning divides inputs into groups/classes."},
+  {w:7, q:"Which of the following is an advantage of using White- box testing?", opts:["Tests are done from a user's perspective and will help in finding inconsistencies between the specifications and real behavior.", "Testers do not need to know how the programs are implemented.", "Testers are based on internal code structure, allowing for thorough path and branch coverage."], ans:2, exp:"This is the key advantage of white-box testing."},
+  {w:7, q:"Which of the following is a disadvantage of using White-box testing?", opts:["Programmers need a thorough knowledge of implementations to develop a White- box test suite.", "Many program paths will be left untested.", "Without clear specifications, test cases will be hard to design."], ans:0, exp:"This is a disadvantage of white-box testing."},
+  {w:7, q:"Which of the following is a correct description of the main difference between Black box testing and White-box testing?", opts:["The internal structure, design or implementation of the item is given to the test developers.", "Black box testing generally requires testers to have domain knowledge (e.g. programming language of the software implementation)", "White-box testing cannot be applied during Integration test."], ans:0, exp:"This describes white-box testing versus black-box testing."},
+  {w:7, q:"Which of the following statements about White- box testing is correct?", opts:["As a test developer, I do not need to know the details of implementations to develop my White box test suite.", "White- box testing is typically conducted before conducting Black box testing.", "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White- box testing."], ans:2, exp:"This statement is correct according to the source material."},
+  {w:7, q:"At which software testing level do we typically prefer using White-box Testing?", opts:["Unit Testing", "System Testing", "Acceptance Testing"], ans:0, exp:"White-box testing is typically preferred at the unit-testing level."},
+
 
   // ══════════════ WEEK 8 — JUnit & Testing ══════════════
   {w:8, q:'Unit test quality requires BOTH:', opts:['High LOC and fast execution','High coverage AND good assertions','Many test methods and few assertions','Low coupling and high cohesion'], ans:1, exp:'Experience: just high coverage or many assertions alone is insufficient — both together are required.'},
@@ -299,8 +534,60 @@ var BANK = [
   {w:14, q:'Feature Envy code smell means:', opts:['A method has too many parameters','A method uses another class\'s data and methods more than its own','A class has no methods','A method calls itself recursively'], ans:1, exp:'Feature Envy: the method "wishes" it were in the class it keeps accessing.'},
   {w:14, q:'A Large Class code smell is indicated by more than ___ methods or ___ instance variables.', opts:['10 methods or 3 variables','24 methods or 6 variables','50 methods or 10 variables','15 methods or 5 variables'], ans:1, exp:'Large Class: >24 methods OR >6 instance variables — time to Extract Class or Extract Subclass.'},
   {w:14, q:'Message Chain a.getB().getC().getD() is bad because:', opts:['It is slower','The client is tightly coupled to the full navigation structure','It uses too much memory','It is not object-oriented'], ans:1, exp:'If any intermediate class changes, all Message Chain clients must change too.'},
-  {w:14, q:'CBO (Coupling Between Object Classes) — higher values mean:', opts:['Better encapsulation','Better reuse','Harder to test, change, and reuse','Better cohesion'], ans:2, exp:'High CBO = many dependencies = harder to isolate for testing, harder to change, harder to reuse.'}
+  {w:14, q:'CBO (Coupling Between Object Classes) — higher values mean:', opts:['Better encapsulation','Better reuse','Harder to test, change, and reuse','Better cohesion'], ans:2, exp:'High CBO = many dependencies = harder to isolate for testing, harder to change, harder to reuse.'},
+{w:11, q:'Developer A tries to determine the fault by following an error propagation chain. Which activity best describes this during fault localization?', opts:['Tracing','Cause elimination','Backtracking','None of the above'], ans:2, exp:'Following the error propagation chain backward is backtracking.'},
+  {w:11, q:'Developer B watches execution by inserting breakpoints, assertions, and print statements. Which activity best describes this during fault localization?', opts:['Tracing','Backtracking','Cause elimination','Coverage based localization'], ans:0, exp:'Watching execution using breakpoints, assertions, and prints is tracing.'},
+  {w:11, q:'Developer C attempts to check every possible cause of the failure. Which activity best describes this during fault localization?', opts:['Backtracking','Cause elimination','Tracing','None of the above'], ans:1, exp:'Systematically checking possible causes is cause elimination.'},
+  {w:11, q:'True or False: Cause elimination requires the person debugging to have expertise about the program and common developer faults.', opts:['True','False'], ans:0, exp:'Cause elimination depends on program knowledge and knowledge of typical fault patterns.'},
+  {w:11, q:'True or False: Assertions in debugging are different from those in testing.', opts:['True','False'], ans:0, exp:'The roles of assertions in debugging and testing differ.'},
+  {w:11, q:'Should assertions be a part of production code?', opts:['Yes','No','Doesn\'t matter'], ans:1, exp:'Assertions are generally not meant to control production behavior.'},
+  {w:11, q:'Which of the following is the assertion that needs to be True after a method execution?', opts:['Precondition','Checkpoint','Postcondition','None of the above'], ans:2, exp:'A postcondition must hold after the method completes.'},
+  {w:11, q:'True or False: Invariants are assertions that are always True.', opts:['True','False'], ans:0, exp:'An invariant is expected to hold throughout the relevant scope.'},
+  {w:11, q:'Which of the following have to be True for a loop invariant? Select all that apply.', opts:['Before the loop','After the loop','During the loop'], ans:[0,1,2], exp:'A valid loop invariant holds before, during, and after the loop.'},
+  {w:11, q:'What is the purpose of debugging?', opts:['Fix failures','Find failures','Fix faults','Find faults'], ans:2, exp:'Debugging fixes faults, while testing reveals failures.'},
+  {w:11, q:'True or False: Debugging has the same purpose as testing.', opts:['True','False'], ans:1, exp:'Testing finds failures; debugging locates and fixes faults.'},
+  {w:11, q:'Which of the following steps is NOT a part of the debugging process?', opts:['Reproduce','Focus','Isolate','None of the above'], ans:3, exp:'All listed steps are part of the debugging process.'},
+  {w:11, q:'Which of the following information does the problem history section of the bug report include?', opts:['System specifications','Error Output','Expected behavior','Steps to reproduce the bug'], ans:3, exp:'Problem history commonly includes reproduction steps.'},
+  {w:11, q:'True or False: The bug report includes bug ids of duplicated problems.', opts:['True','False'], ans:0, exp:'Duplicate issue references may be part of the report history.'},
+  {w:11, q:'Bugzilla is which of the following?', opts:['IDE','Debugging Tool','Bug tracking tool','All of the above'], ans:2, exp:'Bugzilla is a bug tracking tool.'},
+  {w:11, q:'Which of the following is NOT true about testing and debugging?', opts:['Both testing and debugging can involve looking at source code','Testing finds failures; Debugging finds/corrects faults','Testing and debugging always fix the issues they identify.','Both testing and debugging improve code quality'], ans:2, exp:'Finding an issue does not guarantee it is fixed immediately.'},
+  {w:11, q:'True or False: The fact that bugs cannot be reproduced indicates the bugs no longer exist.', opts:['True','False'], ans:1, exp:'A non-reproducible bug may still exist but depend on hidden conditions.'},
+  {w:11, q:'True or False: Debugging can result in the introduction of new bugs.', opts:['True','False'], ans:0, exp:'A change intended to fix one issue can introduce another.'},
+  {w:11, q:'Which of the following is NOT a step in the debugging process?', opts:['Add the bug report in a tracker','Reproduce the bug','Trace the origins of the bug','Ignore the bug if it is minor','Isolate the causes for failure'], ans:3, exp:'Ignoring the bug is not a valid debugging step.'},
+  {w:11, q:'Which of the following is NOT included in a bug report?', opts:['Environment related information','Support contact information','Problem history','Expected and Experienced behavior'], ans:1, exp:'Support contact information is not one of the core bug report fields here.'},
+  {w:11, q:'During tracking/reproducing, a problem description changes from a specific Arial/font-size case to a broader one that still reproduces. Which step best represents this?', opts:['Summarization','Generalization','Reproducing','Isolation','All of the above'], ans:1, exp:'Broadening the conditions while still reproducing is generalization.'},
+  {w:11, q:'During tracking/reproducing, the statement changes from "The problem occurs in Windows XP." to "The problem occurs in Windows XP ONLY." Which step best represents this?', opts:['Isolate','Condense','Summarize','None of the above'], ans:0, exp:'Narrowing the reproducing condition is isolation.'},
+  {w:11, q:'Which of the following approaches is the MOST efficient to figure out the line of failure in a very large input file?', opts:['Binary Search','Linear Search','Delta Debugging','None of the above'], ans:0, exp:'Binary search quickly narrows the search space by halves.'},
+  {w:11, q:'Consider the code x=0; i=2; while i<=5: x=x+i*i; i=i+1. Which is an example of a loop invariant?', opts:['x = sum of squares of 2..i','x = sum of squares of 2..i-1','x = sum of squares of 1..i-1','x = sum of squares of 1..i'], ans:1, exp:'At the loop test, x contains the sum through i-1.'},
+  {w:11, q:'Which of the following is the correct description of "Failure" in software engineering?', opts:['The cause of bugs','The symptoms of bugs','The products of bugs','The bugs'], ans:1, exp:'A failure is the observable symptom.'},
+  {w:11, q:'Which of the following is the correct description of "Fault" in software engineering?', opts:['The cause of bugs','The symptoms of bugs','The products of bugs','The bugs'], ans:0, exp:'A fault is the cause in the code or design.'},
+  {w:11, q:'"Follow and watch the execution of programs to determine the cause of bugs" describes which debugging behavior?', opts:['Backtracking','Cause elimination','Tracing','Delta Debugging'], ans:2, exp:'Watching execution corresponds to tracing.'},
+  {w:11, q:'Which of the following is used for tracing technique in debugging?', opts:['Print debugging','Breakpoint debugging','Assertion debugging','Single step debugging','All of above'], ans:4, exp:'All listed techniques can be used in tracing.'},
+  {w:11, q:'Backtracking techniques in debugging does NOT involve which of the following?', opts:['Print debugging','Undo code changes','Record variable changes','Reverse instructions order'], ans:3, exp:'Backtracking does not reverse the instruction order.'},
+  {w:11, q:'To pause execution when the program is running for debugging, you should ________.', opts:['Execute the code by memory address offset','Throw an error in the code','Trigger an interruption','Set a breakpoint'], ans:3, exp:'A breakpoint pauses execution at a chosen point.'},
+  {w:14, q:"Which of the following code smells occurs when a class has many methods and instance variables (e.g., more than 24 methods or 6 instance variables), making it difficult to understand or maintain?", opts:["Message Chain", "Feature Envy", "Data Class", "Large Class"], ans:3, exp:"A Large Class smell appears when a class grows too big, with too many methods or fields, making it harder to understand and maintain."},
+  {w:14, q:"Which refactoring is most appropriate for resolving a Large Class code smell?", opts:["Inline Method", "Extract Class", "Move Method", "Rename Variable"], ans:1, exp:"Extract Class splits responsibilities out of an oversized class into a new class, which is the standard refactoring for a Large Class smell."},
+  {w:14, q:"True or False:\nA Message Chain code smell is bad because it makes the client code independent of the internal structure of the navigation between objects.", opts:["True", "False"], ans:1, exp:"False. Message Chain is bad because it exposes internal navigation structure and tightly couples client code to that chain."},
+  {w:14, q:"Which of the following is NOT one of the four types of software maintenance?", opts:["Corrective", "Preventive", "Adaptive", "Proactive"], ans:3, exp:"The common four are corrective, adaptive, perfective, and preventive. Proactive is not one of the standard four types."},
+  {w:14, q:"Is the following statement True or False?\nAdaptive maintenance is performed to adjust software to a changed or changing environment.", opts:["True", "False"], ans:0, exp:"True. Adaptive maintenance modifies software so it keeps working in a changed environment."},
+  {w:14, q:"Which of the following statements is TRUE about the testing needs for Corrective Maintenance?", opts:["It requires testing only to confirm that new features work as expected.", "It requires testing to reproduce the failure, confirm the fix, and ensure that no new issues are introduced.", "It does not require any testing if the changes are minor.", "It focuses solely on testing the user interface for usability."], ans:1, exp:"Corrective maintenance fixes faults, so testing must reproduce the failure, verify the fix, and check that the fix did not introduce regressions."},
+  {w:14, q:"Which of the following is NOT a metric for measuring the size of code?", opts:["Number of lines", "Number of methods", "Number of classes", "Cyclomatic complexity"], ans:3, exp:"Cyclomatic complexity measures control-flow complexity, not code size."},
+  {w:14, q:"Is the following statement True or False?\nA method with a cyclomatic complexity greater than 10 is considered hard to test and fault prone.", opts:["True", "False"], ans:0, exp:"True. Higher cyclomatic complexity generally means more paths to test and greater fault risk."},
+  {w:14, q:"Is the following statement True or False?\nLines of Code (LOC) is always a reliable indicator of the quality and complexity of the code.", opts:["True", "False"], ans:1, exp:"False. LOC is a rough size measure, but it is not always a reliable indicator of quality or complexity."},
+  {w:14, q:"Which of the following Object Oriented (OO) metrics is used to measure the sum of complexities of the methods in a class?", opts:["Depth of Inheritance Tree (DIT)", "Weighted Methods Per Class (WMC)", "Coupling between Object Classes (CBO)", "Number of Children (NOC)"], ans:1, exp:"WMC measures the combined complexity of methods in a class."},
+  {w:14, q:"Is the following statement True or False?\nHigher Coupling between Object Classes (CBO) makes the class easier to test and more reusable.", opts:["True", "False"], ans:1, exp:"False. Higher coupling usually makes code harder to test, harder to reuse, and more fragile."},
+  {w:14, q:"Which of the following statements is True about Depth of Inheritance Tree (DIT)?", opts:["A higher DIT value indicates more methods are inherited, making class behavior easier to predict.", "A higher DIT value means the class reuses more methods but is harder to predict and more complex.", "DIT only considers single inheritance and ignores multiple inheritance.", "DIT is unrelated to the complexity of a class."], ans:1, exp:"Higher DIT can increase reuse through inheritance, but it also tends to make behavior harder to understand and predict."},
+  {w:14, q:"Which of the following best describes refactoring?", opts:["Changing the external behavior of a program to add new features.", "Changing the internal structure of a program without changing its external behavior.", "Changing the program to optimize performance but altering its functionality.", "Debugging and fixing errors in the code."], ans:1, exp:"Refactoring improves internal structure while preserving externally visible behavior."},
+  {w:14, q:"Is the following statement True or False?\nRefactoring should always be done after changing the behavior of a program.", opts:["True", "False"], ans:1, exp:"False. Refactoring itself should not change behavior; it can be done before or after functional changes, but its defining property is behavior preservation."},
+  {w:14, q:"Which of the following is NOT a benefit of Extract Method refactoring?", opts:["Increases code reusability", "Increases code readability", "Decreases the number of methods in a class", "Makes the purpose of the code more understandable"], ans:2, exp:"Extract Method usually creates an additional method, so it does not decrease the number of methods in a class."},
+  {w:14, q:"Which of the following is the first step when performing Introduce Parameter Object refactoring?", opts:["Add a new parameter whose type is the new class", "Make a new class for the group of parameters", "Incrementally remove each original parameter", "Replace method calls with inlined code"], ans:1, exp:"You first create a class that groups the related parameters together."},
+  {w:14, q:"Is the following statement True or False?\nAfter using the Introduce Parameter Object refactoring, you should check if any code can be moved to the methods of the new class for parameter object, which is known as the Extract Method refactoring.", opts:["True", "False"], ans:0, exp:"True. After introducing a parameter object, it is common to move related behavior into that new class when appropriate."},
+  {w:14, q:"Which of the following is NOT a benefit of using Introduce Parameter Object?", opts:["Reduces the number of parameters in method calls", "Makes the code more difficult to understand", "Increases code readability and maintainability", "Groups related parameters together into a single object"], ans:1, exp:"Introduce Parameter Object is meant to simplify calls and group related data, not make the code harder to understand."},
+  {w:14, q:"Which of the following best describes a code smell?", opts:["A clear sign that the code's design is starting to decay", "A syntax error that prevents code from compiling", "An optimized piece of code that improves performance", "A security vulnerability in the code"], ans:0, exp:"A code smell is a surface indication that the design may be deteriorating and could benefit from refactoring."},
+  {w:14, q:"Which of the following refactorings is commonly used to resolve Duplicated Code?", opts:["Extract Method", "Introduce Parameter Object", "Inline Method", "Rename Variable"], ans:0, exp:"Extract Method helps factor out repeated logic into a single reusable method."},
+  {w:14, q:"Is the following statement True or False?\nA Long Method code smell is problematic because it can be difficult to understand and maintain due to its complexity.", opts:["True", "False"], ans:0, exp:"True. Long methods often become hard to read, reason about, test, and maintain."}
 ];
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // EXAM ENGINE
@@ -309,6 +596,10 @@ var activeFilter = 'all';
 var activeQuestions = [];
 var answered = [];
 var correctCount = 0;
+var selectedMulti = [];
+var examTimerInterval = null;
+var remainingSeconds = 0;
+var examLocked = false;
 
 function toggleWeekFilter(w, btn) {
   activeFilter = w;
@@ -326,99 +617,257 @@ function shuffle(arr) {
 }
 
 function startExam() {
+  clearExamTimer();
+  examLocked = false;
   var pool = BANK.filter(function(q){ return activeFilter === 'all' || String(q.w) === String(activeFilter); });
   var countSel = document.getElementById('q-count').value;
-  var count = countSel === 'all' ? pool.length : Math.min(parseInt(countSel), pool.length);
+  var count = countSel === 'all' ? pool.length : Math.min(parseInt(countSel, 10), pool.length);
   activeQuestions = shuffle(pool).slice(0, count);
   answered = new Array(activeQuestions.length).fill(false);
+  selectedMulti = new Array(activeQuestions.length).fill(null).map(function(){ return []; });
   correctCount = 0;
   renderQuestions();
+  startExamTimerFromInput();
+  goTopExam();
 }
 
 function resetExam() {
+  clearExamTimer();
+  examLocked = false;
   activeQuestions = [];
   answered = [];
+  selectedMulti = [];
   correctCount = 0;
-  document.getElementById('questions-container').innerHTML = '<div class="empty-state">Select options above and click 🔀 Shuffle &amp; Start to begin.</div>';
-  document.getElementById('score-display').textContent = '— / —';
-  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('questions-container').innerHTML = '';
+  updateScore();
+  updateProgress();
+  updateTimerDisplay(null);
 }
 
 function updateScore() {
-  var total = answered.filter(Boolean).length;
-  var n = activeQuestions.length;
-  document.getElementById('score-display').textContent = total === 0 ? '— / ' + n : correctCount + ' / ' + total + ' answered';
-  document.getElementById('progress-fill').style.width = (n > 0 ? (total / n * 100) : 0) + '%';
+  var total = activeQuestions.length || 0;
+  var scoreText = correctCount + ' / ' + total;
+  document.getElementById('score-display').textContent = scoreText;
+  var fs = document.getElementById('floating-score');
+  if (fs) fs.textContent = scoreText;
 }
 
-function weekLabel(w) {
-  var map = {1:'Wk 1',2:'Wk 2',3:'Wk 3',4:'Wk 4',5:'Wk 5',6:'Wk 6',7:'Wk 7',8:'Wk 8',11:'Wk 11',14:'Wk 14'};
-  return map[w] || 'Wk ' + w;
+function updateProgress() {
+  var total = activeQuestions.length || 0;
+  var done = answered.filter(Boolean).length;
+  var pct = total ? (done / total) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
 }
+
+function isMulti(q) { return Array.isArray(q.ans); }
 
 function renderQuestions() {
   var container = document.getElementById('questions-container');
-  container.innerHTML = '';
-  if (activeQuestions.length === 0) {
-    container.innerHTML = '<div class="empty-state">No questions match the selected filter.</div>';
+  if (!activeQuestions.length) {
+    removeNextTarget();
+    container.innerHTML = '<div class="empty-state">Choose a filter and start the exam.</div>';
+    updateScore(); updateProgress();
     return;
   }
-  activeQuestions.forEach(function(q, idx) {
-    var card = document.createElement('div');
-    card.className = 'q-card';
-    var optsHtml = q.opts.map(function(opt, oi){
-      return '<button type="button" class="qz-opt" id="fe-opt-'+idx+'-'+oi+'" data-q="'+idx+'" data-o="'+oi+'">'+escHtml(opt)+'</button>';
-    }).join('');
-    var codeHtml = q.code ? '<div class="q-code"><code>'+escHtml(q.code)+'</code></div>' : '';
-    card.innerHTML =
-      '<div class="q-num">Q'+(idx+1)+'</div>'+
-      '<span class="q-week-tag">'+escHtml(weekLabel(q.w))+'</span>'+
-      '<div class="q-text">'+escHtml(q.q)+'</div>'+
-      codeHtml+
-      '<div class="qz-options" id="fe-opts-'+idx+'">'+optsHtml+'</div>'+
-      '<div class="qz-explanation" id="fe-expl-'+idx+'"><div class="qz-expl-title">Explanation</div><div class="qz-expl-plain" id="fe-expl-text-'+idx+'"></div></div>';
-    container.appendChild(card);
+  var html = '';
+  activeQuestions.forEach(function(q, qi) {
+    html += '<div class="q-card">';
+    html += '<div class="q-num">Q' + (qi + 1) + ' · Week ' + q.w + '</div>';
+    html += '<div class="q-text">' + escapeHtml(q.q).replace(/\n/g, '<br>') + '</div>';
+    if (q.code) html += '<pre class="q-code"><code>' + escapeHtml(q.code) + '</code></pre>';
+    if (isMulti(q)) html += '<div class="multi-hint">Select all that apply.</div>';
+    html += '<div class="qz-options">';
+    q.opts.forEach(function(opt, oi) {
+      html += '<button type="button" class="qz-opt" data-q="' + qi + '" data-opt="' + oi + '">' + escapeHtml(opt) + '</button>';
+    });
+    html += '</div>';
+    if (isMulti(q)) {
+      html += '<button type="button" class="btn-secondary multi-submit" data-submit-q="' + qi + '">Submit answer</button>';
+    }
+    html += '<div class="qz-explanation" id="fe-expl-' + qi + '"><div class="qz-expl-title">Explanation</div><div class="qz-expl-plain" id="fe-expl-text-' + qi + '"></div></div>';
+    html += '</div>';
   });
-  updateScore();
-  container.addEventListener('click', handleClick);
+  container.innerHTML = html;
+  updateScore(); updateProgress();
+  markNextTarget(0);
 }
 
-function escHtml(s) {
+function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-function handleClick(e) {
-  var btn = e.target.closest('.qz-opt');
-  if (!btn || btn.disabled) return;
-  var qIdx = parseInt(btn.getAttribute('data-q'), 10);
-  var oi   = parseInt(btn.getAttribute('data-o'), 10);
-  if (answered[qIdx]) return;
-  answered[qIdx] = true;
-  var q = activeQuestions[qIdx];
-  var isCorrect = oi === q.ans;
-  if (isCorrect) correctCount++;
-  q.opts.forEach(function(_, optI){
-    var b = document.getElementById('fe-opt-'+qIdx+'-'+optI);
-    if (!b) return;
-    b.disabled = true;
-    if (optI === oi && isCorrect)        b.className = 'qz-opt-correct';
-    else if (optI === oi && !isCorrect)  b.className = 'qz-opt-wrong';
-    else if (optI === q.ans && !isCorrect) b.className = 'qz-opt-reveal';
-    else                                 b.className = 'qz-opt-neutral';
-  });
-  var explEl = document.getElementById('fe-expl-'+qIdx);
-  var explText = document.getElementById('fe-expl-text-'+qIdx);
-  if (explEl && explText) {
-    explText.textContent = q.exp;
-    explEl.style.display = 'block';
-    explEl.classList.toggle('qz-explanation-correct', isCorrect);
-    explEl.classList.toggle('qz-explanation-wrong', !isCorrect);
+function handleClick(ev) {
+  var btn = ev.target.closest('.qz-opt');
+  var submit = ev.target.closest('[data-submit-q]');
+  if (submit) {
+    gradeQuestion(parseInt(submit.getAttribute('data-submit-q'), 10));
+    return;
   }
-  updateScore();
+  if (!btn || examLocked) return;
+  var qIdx = parseInt(btn.getAttribute('data-q'), 10);
+  var optIdx = parseInt(btn.getAttribute('data-opt'), 10);
+  if (answered[qIdx] || examLocked) return;
+  var q = activeQuestions[qIdx];
+  if (isMulti(q)) {
+    var sel = selectedMulti[qIdx];
+    var pos = sel.indexOf(optIdx);
+    if (pos >= 0) sel.splice(pos, 1); else sel.push(optIdx);
+    document.querySelectorAll('.qz-opt[data-q="' + qIdx + '"]').forEach(function(b){
+      var oi = parseInt(b.getAttribute('data-opt'), 10);
+      b.className = sel.indexOf(oi) >= 0 ? 'qz-opt qz-opt-selected' : 'qz-opt';
+    });
+  } else {
+    gradeQuestion(qIdx, optIdx);
+  }
 }
 
-// Auto-start with 30 questions on load
-window.addEventListener('DOMContentLoaded', function(){ startExam(); });
+function sameSet(a, b) {
+  if (a.length !== b.length) return false;
+  var sa = a.slice().sort(); var sb = b.slice().sort();
+  for (var i=0;i<sa.length;i++) if (sa[i] !== sb[i]) return false;
+  return true;
+}
+
+function gradeQuestion(qIdx, singleOptIdx) {
+  if (answered[qIdx] || examLocked) return;
+  var q = activeQuestions[qIdx];
+  var isCorrect = false;
+  if (isMulti(q)) {
+    isCorrect = sameSet(selectedMulti[qIdx], q.ans);
+  } else {
+    isCorrect = (singleOptIdx === q.ans);
+  }
+  answered[qIdx] = true;
+  if (isCorrect) correctCount += 1;
+  var buttons = document.querySelectorAll('.qz-opt[data-q="' + qIdx + '"]');
+  buttons.forEach(function(b){
+    var oi = parseInt(b.getAttribute('data-opt'), 10);
+    b.disabled = true;
+    if (isMulti(q)) {
+      var chosen = selectedMulti[qIdx].indexOf(oi) >= 0;
+      var correct = q.ans.indexOf(oi) >= 0;
+      if (chosen && correct) b.className = 'qz-opt-correct';
+      else if (chosen && !correct) b.className = 'qz-opt-wrong';
+      else if (!chosen && correct) b.className = 'qz-opt-reveal';
+      else b.className = 'qz-opt-neutral';
+    } else {
+      if (oi === singleOptIdx && isCorrect) b.className = 'qz-opt-correct';
+      else if (oi === singleOptIdx && !isCorrect) b.className = 'qz-opt-wrong';
+      else if (oi === q.ans && !isCorrect) b.className = 'qz-opt-reveal';
+      else b.className = 'qz-opt-neutral';
+    }
+  });
+  var sb = document.querySelector('[data-submit-q="' + qIdx + '"]');
+  if (sb) sb.disabled = true;
+  var expl = document.getElementById('fe-expl-' + qIdx);
+  var explText = document.getElementById('fe-expl-text-' + qIdx);
+  if (expl && explText) {
+    explText.textContent = q.exp || '';
+    expl.style.display = 'block';
+  }
+  updateScore(); updateProgress();
+  markNextUnansweredTarget();
+}
+
+
+function formatTime(seconds) {
+  if (seconds === null || seconds === undefined) return '∞';
+  var min = Math.floor(seconds / 60);
+  var sec = seconds % 60;
+  return String(min) + ':' + String(sec).padStart(2, '0');
+}
+
+function updateTimerDisplay(seconds) {
+  var text = seconds === null ? '∞' : formatTime(seconds);
+  var el = document.getElementById('floating-timer');
+  if (el) el.textContent = text;
+}
+
+function clearExamTimer() {
+  if (examTimerInterval) {
+    clearInterval(examTimerInterval);
+    examTimerInterval = null;
+  }
+}
+
+function lockExamDueToTime() {
+  examLocked = true;
+  document.querySelectorAll('.qz-opt, .multi-submit').forEach(function(el){ el.disabled = true; });
+  updateTimerDisplay(0);
+  window.alert('Time is up. The exam is now locked.');
+}
+
+function startExamTimerFromInput() {
+  clearExamTimer();
+  var input = document.getElementById('timer-minutes');
+  var minutes = input ? parseInt(input.value, 10) : 0;
+  if (isNaN(minutes) || minutes <= 0) {
+    remainingSeconds = null;
+    updateTimerDisplay(null);
+    return;
+  }
+  remainingSeconds = minutes * 60;
+  updateTimerDisplay(remainingSeconds);
+  examTimerInterval = setInterval(function() {
+    if (remainingSeconds === null) return;
+    remainingSeconds -= 1;
+    if (remainingSeconds <= 0) {
+      clearExamTimer();
+      lockExamDueToTime();
+      return;
+    }
+    updateTimerDisplay(remainingSeconds);
+  }, 1000);
+}
+
+function removeNextTarget() {
+  document.querySelectorAll('.q-card.is-next-target').forEach(function(card){ card.classList.remove('is-next-target'); });
+}
+
+function markNextTarget(idx) {
+  removeNextTarget();
+  var cards = document.querySelectorAll('.q-card');
+  if (cards[idx]) cards[idx].classList.add('is-next-target');
+}
+
+function markNextUnansweredTarget() {
+  for (var i = 0; i < answered.length; i++) {
+    if (!answered[i]) { markNextTarget(i); return; }
+  }
+  removeNextTarget();
+}
+
+function scrollToNextQuestion() {
+  var cards = document.querySelectorAll('.q-card');
+  if (!cards.length) return;
+  var targetIndex = -1;
+  for (var i = 0; i < answered.length; i++) {
+    if (!answered[i]) { targetIndex = i; break; }
+  }
+  if (targetIndex === -1) {
+    var threshold = window.scrollY + 120;
+    for (var j = 0; j < cards.length; j++) {
+      if (cards[j].getBoundingClientRect().top + window.scrollY > threshold) { targetIndex = j; break; }
+    }
+    if (targetIndex === -1) targetIndex = cards.length - 1;
+  }
+  markNextTarget(targetIndex);
+  cards[targetIndex].scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function pageUpExam() { window.scrollBy({ top: -Math.max(window.innerHeight * 0.85, 300), behavior: 'smooth' }); }
+function pageDownExam() { window.scrollBy({ top: Math.max(window.innerHeight * 0.85, 300), behavior: 'smooth' }); }
+function goTopExam() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function goBottomExam() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+
+window.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('questions-container');
+  if (container && !container.dataset.boundClick) {
+    container.addEventListener('click', handleClick);
+    container.dataset.boundClick = 'true';
+  }
+  startExam();
+});
 </script>
 <script src="../js/study-weeks-config.js?v=20260416"></script>
 <script src="../js/study-lang.js?v=20260416"></script>
