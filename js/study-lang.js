@@ -1,6 +1,6 @@
 /**
  * Site language: Chinese (zh) vs English (en). Pages live under zh/ and en/.
- * Persists in localStorage on index; path decides language on week pages.
+ * Persists in localStorage on index (default English on first open); path decides language on week pages.
  */
 (function () {
   var STORAGE_KEY = 'cs427-study-lang';
@@ -34,7 +34,7 @@
       var s = localStorage.getItem(STORAGE_KEY);
       if (s === 'en' || s === 'zh') return s;
     } catch (e) {}
-    return 'zh';
+    return 'en';
   };
 
   window.setStudyLang = function (lang) {

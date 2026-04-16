@@ -76,6 +76,15 @@ table{width:100%;border-collapse:collapse;font-size:0.86rem;}
 th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
 td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
 td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.card-body code,.note-box code,.green-box code,.blue-box code,td code,li code{
+  font-family:'Source Code Pro',monospace;
+  font-size:1em;
+  line-height:inherit;
+  background:var(--tag-bg);
+  padding:1px 6px;
+  border-radius:3px;
+  color:var(--text);
+}
 .divider{border:none;margin:20px 0;height:0;clear:both;}
 .note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
 .note-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent2);margin-bottom:4px;}
@@ -346,7 +355,7 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
         <table>
           <thead><tr><th>角色</th><th>职责</th></tr></thead>
           <tbody>
-            <tr><td>AbstractExpression</td><td>声明 interpret(Context) 接口</td></tr>
+            <tr><td>AbstractExpression</td><td>声明 <code>interpret(Context)</code> 接口</td></tr>
             <tr><td>TerminalExpression</td><td>叶节点表达式，无子节点，可直接解释</td></tr>
             <tr><td>NonTerminalExpression</td><td>内部节点，维护子 Expression 列表，递归解释</td></tr>
             <tr><td>Context</td><td>携带解释过程中的全局信息（非树节点）</td></tr>
@@ -375,7 +384,7 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
             <tr><td>Composite</td><td>统一处理单个对象与对象组合</td><td>树形结构、个体与群体统一操作</td></tr>
             <tr><td>Iterator</td><td>顺序遍历集合，不暴露内部结构</td><td>遍历集合元素</td></tr>
             <tr><td>Visitor</td><td>不修改类，为其新增操作</td><td>对现有类添加行为、双重分派</td></tr>
-            <tr><td>Interpreter</td><td>解释语言/表达式</td><td>文法、AST、语言解析</td></tr>
+            <tr><td>Interpreter</td><td>用表达式类层次表示文法，在 AST 上解释句子（不是泛泛的「脚本引擎」）</td><td>文法、表达式层次、AST、<code>interpret(Context)</code></td></tr>
           </tbody>
         </table>
       </div>

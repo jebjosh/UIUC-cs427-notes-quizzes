@@ -6,7 +6,7 @@ Static study site for **CS 427: Software Engineering** (UIUC)—weekly notes wit
 
 - **Home (`index.html`)** — Left rail lists course weeks; the main area loads the selected week in an **iframe**. URL hash `#week-id` selects the week (e.g. `#week-8`).
 - **Per-week pages** — Split layout: notes (left) and quiz (right). Tabs for topics; some weeks embed a mind map under `mindmap/`.
-- **study-lang** — Language switch (**中文** / **English**). On the index page, preference is stored in `localStorage` under `cs427-study-lang`. On `zh/…` or `en/…` pages, language follows the folder; switching navigates to the same week in the other language.
+- **study-lang** — Language switch (**中文** / **English**). On the index page, the default is **English** until the user picks a language; the choice is stored in `localStorage` under `cs427-study-lang`. On `zh/…` or `en/…` pages, language follows the folder; switching navigates to the same week in the other language.
 - **Single source of weeks** — `js/study-weeks-config.js` defines `window.STUDY_WEEKS` (id, week number, HTML filename, label). Both the index nav and each week’s sidebar use this list.
 
 ## Run locally

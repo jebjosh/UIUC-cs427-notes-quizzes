@@ -77,6 +77,15 @@ table{width:100%;border-collapse:collapse;font-size:0.86rem;}
 th{font-family:'Source Code Pro',monospace;font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:8px 12px;border:none;text-align:left;background:var(--surface2);}
 td{padding:9px 12px;border:none;color:var(--text2);line-height:1.5;vertical-align:top;background:#fff;}
 td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.card-body code,.note-box code,.green-box code,.blue-box code,td code,li code{
+  font-family:'Source Code Pro',monospace;
+  font-size:1em;
+  line-height:inherit;
+  background:var(--tag-bg);
+  padding:1px 6px;
+  border-radius:3px;
+  color:var(--text);
+}
 .divider{border:none;margin:20px 0;height:0;clear:both;}
 .note-box{background:var(--accent2-light);border:none;border-radius:var(--radius);padding:12px 14px;font-size:0.86rem;color:var(--text2);line-height:1.6;margin-top:14px;}
 .note-box .note-label{font-family:'Source Code Pro',monospace;font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent2);margin-bottom:4px;}
@@ -133,7 +142,7 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 <!-- Tab 0: Mind map -->
 <div class="tab-panel active" id="tab-mindmap">
 <div class="mm-iframe-wrap">
-<iframe class="mm-iframe" loading="lazy" src="../mindmap/week_6_design_patterns_mindmap.html" title="Design Patterns mind map"></iframe>
+<iframe class="mm-iframe" loading="lazy" src="../mindmap/week_6_design_patterns_mindmap_en.html" title="Design Patterns mind map"></iframe>
 </div>
 </div>
 <!-- Tab 1: Overview -->
@@ -341,7 +350,7 @@ A trading desk swaps execution algorithms during a session — each strategy is 
 <tr><td>Composite</td><td>Treat individual objects and groups uniformly.</td><td>Tree structure, same operations on part and whole</td></tr>
 <tr><td>Iterator</td><td>Sequential access without exposing representation.</td><td>“Walk” a collection, hide internals</td></tr>
 <tr><td>Visitor</td><td>Add operations over a stable class hierarchy.</td><td>New behavior without editing each element class, double dispatch</td></tr>
-<tr><td>Interpreter</td><td>Evaluate or execute a little language.</td><td>Grammar rules, AST, parsing</td></tr>
+<tr><td>Interpreter</td><td>Map grammar rules to expression classes; interpret sentences by evaluating the AST (not “run any script engine”).</td><td>Grammar, expression hierarchy, AST, <code>interpret(Context)</code></td></tr>
 </tbody>
 </table>
 </div>

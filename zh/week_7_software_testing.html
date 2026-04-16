@@ -477,19 +477,34 @@ const rawQuestions = [
     q: "Which of the following is NOT a purpose of testing?",
     opts: ["To improve code quality","To spot code faults","To document code","To guarantee code is fully correct"],
     ans: 3,
-    exp: "Testing can improve quality, find faults, and serve as documentation — but it cannot guarantee code is fully correct. No finite test suite can cover all possible inputs and states."
+    explanations: [
+      "❌ 错 — 笔记「Testing Overview」表中把「提高代码质量」列为测试的正当目标。",
+      "❌ 错 — 「发现代码缺陷」正是测试要做的事（表中 fault detection）。",
+      "❌ 错 — 测试可作为可执行文档描述行为（概览表 + Test Activities：用例即活文档）。",
+      "✅ 对 — 这不是测试能承诺的；笔记强调无法证明程序「完全正确」，输入空间巨大，通过全部测试仍可能有未覆盖路径（红框考点）。"
+    ]
   },
   {
     q: "Which of the following do NOT belong to the types of test activities?",
     opts: ["Test Design","Test Automation","Test Implementation","Test Evaluation"],
     ans: 2,
-    exp: "The main test activity types are Test Design, Test Automation, Test Execution, and Test Evaluation. 'Test Implementation' is not a standard category — implementation details are part of Test Automation."
+    explanations: [
+      "❌ 错 — Test Design 是四类活动之一（定义用例与期望）。",
+      "❌ 错 — Test Automation 是四类之一（把取值写成可执行脚本）。",
+      "✅ 对 — 本课模型里没有「Test Implementation」这一栏；标准链是 Design → Automation → Execution → Evaluation（Test Activities + 考点）。",
+      "❌ 错 — Test Evaluation 是第四类（解读结果与覆盖率）。"
+    ]
   },
   {
     q: "Which of the following test activities embeds test values into executable scripts?",
     opts: ["Test Design","Test Automation","Test Implementation","Test Execution"],
     ans: 1,
-    exp: "Test Automation is the activity that takes test values and embeds them into executable scripts so they can be run automatically. Test Design creates the test cases, and Test Execution runs them."
+    explanations: [
+      "❌ 错 — Test Design 负责定义输入与期望，不负责嵌入脚本（活动表）。",
+      "✅ 对 — Test Automation 负责把取值写进可运行脚本（表：Turn those values into runnable scripts）。",
+      "❌ 错 — 不是本课标准活动名；写脚本归在 Automation。",
+      "❌ 错 — Test Execution 负责执行与收集结果，嵌入脚本在此之前已完成。"
+    ]
   },
   {
     q: "Which of the following statements about testing activities is correct?",
@@ -500,7 +515,12 @@ const rawQuestions = [
       "Test automation is useful to have but could also be boring to construct."
     ],
     ans: 3,
-    exp: "Test automation is genuinely useful (especially for regression testing) but the work of scripting and maintaining automated tests can be repetitive and tedious. The other options are incorrect: test design requires deep domain knowledge, scripting doesn't demand heavy theory, and splitting roles is often more efficient."
+    explanations: [
+      "❌ 错 — Test Design 需要领域与系统理解（活动表技能列）。",
+      "❌ 错 — Automation 侧重编程与工具，不是泛泛的「理论」（笔记把自动化与编码/框架挂钩）。",
+      "❌ 错 — 同一人包揽所有活动并非「总是」更高效；分工与专长在实践中很常见。",
+      "✅ 对 — 与「Manual vs automated」表一致：回归频繁时自动化有价值，但编写维护脚本可能枯燥（Reality check + 回归框）。"
+    ]
   },
   {
     q: "Which of the following statements about test cases is correct?",
@@ -510,13 +530,22 @@ const rawQuestions = [
       "The process of developing test cases can also help developers to understand the requirements."
     ],
     ans: 2,
-    exp: "Writing test cases forces developers to think through requirements carefully, which deepens understanding. Test cases can also serve as living documentation. Many people beyond developers (QA engineers, stakeholders) can and should write tests."
+    explanations: [
+      "❌ 错 — 笔记说明测试可文档化预期行为，同事可读测试当规格（Test Activities：活文档）。",
+      "❌ 错 — 「谁写测试」：开发、领域专家等都可写，并非只有开发。",
+      "✅ 对 — 写测试能澄清需求（同卡片：authoring tests 帮你理清需求）。"
+    ]
   },
   {
     q: "When should we write test cases?",
     opts: ["Before code is written","While writing code","After code is written","All of above"],
     ans: 3,
-    exp: "Tests can be written at any stage. Before (TDD/BDD), during (as features are added), or after (regression tests, bug fixes). Each timing has its own advantages, and all are valid in practice."
+    explanations: [
+      "❌ 单独看对（TDD/先测）但不完整 — 笔记还说可在开发中、开发后写测。",
+      "❌ 单独看对但不完整。",
+      "❌ 单独看对（补测/回归）但不完整。",
+      "✅ 对 — Overview：前/中/后都可以；成熟项目往往多种时机并存。"
+    ]
   },
   {
     q: "Which statement about manual testing and automated testing is NOT correct?",
@@ -527,7 +556,12 @@ const rawQuestions = [
       "Automated tests always find more bugs than manual tests."
     ],
     ans: 3,
-    exp: "Automated tests do not always find more bugs. Exploratory manual testing can uncover issues that rigid automated scripts miss. Automation excels at repetitive regression testing, not at creative bug discovery."
+    explanations: [
+      "❌ 该项为真 — 同套回归常跑时自动化更划算（回归框）。",
+      "❌ 真 — 界面稳定后再自动化；变动大时先手工（同表）。",
+      "❌ 真 — 很少重跑的用例手工往往更省（Reality check）。",
+      "✅ D 的表述为假 — 表中写明自动化并不会在找虫数量上必然胜过手工；探索式手工仍能发现脚本漏掉的问题。"
+    ]
   },
   {
     q: "Which of the following statements is true about tests?",
@@ -538,7 +572,12 @@ const rawQuestions = [
       "Tests can always spot bugs"
     ],
     ans: 2,
-    exp: "It is entirely normal — especially in well-tested projects — for the test codebase to exceed the production codebase in size. Tests are not limited to code form (manual tests exist), UIs can be tested, and tests cannot guarantee finding all bugs."
+    explanations: [
+      "❌ 错 — 笔记：测试不必是代码，手工计划也算（Test Activities 列表）。",
+      "❌ 错 — Overview：界面可测，稳定后可自动化。",
+      "✅ 对 — Overview：成熟项目测试代码量超过产品代码很常见。",
+      "❌ 错 — 测试不能担保找出所有缺陷（与「完全正确」同类限制）。"
+    ]
   },
   {
     q: "Which of the following statements about writing tests as a developer is NOT correct?",
@@ -549,7 +588,12 @@ const rawQuestions = [
       "Only QA developers should develop test cases since they are experts in testing area."
     ],
     ans: 3,
-    exp: "It is not true that only QA developers should write tests. Developers, domain experts, and even end users can contribute valuable test cases. Broader involvement leads to better coverage and reduces blind spots."
+    explanations: [
+      "❌ 该项为真 — Developer bias：再熟也可能漏测。",
+      "❌ 真 — 「谁写测试」鼓励多人参与。",
+      "❌ 真 — 同卡片：作者可能偏向自己认为正确的路径。",
+      "✅ 该项不正确 — 笔记明确反对只有 QA 写测试；视角越多盲点越少。"
+    ]
   },
   {
     q: "Which of the following is true about Black-box testing?",
@@ -560,7 +604,12 @@ const rawQuestions = [
       "Black-box testing is better for finding crashes, out of bounds failures, and file not closed failures."
     ],
     ans: 0,
-    exp: "The input space is effectively infinite for most programs, making exhaustive black-box testing infeasible. The second option describes white-box testing. Black-box testing is actually weak at finding extra logic faults (since you can't see the internals), and white-box testing is generally better for low-level faults like out-of-bounds errors."
+    explanations: [
+      "✅ 对 — Black vs white：输入空间巨大，穷举黑盒不可行，用 ECP/BVA 抽样。",
+      "❌ 错 — 那是白盒/结构测试（看得见内部）。",
+      "❌ 错 — 黑盒难以发现内部多余逻辑（不读实现）。",
+      "❌ 错 — 越界、资源类问题更偏白盒强项（对比表）。"
+    ]
   },
   {
     q: "Which of the following statements about White-box testing is NOT correct?",
@@ -570,13 +619,21 @@ const rawQuestions = [
       "White-box testing is usually very simple, so it does not require knowledge of programming and implementation."
     ],
     ans: 2,
-    exp: "White-box testing requires detailed knowledge of the internal code structure, logic, and implementation. It is not simple — testers must understand control flow, data flow, and program internals to design effective structural tests."
+    explanations: [
+      "❌ 该项为真 — Cross-over：ECP/BVA 也可用于白盒。",
+      "❌ 真 — 白盒跟实现细节，频繁改动则维护成本高。",
+      "✅ 该项不正确 — 白盒需要编程与实现知识；笔记强调并不「简单」（表 + 考点）。"
+    ]
   },
   {
     q: "A developer called Math.log(5) which was supposed to return the natural logarithm of the input, but returns 125 instead. This is an example of:",
     opts: ["Error","Failure","Fault"],
     ans: 0,
-    exp: "An Error is a human mistake in the code — here the developer wrote incorrect logic (perhaps computing 5³ instead of ln(5)). A Fault is the defect in the code itself. A Failure is the observable incorrect behavior at runtime. According to the PIE model, the incorrect source action is the Error."
+    explanations: [
+      "✅ 对 — Error/Failure/Fault 表：error 是人的失误；蓝框 walk-through 同型例子。",
+      "❌ 错 — Failure 是运行时可观察的错误行为（错误返回值），不是题干优先问的分类。",
+      "❌ 错 — Fault 是固化在制品里的缺陷；「写错那一笔」在笔记术语里更贴近 error。"
+    ]
   },
   {
     q: "According to the PIE model, which of the following conditions is NOT correct for a failure to be observed?",
@@ -586,19 +643,33 @@ const rawQuestions = [
       "The infected state must NOT propagate to cause some output of the program to be incorrect."
     ],
     ans: 2,
-    exp: "The PIE model requires: (1) the faulty location is Executed, (2) the state becomes Infected (incorrect), and (3) the infected state Propagates to an observable output. The third option states the opposite — propagation IS required for a failure to be observed."
+    explanations: [
+      "❌ 该条正确 — Execution：故障语句要执行到。",
+      "❌ 正确 — Infection：状态要变错。",
+      "✅ 该表述不符合 PIE — 必须有 Propagation 到可观察输出；「不得传播」与模型相反（红框考点）。"
+    ]
   },
   {
     q: "Which of the following is NOT a metric for code coverage?",
     opts: ["Method coverage","Branch coverage","Statement coverage","Parameter coverage"],
     ans: 3,
-    exp: "Standard code coverage metrics include Statement, Branch, Method/Function, Line, and Condition coverage. 'Parameter coverage' is not a recognized standard coverage metric — parameters are not independently tracked as an execution structure."
+    explanations: [
+      "❌ Method coverage 是标准指标（Code Coverage 表）。",
+      "❌ Branch coverage 标准。",
+      "❌ Statement coverage 标准。",
+      "✅ 对 — 「Parameter coverage」不在常用体系内；指标针对可执行结构而非参数本身（考点 + 表）。"
+    ]
   },
   {
     q: "\"Dividing input conditions into groups and testing each group of inputs\" describes which technique for Black-box testing?",
     opts: ["Boundary Value Analysis","Equivalence Class Partitioning","Decision Table Testing","Use case testing"],
     ans: 1,
-    exp: "Equivalence Class Partitioning divides inputs into classes where all members are expected to behave the same way, then tests one representative from each class. Boundary Value Analysis focuses specifically on the edges between classes, not the partitioning itself."
+    explanations: [
+      "❌ BVA 强调类边界与邻值（±1），不是「划分组」本身（ECP vs BVA 框）。",
+      "✅ 对 — ECP：划分等价类并取代表（技术表：partition / representative）。",
+      "❌ 决策表是条件组合与动作的矩阵，不是单纯分组代表值。",
+      "❌ 用例测试从用户流程抽场景，不同于通用分代表值模式。"
+    ]
   }
 ];
 
@@ -608,13 +679,13 @@ const questions = rawQuestions.map(function (rq, idx) {
     text: rq.q,
     options: rq.opts,
     correct: rq.ans,
-    exp: rq.exp
+    explanations: rq.explanations
   };
 });
 </script>
 <script src="../js/quiz-pane.js"></script>
 <script>
-QuizPane.mount({ questions: questions, expandExplanationToOptions: true });
+QuizPane.mount({ questions: questions });
 </script>
 <script src="../js/study-weeks-config.js"></script>
 <script src="../js/study-lang.js"></script>
