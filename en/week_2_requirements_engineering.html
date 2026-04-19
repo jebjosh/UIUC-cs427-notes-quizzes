@@ -907,6 +907,24 @@ const questions = [
       "✅ 21 — The critical path is A → B → D → E: 6 + 10 + 5 = 21 (longer than A → B → C → E = 16).",
       "❌ 24 — No path from A to E sums to 24 with these edge weights."
     ]
+  },
+  {
+    num: 46,
+    text: "For the above Gantt chart, which of the following statements is wrong?",
+    figureSrc: "../assets/quiz2-q8-gantt.png",
+    options: [
+      "The relationship between tasks 1 and 2 satisfies the Start-To-Start constraint",
+      "The relationship between tasks 2 and 3 satisfies the Finish-To-Start constraint",
+      "The relationship between tasks 3 and 4 satisfies the Finish-To-Finish constraint",
+      "The relationship between tasks 1 and 4 satisfies the Finish-To-Start constraint"
+    ],
+    correct: 3,
+    explanations: [
+      "❌ This statement is valid for Task 1 and 2.",
+      "❌ This statement is valid for Task 2 and 3.",
+      "❌ This statement is valid for Task 3 and 4.",
+      "✅ This is the wrong statement — Tasks 1 and 4 do not have a Finish-To-Start relationship."
+    ]
   }
 
 ];

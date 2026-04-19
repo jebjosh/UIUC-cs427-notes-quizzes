@@ -1115,7 +1115,20 @@ var questions = [
     "✅ Requirements engineering is only about one single version of a software system at a specific time. Is the only one NOT correct from the options",
    
   ]
-}
+},
+  {
+    num: 36,
+    text: "Refer to the schedule below. What is the maximum number of tasks that are in progress on the same day at any time?",
+    figureSrc: "../assets/quiz2-q8-gantt.png",
+    options: ["1", "2", "3", "4"],
+    correct: 2,
+    explanations: [
+      "❌ 1 — On several days more than one task runs (e.g. Day 2).",
+      "❌ 2 — On Day 2, Task 1, Task 2, and Task 4 all overlap (three tasks).",
+      "✅ 3 — Day 2 has Task 1 (days 1–2), Task 2 (days 2–3), and Task 4 (days 2–5) in progress simultaneously.",
+      "❌ 4 — No single day has four tasks running at the same time."
+    ]
+  }
 ];
 </script>
 <script src="../js/quiz-pane.js?v=20260419"></script>
