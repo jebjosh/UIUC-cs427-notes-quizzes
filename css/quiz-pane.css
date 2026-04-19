@@ -350,3 +350,42 @@
   .qz-source-line{margin-bottom:16px;padding-bottom:2px;}
   .qz-diagram img{max-height:180px;}
 }
+
+/* ── Mobile two-pane switcher (≤960px) ────────────────────────────
+   On small screens the notes + quiz panes stack vertically.
+   A sticky pill-switcher lets the user jump between them.
+───────────────────────────────────────────────────────────────────*/
+@media (max-width:960px){
+  /* The pill bar is injected by study-week-common.js on mobile */
+  .pane-switcher{
+    display:flex;
+    position:sticky;
+    top:0;
+    z-index:40;
+    background:var(--bg,#faf9f7);
+    border-bottom:1px solid var(--border,#e8e6e1);
+    padding:8px 14px;
+    gap:6px;
+  }
+  .pane-switch-btn{
+    flex:1;
+    font-family:'Source Sans 3',sans-serif;
+    font-size:0.82rem;
+    font-weight:600;
+    padding:9px 12px;
+    border:1px solid var(--border,#e8e6e1);
+    border-radius:8px;
+    background:var(--surface,#fff);
+    color:var(--text2,#4a4840);
+    cursor:pointer;
+    transition:background .15s,color .15s;
+  }
+  .pane-switch-btn.active{
+    background:var(--accent-light,#edf4ef);
+    color:var(--accent,#3d6b4f);
+    border-color:var(--accent-light,#edf4ef);
+  }
+  /* Hide inactive pane on mobile */
+  .page-split.mobile-notes-active .quiz-pane{ display:none; }
+  .page-split.mobile-quiz-active  .notes-pane{ display:none; }
+}

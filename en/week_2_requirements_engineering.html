@@ -8,8 +8,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Week 2 · Development Models &amp; Project Management</title>
-<link href="../css/study-sidebar.css?v=20260416b" rel="stylesheet"/>
-<link href="../css/quiz-pane.css?v=20260416" rel="stylesheet"/>
+<link href="../css/study-sidebar.css?v=20260419" rel="stylesheet"/>
+<link href="../css/quiz-pane.css?v=20260419" rel="stylesheet"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -116,8 +116,8 @@ td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
 }
 
 </style>
-<link href="../css/study-week-tabs.css?v=20260416" rel="stylesheet"/>
-<script src="../js/study-week-common.js?v=20260416"></script>
+<link href="../css/study-week-tabs.css?v=20260419" rel="stylesheet"/>
+<script src="../js/study-week-common.js?v=20260419"></script>
 </head>
 <body data-study-week="week-2">
 <div class="app-shell">
@@ -403,7 +403,7 @@ const questions = [
   },
   {
     num: 8,
-    text: "For the Gantt chart (Task1 Day1-2, Task2 Day1.5-3, Task3 Day3-5, Task4 Day2-4), which statement is wrong?",
+    text: "For the Gantt chart (Task1 Day1-2, Task2 Day1.5-3, Task3 Day3-5, Task4 Day2-5), which statement is wrong?",
     options: [
       "The relationship between tasks 1 and 2 satisfies the Start-To-Start constraint",
       "The relationship between tasks 2 and 3 satisfies the Finish-To-Start constraint",
@@ -881,16 +881,42 @@ const questions = [
       "❌ XP releases incrementally, not all at once.",
       "❌ High fault tolerance is not a guaranteed direct advantage of XP."
     ]
+  },
+  {
+    num: 48,
+    text: "Refer to the schedule below. What is the maximum number of tasks that are in progress on the same day at any time?",
+    figureSrc: "../assets/quiz2-q8-gantt.png",
+    options: ["1", "2", "3", "4"],
+    correct: 2,
+    explanations: [
+      "❌ 1 — On several days more than one task runs (e.g. Day 2).",
+      "❌ 2 — On Day 2, Task 1, Task 2, and Task 4 all overlap (three tasks).",
+      "✅ 3 — Day 2 has Task 1 (days 1–2), Task 2 (days 2–3), and Task 4 (days 2–5) in progress simultaneously. No day has four tasks at once.",
+      "❌ 4 — No single day has four tasks running at the same time."
+    ]
+  },
+  {
+    num: 49,
+    text: "Refer to the directed graph below. Each edge weight is an execution time. What is the total latency of the critical path from A to E?",
+    figureSrc: "../assets/quiz2-q9-graph.png",
+    options: ["16", "18", "21", "24"],
+    correct: 2,
+    explanations: [
+      "❌ 16 — This is the sum along A → B → C → E (6 + 3 + 7), which is not the longest path.",
+      "❌ 18 — No path from A to E adds to 18 with the given weights.",
+      "✅ 21 — The critical path is A → B → D → E: 6 + 10 + 5 = 21 (longer than A → B → C → E = 16).",
+      "❌ 24 — No path from A to E sums to 24 with these edge weights."
+    ]
   }
 
 ];
 </script>
-<script src="../js/quiz-pane.js?v=20260416"></script>
+<script src="../js/quiz-pane.js?v=20260419"></script>
 <script>
 QuizPane.mount({ questions: questions });
 </script>
-<script src="../js/study-weeks-config.js?v=20260416"></script>
-<script src="../js/study-lang.js?v=20260416"></script>
-<script src="../js/study-sidebar.js?v=20260416b"></script>
+<script src="../js/study-weeks-config.js?v=20260419"></script>
+<script src="../js/study-lang.js?v=20260419"></script>
+<script src="../js/study-sidebar.js?v=20260419"></script>
 </body>
 </html>

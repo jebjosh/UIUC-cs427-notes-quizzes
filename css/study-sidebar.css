@@ -5,8 +5,19 @@
   --accent:#3d6b4f;--accent-light:#edf4ef;
   --tag-bg:#f0ede8;--radius:8px;
   --notes-pane-fr:1.15fr;--quiz-pane-fr:0.85fr;
+  --sidebar-width: minmax(256px,320px);
+  --sidebar-collapsed-width: 64px;
 }
-.app-shell,.index-app{display:grid;grid-template-columns:minmax(256px,320px) minmax(0,1fr);min-height:100vh;align-items:stretch;}
+
+/* ── Layout shell ───────────────────────────────────────────────── */
+.app-shell,.index-app{
+  display:grid;
+  grid-template-columns:minmax(256px,320px) minmax(0,1fr);
+  min-height:100vh;
+  align-items:stretch;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────── */
 .study-nav{
   background:var(--bg);
   padding:24px 16px 16px;
@@ -14,13 +25,25 @@
   top:0;
   min-height:100vh;
   max-height:100vh;
+  width:100%;
   display:flex;
   flex-direction:column;
   border-right:1px solid var(--border);
+  overflow:hidden;
+  box-sizing:border-box;
 }
-.study-nav-header{margin-bottom:18px;padding:0 8px 12px 10px;border-bottom:1px solid var(--border);flex-shrink:0;}
+
+.study-nav-header{
+  margin-bottom:18px;
+  padding:0 8px 12px 10px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+  /* prevent title from expanding header beyond collapsed width */
+  min-width:0;
+}
 .study-nav-header .study-nav-title{margin-bottom:0;padding:0;border:none;}
-/* In-flow: bottom of left column (same bg as sidebar, not a floating layer) */
+
+/* In-flow lang switch: sits at the bottom of the sidebar column */
 #study-lang-switch-root,.study-lang-switch-root{
   margin-top:auto;
   flex-shrink:0;
@@ -30,7 +53,9 @@
 .study-lang-btn{font-family:'Source Sans 3',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 10px;border:none;border-radius:6px;background:transparent;color:var(--text2);cursor:pointer;line-height:1.2;}
 .study-lang-btn:hover{background:var(--accent-light);color:var(--accent);}
 .study-lang-btn.active{background:var(--accent-light);color:var(--accent);}
-.study-nav-title{font-family:'Source Sans 3',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;line-height:1.35;}
+.study-nav-title{font-family:'Source Sans 3',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;line-height:1.35;
+  /* allow title to truncate when sidebar is collapsing */
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .study-nav-list{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow-y:auto;}
 .study-nav-list a{font-size:0.84rem;color:var(--text2);text-decoration:none;padding:11px 12px;line-height:1.45;transition:background 0.15s,color 0.15s;display:block;border-radius:var(--radius);}
 .study-nav-list a:hover{background:var(--accent-light);color:var(--accent);}
@@ -39,12 +64,75 @@
 .study-nav-group{padding:0;}
 .study-nav-group-label{font-size:0.84rem;font-weight:600;color:var(--text2);padding:11px 12px 4px;line-height:1.45;}
 .study-nav-sub{display:block;font-size:0.78rem;color:var(--muted);padding:4px 12px 11px 22px;line-height:1.4;}
+
+/* ── Embed mode ─────────────────────────────────────────────────── */
 .embed-mode #study-sidebar-root{display:none!important;}
 .embed-mode .study-nav{display:none!important;}
 .embed-mode .app-shell,.embed-mode .index-app{grid-template-columns:1fr!important;min-height:100vh;}
+
+/* ── Hamburger toggle button ────────────────────────────────────── */
+.study-nav-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.study-nav-header .study-nav-title{flex:1;min-width:0;}
+.study-nav-toggle{
+  display:inline-flex;flex-direction:column;justify-content:center;gap:4px;flex:0 0 auto;
+  width:40px;height:40px;border:1px solid var(--border);border-radius:10px;
+  background:var(--surface);cursor:pointer;padding:0 10px;
+}
+.study-nav-toggle:hover{background:var(--accent-light);}
+.study-nav-toggle span{display:block;height:2px;border-radius:2px;background:var(--text);transition:transform .2s ease,opacity .2s ease;}
+
+/* ── Collapsed state ─────────────────────────────────────────────
+   ROOT CAUSE FIX:
+   Simply hiding the nav list doesn't shrink the sidebar column
+   because the grid column is minmax(256px,320px) — it stays wide.
+   The real fix is to:
+     1. Override the grid column to an explicit narrow px value
+     2. Shrink the sidebar's own padding to match
+     3. Hide the title text (it overflows the narrow column)
+   This way the sidebar visually collapses to just the ☰ button.
+────────────────────────────────────────────────────────────────── */
+body.study-sidebar-collapsed .app-shell,
+body.study-sidebar-collapsed .index-app{
+  /* collapse column to exactly the toggle button width + its padding */
+  grid-template-columns:var(--sidebar-collapsed-width) minmax(0,1fr);
+}
+body.study-sidebar-collapsed .study-nav-list,
+body.study-sidebar-collapsed #study-lang-switch-root,
+body.study-sidebar-collapsed .study-lang-switch-root{display:none;}
+body.study-sidebar-collapsed .study-nav{
+  min-height:auto;
+  max-height:none;
+  /* shrink padding so the 64px column fits snugly */
+  padding:12px 12px 12px;
+}
+body.study-sidebar-collapsed .study-nav-header{
+  margin-bottom:0;
+  border-bottom:none;
+  padding-bottom:0;
+  /* hide the title — only the toggle button shows */
+  gap:0;
+}
+body.study-sidebar-collapsed .study-nav-title{
+  /* visually hide but keep for accessibility */
+  width:0;overflow:hidden;opacity:0;
+}
+
+/* X / burger animation */
+body.study-sidebar-collapsed .study-nav-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+body.study-sidebar-collapsed .study-nav-toggle span:nth-child(2){opacity:0;}
+body.study-sidebar-collapsed .study-nav-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* ── Tablet (≤960px): sidebar becomes a collapsible top bar ─────── */
 @media (max-width:960px){
+  /* On tablet/mobile, the grid stacks vertically (1 column),
+     so the collapsed grid fix is irrelevant — keep it 1fr */
   .app-shell,.index-app{grid-template-columns:1fr;}
+  body.study-sidebar-collapsed .app-shell,
+  body.study-sidebar-collapsed .index-app{grid-template-columns:1fr;}
+
+  .study-nav-toggle{width:42px;height:42px;}
   .study-nav{position:relative;min-height:auto;max-height:none;padding:16px 18px 14px;border-right:none;border-bottom:1px solid var(--border);}
+  body.study-sidebar-collapsed .study-nav{padding:12px 18px 12px;}
   #study-lang-switch-root,.study-lang-switch-root{margin-top:14px;}
   .study-nav-list{flex-direction:row;flex-wrap:wrap;gap:0;flex:0 1 auto;overflow:visible;}
   .study-nav-list > * + *{border-top:none;}
@@ -52,10 +140,12 @@
   .study-nav-list a{padding:8px 11px;font-size:0.76rem;}
   .study-nav-list .study-nav-soon{padding:8px 11px;font-size:0.76rem;}
   .study-nav-group-label,.study-nav-sub{padding:8px!important;}
+  /* On tablet, title stays visible when collapsed (sidebar is horizontal) */
+  body.study-sidebar-collapsed .study-nav-title{width:auto;overflow:hidden;opacity:1;}
+  body.study-sidebar-collapsed .study-nav-header{gap:12px;}
 }
 
-
-/* Mobile polish */
+/* ── Mobile (≤700px) ────────────────────────────────────────────── */
 @media (max-width:700px){
   .study-nav{padding:12px 12px 10px;}
   .study-nav-header{margin-bottom:12px;padding:0 4px 10px 6px;}
@@ -68,22 +158,4 @@
 }
 @media (max-width:420px){
   .study-nav-list{grid-template-columns:1fr;}
-}
-
-
-.study-nav-header{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.study-nav-header .study-nav-title{flex:1;min-width:0;}
-.study-nav-toggle{display:inline-flex;flex-direction:column;justify-content:center;gap:4px;flex:0 0 auto;width:40px;height:40px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;padding:0 10px;}
-.study-nav-toggle:hover{background:var(--accent-light);}
-.study-nav-toggle span{display:block;height:2px;border-radius:2px;background:var(--text);transition:transform .2s ease,opacity .2s ease;}
-body.study-sidebar-collapsed .study-nav-list,
-body.study-sidebar-collapsed #study-lang-switch-root,
-body.study-sidebar-collapsed .study-lang-switch-root{display:none;}
-body.study-sidebar-collapsed .study-nav{min-height:auto;max-height:none;padding-bottom:12px;}
-body.study-sidebar-collapsed .study-nav-header{margin-bottom:0;border-bottom:none;padding-bottom:0;}
-body.study-sidebar-collapsed .study-nav-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg);}
-body.study-sidebar-collapsed .study-nav-toggle span:nth-child(2){opacity:0;}
-body.study-sidebar-collapsed .study-nav-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-@media (max-width:960px){
-  .study-nav-toggle{width:42px;height:42px;}
 }
