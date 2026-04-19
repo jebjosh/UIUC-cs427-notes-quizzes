@@ -531,420 +531,459 @@ const IMGS = {
 };
 
 const questions = [
-  {
-    num:1, text:"In Class Diagrams, relationship between part and whole can be represented by which of the following?",
-    options:["Generalization","Aggregation","Division","None of the above"], correct:1,
-    explanations:[
-"❌ Generalization — Indicates an inheritance relationship (is-a). The subclass is a specialization of the parent class, not a part-whole relationship.",
-      "✅ Aggregation — Aggregation models part-whole: parts can exist outside the whole; this is the correct answer.",
-"❌ Division — is not a standard relationship type in UML.",
-      "❌ None of the above — Wrong; Aggregation is correct."
-    ]
-  },
-  {
-    num:2, text:"Consider the above Class Diagram when answering the following question:\nWhich of the following statements is True about Author?",
-    diagram:"q2",
-    options:["An author may have written nothing.","Every author has contributed up to four articles.","Every author has contributed at least one article and at least one book.","Every book has up to one author."], correct:0,
-    explanations:[
-"✅ An author may have written nothing. — Article side multiplicity is 0..*, Book side is also 0..*, Author can not have any Article or Book, that is, it can write nothing.",
-"❌ Every author has contributed up to four articles. — The Author side of the Article-Author connection is 1..4, which means that each article requires 1~4 authors, not that each author can write up to 4 articles.",
-"❌ Every author has contributed at least one article and at least one book. — Multiplicity is 0..*, zero is fine.",
-"❌ Every book has up to one author. — Book-Author multiplicity is 0..*, a book can have multiple authors."
-    ]
-  },
-  {
-    num:3, text:"Consider the Class diagram in Question 2\nWhich relationship best describes the relationship between Publication and Article?",
-    diagram:"q2",
-    options:["Composition","Generalization","Aggregation","None of the above"], correct:1,
-    explanations:[
-"❌ Composition — Composition is a strong part-whole relationship. Parts cannot exist without the whole. Publication and Article do not have this relationship.",
-"✅ Generalization — The arrows pointing to Publication from Article and Book in the figure are hollow triangles, indicating inheritance (Generalization), and Article is-a Publication.",
-"❌ Aggregation — Aggregation is a part-whole relationship, and the diagram uses inheritance arrows.",
-"❌ None of the above — Wrong, Generalization correct."
-    ]
-  },
-  {
-    num:4, text:"Consider the class diagram from Question 2\nWhich of the following statements is NOT True about the Class Diagram?",
-    diagram:"q2",
-    options:["Every publication has an Author.","Every Article has at least one Author","Not every Book has an Author","None of the above"], correct:0,
-    explanations:[
-"✅ Every publication has an Author. — This is NOT True. Book-Author multiplicity 0..*, that is, a book can have no author; therefore not every Publication must have an Author.",
-"❌ Every Article has at least one Author — The Author side of the Article-Author connection is 1..4, and every Article has at least one author, which is True.",
-"❌ Not every Book has an Author — Book-Author multiplicity 0..*, a Book can have no Author, this is True.",
-"❌ None of the above — False, the first item is indeed Not True."
-    ]
-  },
-  {
-    num:5, text:"Based on this Class diagram, which of the following statements about the City and State classes is correct?",
-    diagram:"q5",
-    options:["No two cities can have the same name","Each city can be in zero or one state","Each city is in exactly one state","No two states can have the same name"], correct:2,
-    explanations:[
-"❌ No two cities can have the same name — The class diagram has no uniqueness constraint and Name is just a normal attribute, so this conclusion cannot be reached.",
-"❌ Each city can be in zero or one state — There is no multiplicity annotation on the City side (default 1), and each City belongs to exactly one State, not zero or one.",
-"✅ Each city is in exactly one state — There is a composition diamond on the State side, and the default multiplicity on the City side is 1, which means that each City belongs to exactly one State.",
-"❌ No two states can have the same name — The class diagram does not impose a uniqueness constraint to conclude this."
-    ]
-  },
-  {
-    num:6, text:"P restaurant wants to automate ordering of pizzas for customers.\n1. Two sizes: large, small\n2. Each pizza can have two different sauces and two different bases\n3. A customer can order a pizza or a drink\n\nWhich of the following is LEAST likely to be a class or attribute?",
-    options:["Pizza","Order","Customer","Sauce","Drink","Size"], correct:1,
-    explanations:[
-"❌ Pizza — obviously the core entity, should be a class.",
-"✅ Order — In this scenario, Order is more likely to be an operation (method) than a persistent data entity; the requirement describes the action of placing an order.",
-"❌ Customer — The customer is directly mentioned in the requirement and is an entity class.",
-"❌ Sauce — A different Sauce is mentioned in the requirement, which can be a class or a property.",
-"❌ Drink — The requirement clearly treats Drink as an orderable item and an entity.",
-"❌ Size — The requirement mentions two sizes: large/small, which can be used as attributes or classes."
-    ]
-  },
-  {
-    num:7, text:"From the requirements stated in Question 6, which of the following is MOST likely to be an operation?",
-    options:["Base","Order","Sauce","None of the above"], correct:1,
-    explanations:[
-"❌ Base — is a component of pizza and is a property or class, not an operation.",
-"✅ Order — Order describes the action/behavior of placing an order, and is more suitable as a method (operation) in OO design, such as customer.order(pizza).",
-"❌ Sauce — is a component of pizza and is a property or class.",
-"❌ None of the above — Error, Order is the most appropriate action."
-    ]
-  },
-  {
-    num:8, text:"In UML diagrams, how are abstract classes distinguished from concrete classes?",
-    options:["They are shown in the same way","Class names for abstract classes are shown in italics","Class names for concrete classes are shown in italics","Abstract classes are shown as boxes with bold outlines"], correct:1,
-    explanations:[
-"❌ They are shown in the same way — Wrong, UML has a special way of representing abstract classes.",
-"✅ Class names for abstract classes are shown in italics — The UML specification stipulates that class names for abstract classes are shown in italics to distinguish them from concrete classes.",
-"❌ Class names for concrete classes are shown in italics — Just the opposite, italics are used for abstract classes and normal fonts are used for concrete classes.",
-"❌ Abstract classes are shown as boxes with bold outlines — This is not a UML standard specification."
-    ]
-  },
-  {
-    num:9, text:"Which of the following terms best describes the case where a Queue class is implemented using an internal instance of Array for storing the elements in the queue?",
-    options:["Creation","Composition","Generalization","Singularity"], correct:1,
-    explanations:[
-"❌ Creation — Not a standard term for describing relationships between classes.",
-"✅ Composition — Composition is a strong part-whole relationship: Array is an internal component of Queue, and its life cycle follows Queue, conforming to the definition of Composition.",
-"❌ Generalization — inheritance relationship, Queue does not inherit Array.",
-"❌ Singularity — is not a relationship type in UML."
-    ]
-  },
-  {
-    num:10, text:"Is the following statement True or False?\nUML class diagrams are a good way to represent the algorithmic nature of the interactions between classes.",
-    options:["True","False"], correct:1,
-    explanations:[
-"❌ True — False, class diagrams are not suitable for representing algorithms or interaction logic.",
-"✅ False — UML class diagrams are used to show the structure of a class (properties, methods, relationships) and do not represent algorithms or interaction sequences. To represent interactions, use Sequence Diagram or Activity Diagram."
-    ]
-  },
-  {
-    num:11, text:"The vertical dimension of a sequence diagram represents which of the following?",
-    options:["Message","Time","Objects","Replies"], correct:1,
-    explanations:[
-"❌ Message — A message is a horizontal arrow representing calls between objects, not a vertical dimension.",
-"✅ Time — The vertical axis of a Sequence Diagram represents the passage of time, with time increasing from top to bottom.",
-"❌ Objects — Objects are arranged along the top horizontal axis, with the vertical lifeline of each object.",
-"❌ Replies — Replies are specific types of messages that are still horizontally dimensional."
-    ]
-  },
-  {
-    num:12, text:"Is the following statement True or False?\nClass Diagrams can show timing-related information.",
-    options:["True","False"], correct:1,
-    explanations:[
-"❌ True — Error, the class diagram is a static structural view and does not contain timing or execution order information.",
-"✅ False — Class Diagram is a static diagram that only describes the system structure (classes, attributes, methods, relationships), and timing information is represented by Sequence Diagram or Timing Diagram."
-    ]
-  },
-  {
-    num:13, text:"Which of the following determines the order of events in a Sequence Diagram?",
-    options:["The order of events based on their object-creation time","The order of events based on their triggering time","The order of events based on their importance","The order of events based on their duration time"], correct:1,
-    explanations:[
-"❌ The order of events based on their object-creation time — The order of object creation does not determine the order of messages.",
-"✅ The order of events based on their triggering time — The events in the sequence diagram are arranged from top to bottom according to their triggering time, reflecting the actual execution/interaction sequence.",
-"❌ The order of events based on their importance — importance is not a ranking basis.",
-"❌ The order of events based on their duration time — duration does not determine order."
-    ]
-  },
-{
-  num:14, text:"Object-oriented design deals with which of the following (choose all that apply):",
-  options:["Medium level of implementation details", "Low level of requirements details", "Only requirement details", "None of the above"], correct:[0, 1],
-  explanations:[
-"✅ Medium level of implementation details is correct.",
-"✅ Low level of requirements details is correct.",
-"❌ Only requirement details is not correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:15, text:"Is the following statement True or False?\nArchitecture and object-oriented design provide details involving Requirements and Implementation.",
-  options:["True", "False"], correct:0,
-  explanations:[
-"✅ True is correct.",
-"❌ False is not correct."
-    ]
-  },
-{
-  num:16, text:"Which of the following are the benefits of Modeling Notations? (choose all that apply)",
-  options:["Communication between engineers", "Assuring quality of design", "Reduction of code complexity", "None of the above"], correct:[0, 1],
-  explanations:[
-"✅ Communication between engineers is correct.",
-"✅ Assuring quality of design is correct.",
-"❌ Reduction of code complexity is not the listed answer here.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:17, text:"Is the following statement True or False?\nUnified Modeling Language is a popular language for requirements and OO design.",
-  options:["True", "False"], correct:0,
-  explanations:[
-"✅ True is correct.",
-"❌ False is not correct."
-    ]
-  },
-{
-  num:18, text:"Which of the following diagrams is a part of Unified Modeling Language (UML)?",
-  options:["Class Diagram", "Interface Diagram", "Intention Diagram", "All of the above"], correct:0,
-  explanations:[
-"✅ Class Diagram is correct.",
-"❌ Interface Diagram is not the marked answer.",
-"❌ Intention Diagram is not a UML diagram here.",
-"❌ All of the above is not correct."
-    ]
-  },
-{
-  num:19, text:"Which of the following is NOT true about a class diagram?",
-  options:["Class diagram provides an overall structure of a software system", "Class diagram shows classes for later implementation", "Class diagram provides detailed description including attributes and operations for each of the classes", "Class diagram provides information about how each class interacts with another"], correct:3,
-  explanations:[
-"❌ This is true.",
-"❌ This is true.",
-"❌ This is true.",
-"✅ This is the NOT true statement here."
-    ]
-  },
-{
-  num:20, text:"Is the following statement True or False?\nInherited attributes must be listed in the class definition in a Class Diagram.",
-  options:["True", "False"], correct:1,
-  explanations:[
-"❌ True is not correct.",
-"✅ False is correct."
-    ]
-  },
-{
-  num:21, text:"Which of the following can be used to describe an Association in a Class Diagram?",
-  options:["Direction", "Multiplicity", "Aggregation/Composition", "All of the above"], correct:3,
-  explanations:[
-"❌ Direction can be used, but not alone.",
-"❌ Multiplicity can be used, but not alone.",
-"❌ Aggregation/Composition can be used, but not alone.",
-"✅ All of the above is correct."
-    ]
-  },
-{
-  num:22, text:"An operation in a class in a Class diagram does NOT contain which of the following?",
-  options:["Return Type", "Method Parameters", "Visibility", "None of the above"], correct:3,
-  explanations:[
-"❌ Return type can appear in an operation.",
-"❌ Method parameters can appear in an operation.",
-"❌ Visibility can appear in an operation.",
-"✅ None of the above is correct."
-    ]
-  },
-{
-  num:23, text:"Aggregation describes which of the following relationships?",
-  options:["Parent-child relationship", "Whole-part relationship", "Calling relationship", "None of the above"], correct:1,
-  explanations:[
-"❌ Parent-child is not correct here.",
-"✅ Whole-part relationship is correct.",
-"❌ Calling relationship is not correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:24, text:"Is the following statement True or False?\nAssociation and composition indicate exactly the same relationship.",
-  options:["True", "False"], correct:1,
-  explanations:[
-"❌ True is not correct.",
-"✅ False is correct."
-    ]
-  },
-{
-  num:25, text:"Which of the following can be used to describe an association relationship?",
-  options:["Direction", "Multiplicity", "Both of the above", "None of the above"], correct:2,
-  explanations:[
-"❌ Direction alone is incomplete here.",
-"❌ Multiplicity alone is incomplete here.",
-"✅ Both of the above is correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:26, text:"0..1 indicates which of the following?",
-  options:["1 instance", "At least one instance", "At most one instance", "Zero or more instances"], correct:2,
-  explanations:[
-"❌ 1 instance is not correct.",
-"❌ At least one instance is not correct.",
-"✅ At most one instance is correct.",
-"❌ Zero or more instances is not correct."
-    ]
-  },
-{
-  num:27, text:"Is composition a stronger relation than association?",
-  options:["Yes", "No"], correct:0,
-  explanations:[
-"✅ Yes is correct.",
-"❌ No is not correct."
-    ]
-  },
-{
-  num:28, text:"What kind of relationship does a Generalization relationship describe?",
-  options:["Whole-part relationship", "Parent-child relationship", "Calling relationship", "All of the above"], correct:1,
-  explanations:[
-"❌ Whole-part is not correct.",
-"✅ Parent-child relationship is correct.",
-"❌ Calling relationship is not correct.",
-"❌ All of the above is not correct."
-    ]
-  },
-{
-  num:29, text:"Which of the following is NOT true about an Abstract Class?",
-  options:["Concrete classes override operations in an Abstract Class", "An Abstract Class can be instantiated directly", "Abstract Classes are different from interfaces", "None of the above"], correct:1,
-  explanations:[
-"❌ This may be true.",
-"✅ An Abstract Class can be instantiated directly is the NOT true statement.",
-"❌ This is true.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:30, text:"Is the following statement True or False?\nIt is possible to create instances of an Interface.",
-  options:["True", "False"], correct:1,
-  explanations:[
-"❌ True is not correct.",
-"✅ False is correct."
-    ]
-  },
-{
-  num:31, text:"What can be the purpose of a dotted line in a Class Diagram?",
-  options:["To establish an association relationship between an Abstract Class and an Interface", "To establish a generalization relationship between two Interfaces", "To establish a generalization relationship between an Abstract Class and a Concrete Class", "To establish an implementing relationship between an Interface and a Concrete Class"], correct:3,
-  explanations:[
-"❌ Not correct.",
-"❌ Not correct.",
-"❌ Not correct.",
-"✅ This is correct."
-    ]
-  },
-{
-  num:32, text:"Dependency relationship can describe which of the following relationships? (Choose all that apply)",
-  options:["Class A calls a method in Class B", "Class A creates an instance of Class B", "Class A is a subclass of Class B", "Class A is independent of Class B"], correct:[0, 1],
-  explanations:[
-"✅ This is correct.",
-"✅ This is correct.",
-"❌ This is not correct.",
-"❌ This is not correct."
-    ]
-  },
-{
-  num:33, text:"Is the following statement True or False?\nAll Interfaces are Abstract Classes as well.",
-  options:["True", "False"], correct:1,
-  explanations:[
-"❌ True is not correct.",
-"✅ False is correct."
-    ]
-  },
-{
-  num:34, text:"Is the following statement True or False?\nExternal Actors are not included in a Class Diagram.",
-  options:["True", "False"], correct:0,
-  explanations:[
-"✅ True is correct.",
-"❌ False is not correct."
-    ]
-  },
-{
-  num:35, text:"From requirements, nouns are often mapped to ______ and verbs are often mapped to ______ in a Class Diagram.",
-  options:["Operations, Classes", "Relationships, Classes", "Classes, Operations", "None of the above"], correct:2,
-  explanations:[
-"❌ Not correct.",
-"❌ Not correct.",
-"✅ Classes, Operations is correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:36, text:"Mapping all nouns/verbs to classes/operations can result in which of the following?",
-  options:["Redundancy", "Completeness", "Traceability", "All of the above"], correct:0,
-  explanations:[
-"✅ Redundancy is correct.",
-"❌ Not correct.",
-"❌ Not correct.",
-"❌ Not correct."
-    ]
-  },
-{
-  num:37, text:"From the requirements of an online shopping platform stated below, identify candidate classes/objects.\n1. A buyer must be able to purchase a product.\n2. A seller must be able to contact the buyer.",
-  options:["Buyer", "Seller", "Product", "Contact"], correct:[0, 1, 2],
-  explanations:[
-"✅ Buyer is correct.",
-"✅ Seller is correct.",
-"✅ Product is correct.",
-"❌ Contact is not the marked class/object."
-    ]
-  },
-{
-  num:38, text:"From Question 4, identify the operations/relationships from the requirements.",
-  options:["Purchase", "Contact", "Sell", "None of the above"], correct:[0, 1],
-  explanations:[
-"✅ Purchase is correct.",
-"✅ Contact is correct.",
-"❌ Sell is not correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:39, text:"Which of the following is NOT true about a Sequence Diagram (without interaction frame)?",
-  options:["Shows sequence of actions in a single scenario", "Shows communication between objects/classes in a single scenario", "Shows the overall communication of the system in multiple scenarios", "None of the above"], correct:2,
-  explanations:[
-"❌ This is true.",
-"❌ This is true.",
-"✅ This is the NOT true statement.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:40, text:"Messages are represented by ________ in a Sequence Diagram.",
-  options:["Horizontal Lines", "Vertical Lines", "Rectangular Boxes", "None of the above"], correct:0,
-  explanations:[
-"✅ Horizontal Lines is correct.",
-"❌ Vertical Lines is not correct.",
-"❌ Rectangular Boxes is not correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:41, text:"Which of the following is a purpose of using Activations?",
-  options:["To impose conditions on classes/objects", "To indicate when a message can be sent", "To indicate whether the object is currently on the stack", "None of the above"], correct:2,
-  explanations:[
-"❌ Not correct.",
-"❌ Not correct.",
-"✅ This is correct.",
-"❌ None of the above is not correct."
-    ]
-  },
-{
-  num:42, text:"Which of the following can be used to describe a message? (Choose all that apply)",
-  options:["Name", "Arguments", "Condition", "Termination"], correct:[0, 1, 2],
-  explanations:[
-"✅ Name is correct.",
-"✅ Arguments is correct.",
-"✅ Condition is correct.",
-"❌ Termination is not correct."
-    ]
-  },
-{
-  num:43, text:"Is the following statement True or False?\nA single Sequence Diagram typically represents one specific scenario of interaction between objects in a system.",
-  options:["True", "False"], correct:0,
-  explanations:[
-"✅ True is correct.",
-"❌ False is not correct."
-    ]
-  }
+  { num: 1, text: "In Class Diagrams, relationship between part and whole can be represented by which of the following?", options: [
+    "Generalization",
+    "Aggregation",
+    "Division",
+    "None of the above"
+  ], correct: 1, explanations: [
+    "❌ Generalization — Indicates an inheritance relationship (is-a). The subclass is a specialization of the parent class, not a part-whole relationship.",
+    "✅ Aggregation — Aggregation models part-whole: parts can exist outside the whole; this is the correct answer.",
+    "❌ Division — is not a standard relationship type in UML.",
+    "❌ None of the above — Wrong; Aggregation is correct."
+  ] },
+  { num: 2, text: "Consider the above Class Diagram when answering the following question:\nWhich of the following statements is True about Author?", diagram: "q2", options: [
+    "An author may have written nothing.",
+    "Every author has contributed up to four articles.",
+    "Every author has contributed at least one article and at least one book.",
+    "Every book has up to one author."
+  ], correct: 0, explanations: [
+    "✅ An author may have written nothing. — Article side multiplicity is 0..*, Book side is also 0..*, Author can not have any Article or Book, that is, it can write nothing.",
+    "❌ Every author has contributed up to four articles. — The Author side of the Article-Author connection is 1..4, which means that each article requires 1~4 authors, not that each author can write up to 4 articles.",
+    "❌ Every author has contributed at least one article and at least one book. — Multiplicity is 0..*, zero is fine.",
+    "❌ Every book has up to one author. — Book-Author multiplicity is 0..*, a book can have multiple authors."
+  ] },
+  { num: 3, text: "Consider the Class diagram in Question 2\nWhich relationship best describes the relationship between Publication and Article?", diagram: "q2", options: [
+    "Composition",
+    "Generalization",
+    "Aggregation",
+    "None of the above"
+  ], correct: 1, explanations: [
+    "❌ Composition — Composition is a strong part-whole relationship. Parts cannot exist without the whole. Publication and Article do not have this relationship.",
+    "✅ Generalization — The arrows pointing to Publication from Article and Book in the figure are hollow triangles, indicating inheritance (Generalization), and Article is-a Publication.",
+    "❌ Aggregation — Aggregation is a part-whole relationship, and the diagram uses inheritance arrows.",
+    "❌ None of the above — Wrong, Generalization correct."
+  ] },
+  { num: 4, text: "Consider the class diagram from Question 2\nWhich of the following statements is NOT True about the Class Diagram?", diagram: "q2", options: [
+    "Every publication has an Author.",
+    "Every Article has at least one Author",
+    "Not every Book has an Author",
+    "None of the above"
+  ], correct: 0, explanations: [
+    "✅ Every publication has an Author. — This is NOT True. Book-Author multiplicity 0..*, that is, a book can have no author; therefore not every Publication must have an Author.",
+    "❌ Every Article has at least one Author — The Author side of the Article-Author connection is 1..4, and every Article has at least one author, which is True.",
+    "❌ Not every Book has an Author — Book-Author multiplicity 0..*, a Book can have no Author, this is True.",
+    "❌ None of the above — False, the first item is indeed Not True."
+  ] },
+  { num: 5, text: "Based on this Class diagram, which of the following statements about the City and State classes is correct?", diagram: "q5", options: [
+    "No two cities can have the same name",
+    "Each city can be in zero or one state",
+    "Each city is in exactly one state",
+    "No two states can have the same name"
+  ], correct: 2, explanations: [
+    "❌ No two cities can have the same name — The class diagram has no uniqueness constraint and Name is just a normal attribute, so this conclusion cannot be reached.",
+    "❌ Each city can be in zero or one state — There is no multiplicity annotation on the City side (default 1), and each City belongs to exactly one State, not zero or one.",
+    "✅ Each city is in exactly one state — There is a composition diamond on the State side, and the default multiplicity on the City side is 1, which means that each City belongs to exactly one State.",
+    "❌ No two states can have the same name — The class diagram does not impose a uniqueness constraint to conclude this."
+  ] },
+  { num: 6, text: "P restaurant wants to automate ordering of pizzas for customers.\n1. Two sizes: large, small\n2. Each pizza can have two different sauces and two different bases\n3. A customer can order a pizza or a drink\n\nWhich of the following is LEAST likely to be a class or attribute?", options: [
+    "Pizza",
+    "Order",
+    "Customer",
+    "Sauce",
+    "Drink",
+    "Size"
+  ], correct: 1, explanations: [
+    "❌ Pizza — obviously the core entity, should be a class.",
+    "✅ Order — In this scenario, Order is more likely to be an operation (method) than a persistent data entity; the requirement describes the action of placing an order.",
+    "❌ Customer — The customer is directly mentioned in the requirement and is an entity class.",
+    "❌ Sauce — A different Sauce is mentioned in the requirement, which can be a class or a property.",
+    "❌ Drink — The requirement clearly treats Drink as an orderable item and an entity.",
+    "❌ Size — The requirement mentions two sizes: large/small, which can be used as attributes or classes."
+  ] },
+  { num: 7, text: "From the requirements stated in Question 6, which of the following is MOST likely to be an operation?", options: [
+    "Base",
+    "Order",
+    "Sauce",
+    "None of the above"
+  ], correct: 1, explanations: [
+    "❌ Base — is a component of pizza and is a property or class, not an operation.",
+    "✅ Order — Order describes the action/behavior of placing an order, and is more suitable as a method (operation) in OO design, such as customer.order(pizza).",
+    "❌ Sauce — is a component of pizza and is a property or class.",
+    "❌ None of the above — Error, Order is the most appropriate action."
+  ] },
+  { num: 8, text: "In UML diagrams, how are abstract classes distinguished from concrete classes?", options: [
+    "They are shown in the same way",
+    "Class names for abstract classes are shown in italics",
+    "Class names for concrete classes are shown in italics",
+    "Abstract classes are shown as boxes with bold outlines"
+  ], correct: 1, explanations: [
+    "❌ They are shown in the same way — Wrong, UML has a special way of representing abstract classes.",
+    "✅ Class names for abstract classes are shown in italics — The UML specification stipulates that class names for abstract classes are shown in italics to distinguish them from concrete classes.",
+    "❌ Class names for concrete classes are shown in italics — Just the opposite, italics are used for abstract classes and normal fonts are used for concrete classes.",
+    "❌ Abstract classes are shown as boxes with bold outlines — This is not a UML standard specification."
+  ] },
+  { num: 9, text: "Which of the following terms best describes the case where a Queue class is implemented using an internal instance of Array for storing the elements in the queue?", options: [
+    "Creation",
+    "Composition",
+    "Generalization",
+    "Singularity"
+  ], correct: 1, explanations: [
+    "❌ Creation — Not a standard term for describing relationships between classes.",
+    "✅ Composition — Composition is a strong part-whole relationship: Array is an internal component of Queue, and its life cycle follows Queue, conforming to the definition of Composition.",
+    "❌ Generalization — inheritance relationship, Queue does not inherit Array.",
+    "❌ Singularity — is not a relationship type in UML."
+  ] },
+  { num: 10, text: "Is the following statement True or False?\nUML class diagrams are a good way to represent the algorithmic nature of the interactions between classes.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True — False, class diagrams are not suitable for representing algorithms or interaction logic.",
+    "✅ False — UML class diagrams are used to show the structure of a class (properties, methods, relationships) and do not represent algorithms or interaction sequences. To represent interactions, use Sequence Diagram or Activity Diagram."
+  ] },
+  { num: 11, text: "The vertical dimension of a sequence diagram represents which of the following?", options: [
+    "Message",
+    "Time",
+    "Objects",
+    "Replies"
+  ], correct: 1, explanations: [
+    "❌ Message — A message is a horizontal arrow representing calls between objects, not a vertical dimension.",
+    "✅ Time — The vertical axis of a Sequence Diagram represents the passage of time, with time increasing from top to bottom.",
+    "❌ Objects — Objects are arranged along the top horizontal axis, with the vertical lifeline of each object.",
+    "❌ Replies — Replies are specific types of messages that are still horizontally dimensional."
+  ] },
+  { num: 12, text: "Is the following statement True or False?\nClass Diagrams can show timing-related information.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True — Error, the class diagram is a static structural view and does not contain timing or execution order information.",
+    "✅ False — Class Diagram is a static diagram that only describes the system structure (classes, attributes, methods, relationships), and timing information is represented by Sequence Diagram or Timing Diagram."
+  ] },
+  { num: 13, text: "Which of the following determines the order of events in a Sequence Diagram?", options: [
+    "The order of events based on their object-creation time",
+    "The order of events based on their triggering time",
+    "The order of events based on their importance",
+    "The order of events based on their duration time"
+  ], correct: 1, explanations: [
+    "❌ The order of events based on their object-creation time — The order of object creation does not determine the order of messages.",
+    "✅ The order of events based on their triggering time — The events in the sequence diagram are arranged from top to bottom according to their triggering time, reflecting the actual execution/interaction sequence.",
+    "❌ The order of events based on their importance — importance is not a ranking basis.",
+    "❌ The order of events based on their duration time — duration does not determine order."
+  ] },
+  { num: 14, text: "Object-oriented design deals with which of the following (choose all that apply):", options: [
+    "Medium level of implementation details",
+    "Low level of requirements details",
+    "Only requirement details",
+    "None of the above"
+  ], correct: [
+    0,
+    1
+  ], explanations: [
+    "✅ Medium level of implementation details is correct.",
+    "✅ Low level of requirements details is correct.",
+    "❌ Only requirement details is not correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 15, text: "Is the following statement True or False?\nArchitecture and object-oriented design provide details involving Requirements and Implementation.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True is correct.",
+    "❌ False is not correct."
+  ] },
+  { num: 16, text: "Which of the following are the benefits of Modeling Notations? (choose all that apply)", options: [
+    "Communication between engineers",
+    "Assuring quality of design",
+    "Reduction of code complexity",
+    "None of the above"
+  ], correct: [
+    0,
+    1
+  ], explanations: [
+    "✅ Communication between engineers is correct.",
+    "✅ Assuring quality of design is correct.",
+    "❌ Reduction of code complexity is not the listed answer here.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 17, text: "Is the following statement True or False?\nUnified Modeling Language is a popular language for requirements and OO design.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True is correct.",
+    "❌ False is not correct."
+  ] },
+  { num: 18, text: "Which of the following diagrams is a part of Unified Modeling Language (UML)?", options: [
+    "Class Diagram",
+    "Interface Diagram",
+    "Intention Diagram",
+    "All of the above"
+  ], correct: 0, explanations: [
+    "✅ Class Diagram is correct.",
+    "❌ Interface Diagram is not the marked answer.",
+    "❌ Intention Diagram is not a UML diagram here.",
+    "❌ All of the above is not correct."
+  ] },
+  { num: 19, text: "Which of the following is NOT true about a class diagram?", options: [
+    "Class diagram provides an overall structure of a software system",
+    "Class diagram shows classes for later implementation",
+    "Class diagram provides detailed description including attributes and operations for each of the classes",
+    "Class diagram provides information about how each class interacts with another"
+  ], correct: 3, explanations: [
+    "❌ This is true.",
+    "❌ This is true.",
+    "❌ This is true.",
+    "✅ This is the NOT true statement here."
+  ] },
+  { num: 20, text: "Is the following statement True or False?\nInherited attributes must be listed in the class definition in a Class Diagram.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True is not correct.",
+    "✅ False is correct."
+  ] },
+  { num: 21, text: "Which of the following can be used to describe an Association in a Class Diagram?", options: [
+    "Direction",
+    "Multiplicity",
+    "Aggregation/Composition",
+    "All of the above"
+  ], correct: 3, explanations: [
+    "❌ Direction can be used, but not alone.",
+    "❌ Multiplicity can be used, but not alone.",
+    "❌ Aggregation/Composition can be used, but not alone.",
+    "✅ All of the above is correct."
+  ] },
+  { num: 22, text: "An operation in a class in a Class diagram does NOT contain which of the following?", options: [
+    "Return Type",
+    "Method Parameters",
+    "Visibility",
+    "None of the above"
+  ], correct: 3, explanations: [
+    "❌ Return type can appear in an operation.",
+    "❌ Method parameters can appear in an operation.",
+    "❌ Visibility can appear in an operation.",
+    "✅ None of the above is correct."
+  ] },
+  { num: 23, text: "Aggregation describes which of the following relationships?", options: [
+    "Parent-child relationship",
+    "Whole-part relationship",
+    "Calling relationship",
+    "None of the above"
+  ], correct: 1, explanations: [
+    "❌ Parent-child is not correct here.",
+    "✅ Whole-part relationship is correct.",
+    "❌ Calling relationship is not correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 24, text: "Is the following statement True or False?\nAssociation and composition indicate exactly the same relationship.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True is not correct.",
+    "✅ False is correct."
+  ] },
+  { num: 25, text: "Which of the following can be used to describe an association relationship?", options: [
+    "Direction",
+    "Multiplicity",
+    "Both of the above",
+    "None of the above"
+  ], correct: 2, explanations: [
+    "❌ Direction alone is incomplete here.",
+    "❌ Multiplicity alone is incomplete here.",
+    "✅ Both of the above is correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 26, text: "0..1 indicates which of the following?", options: [
+    "1 instance",
+    "At least one instance",
+    "At most one instance",
+    "Zero or more instances"
+  ], correct: 2, explanations: [
+    "❌ 1 instance is not correct.",
+    "❌ At least one instance is not correct.",
+    "✅ At most one instance is correct.",
+    "❌ Zero or more instances is not correct."
+  ] },
+  { num: 27, text: "Is composition a stronger relation than association?", options: [
+    "Yes",
+    "No"
+  ], correct: 0, explanations: [
+    "✅ Yes is correct.",
+    "❌ No is not correct."
+  ] },
+  { num: 28, text: "What kind of relationship does a Generalization relationship describe?", options: [
+    "Whole-part relationship",
+    "Parent-child relationship",
+    "Calling relationship",
+    "All of the above"
+  ], correct: 1, explanations: [
+    "❌ Whole-part is not correct.",
+    "✅ Parent-child relationship is correct.",
+    "❌ Calling relationship is not correct.",
+    "❌ All of the above is not correct."
+  ] },
+  { num: 29, text: "Which of the following is NOT true about an Abstract Class?", options: [
+    "Concrete classes override operations in an Abstract Class",
+    "An Abstract Class can be instantiated directly",
+    "Abstract Classes are different from interfaces",
+    "None of the above"
+  ], correct: 1, explanations: [
+    "❌ This may be true.",
+    "✅ An Abstract Class can be instantiated directly is the NOT true statement.",
+    "❌ This is true.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 30, text: "Is the following statement True or False?\nIt is possible to create instances of an Interface.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True is not correct.",
+    "✅ False is correct."
+  ] },
+  { num: 31, text: "What can be the purpose of a dotted line in a Class Diagram?", options: [
+    "To establish an association relationship between an Abstract Class and an Interface",
+    "To establish a generalization relationship between two Interfaces",
+    "To establish a generalization relationship between an Abstract Class and a Concrete Class",
+    "To establish an implementing relationship between an Interface and a Concrete Class"
+  ], correct: 3, explanations: [
+    "❌ Not correct.",
+    "❌ Not correct.",
+    "❌ Not correct.",
+    "✅ This is correct."
+  ] },
+  { num: 32, text: "Dependency relationship can describe which of the following relationships? (Choose all that apply)", options: [
+    "Class A calls a method in Class B",
+    "Class A creates an instance of Class B",
+    "Class A is a subclass of Class B",
+    "Class A is independent of Class B"
+  ], correct: [
+    0,
+    1
+  ], explanations: [
+    "✅ This is correct.",
+    "✅ This is correct.",
+    "❌ This is not correct.",
+    "❌ This is not correct."
+  ] },
+  { num: 33, text: "Is the following statement True or False?\nAll Interfaces are Abstract Classes as well.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True is not correct.",
+    "✅ False is correct."
+  ] },
+  { num: 34, text: "Is the following statement True or False?\nExternal Actors are not included in a Class Diagram.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True is correct.",
+    "❌ False is not correct."
+  ] },
+  { num: 35, text: "From requirements, nouns are often mapped to ______ and verbs are often mapped to ______ in a Class Diagram.", options: [
+    "Operations, Classes",
+    "Relationships, Classes",
+    "Classes, Operations",
+    "None of the above"
+  ], correct: 2, explanations: [
+    "❌ Not correct.",
+    "❌ Not correct.",
+    "✅ Classes, Operations is correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 36, text: "Mapping all nouns/verbs to classes/operations can result in which of the following?", options: [
+    "Redundancy",
+    "Completeness",
+    "Traceability",
+    "All of the above"
+  ], correct: 0, explanations: [
+    "✅ Redundancy is correct.",
+    "❌ Not correct.",
+    "❌ Not correct.",
+    "❌ Not correct."
+  ] },
+  { num: 37, text: "From the requirements of an online shopping platform stated below, identify candidate classes/objects.\n1. A buyer must be able to purchase a product.\n2. A seller must be able to contact the buyer.", options: [
+    "Buyer",
+    "Seller",
+    "Product",
+    "Contact"
+  ], correct: [
+    0,
+    1,
+    2
+  ], explanations: [
+    "✅ Buyer is correct.",
+    "✅ Seller is correct.",
+    "✅ Product is correct.",
+    "❌ Contact is not the marked class/object."
+  ] },
+  { num: 38, text: "From Question 4, identify the operations/relationships from the requirements.", options: [
+    "Purchase",
+    "Contact",
+    "Sell",
+    "None of the above"
+  ], correct: [
+    0,
+    1
+  ], explanations: [
+    "✅ Purchase is correct.",
+    "✅ Contact is correct.",
+    "❌ Sell is not correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 39, text: "Which of the following is NOT true about a Sequence Diagram (without interaction frame)?", options: [
+    "Shows sequence of actions in a single scenario",
+    "Shows communication between objects/classes in a single scenario",
+    "Shows the overall communication of the system in multiple scenarios",
+    "None of the above"
+  ], correct: 2, explanations: [
+    "❌ This is true.",
+    "❌ This is true.",
+    "✅ This is the NOT true statement.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 40, text: "Messages are represented by ________ in a Sequence Diagram.", options: [
+    "Horizontal Lines",
+    "Vertical Lines",
+    "Rectangular Boxes",
+    "None of the above"
+  ], correct: 0, explanations: [
+    "✅ Horizontal Lines is correct.",
+    "❌ Vertical Lines is not correct.",
+    "❌ Rectangular Boxes is not correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 41, text: "Which of the following is a purpose of using Activations?", options: [
+    "To impose conditions on classes/objects",
+    "To indicate when a message can be sent",
+    "To indicate whether the object is currently on the stack",
+    "None of the above"
+  ], correct: 2, explanations: [
+    "❌ Not correct.",
+    "❌ Not correct.",
+    "✅ This is correct.",
+    "❌ None of the above is not correct."
+  ] },
+  { num: 42, text: "Which of the following can be used to describe a message? (Choose all that apply)", options: [
+    "Name",
+    "Arguments",
+    "Condition",
+    "Termination"
+  ], correct: [
+    0,
+    1,
+    2
+  ], explanations: [
+    "✅ Name is correct.",
+    "✅ Arguments is correct.",
+    "✅ Condition is correct.",
+    "❌ Termination is not correct."
+  ] },
+  { num: 43, text: "Is the following statement True or False?\nA single Sequence Diagram typically represents one specific scenario of interaction between objects in a system.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True is correct.",
+    "❌ False is not correct."
+  ] }
 ];
 </script>
 <script src="../js/quiz-pane.js?v=20260419"></script>

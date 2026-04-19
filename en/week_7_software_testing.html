@@ -463,415 +463,689 @@ White-box work is <strong>not</strong> “easy”—it demands solid coding skil
 </div>
 <script>
 const rawQuestions = [
-  {
-    q: "Which of the following is NOT a purpose of testing?",
-    opts: ["To improve code quality","To spot code faults","To document code","To guarantee code is fully correct"],
-    ans: 3,
-    explanations: [
-      "❌ Incorrect — The notes list “improve code quality” as a valid goal: testing finds defects so quality rises (Testing Overview).",
-      "❌ Incorrect — “Spot code faults” is exactly what testing is for (fault detection in the overview table).",
-      "❌ Incorrect — Tests act as executable documentation of behavior (overview table + Test Activities tab: test cases as living documentation).",
-      "✅ Correct — This is NOT a valid claim. The notes stress that testing cannot prove the program is fully correct; the input space is huge and passing all tests still leaves untested paths (overview + red exam tip)."
-    ]
-  },
-  {
-    q: "Which of the following do NOT belong to the types of test activities?",
-    opts: ["Test Design","Test Automation","Test Implementation","Test Evaluation"],
-    ans: 2,
-    explanations: [
-      "❌ Incorrect — Test Design is one of the four named activities (define cases and expected results).",
-      "❌ Incorrect — Test Automation is one of the four (turn values into runnable scripts).",
-      "✅ Correct — “Test Implementation” is not a named category in this course model. The standard chain is Design → Automation → Execution → Evaluation (Test Activities tab + exam tip).",
-      "❌ Incorrect — Test Evaluation is the fourth activity (interpret results and coverage)."
-    ]
-  },
-  {
-    q: "Which of the following test activities embeds test values into executable scripts?",
-    opts: ["Test Design","Test Automation","Test Implementation","Test Execution"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — Test Design decides inputs and expected results; it does not embed them into scripts (activities table).",
-      "✅ Correct — Test Automation’s job is to take those values and encode them in executable scripts (activities table: “Turn those values into runnable scripts”).",
-      "❌ Incorrect — Not a standard activity name here; scripting falls under Test Automation.",
-      "❌ Incorrect — Test Execution runs tests and collects outcomes; embedding is already done before that."
-    ]
-  },
-  {
-    q: "Which of the following statements about testing activities is correct?",
-    opts: [
-      "Designing tests requires relatively little knowledge about the domain and programs.",
-      "In order to embed test values into executable scripts, one needs to understand the theory very well.",
-      "It is always efficient to assign the same person for all testing activities.",
-      "Test automation is useful to have but could also be boring to construct."
-    ],
-    ans: 3,
-    explanations: [
-      "❌ Incorrect — Test Design requires strong domain knowledge and system understanding (activities table: skills for Test Design).",
-      "❌ Incorrect — Automation needs programming and tool familiarity, not abstract “theory” in this sense; the notes tie automation to coding and frameworks.",
-      "❌ Incorrect — The same person for every activity is not “always” efficient; role split and specialization are common in practice (stated in the original rationale).",
-      "✅ Correct — Matches the Manual vs automated tab: automation pays off for frequent regression, but building and maintaining scripts can be repetitive and tedious (“Reality check” + regression box)."
-    ]
-  },
-  {
-    q: "Which of the following statements about test cases is correct?",
-    opts: [
-      "Test cases cannot be used as documents as they are considered as two very different categories.",
-      "Only developers can construct test cases for their programs.",
-      "The process of developing test cases can also help developers to understand the requirements."
-    ],
-    ans: 2,
-    explanations: [
-      "❌ Incorrect — The notes say tests document expected behavior; teammates can read tests as specs (Test Activities: “Test cases as living documentation”).",
-      "❌ Incorrect — The “Who writes tests” box: developers, domain experts, and others can author tests—not QA only.",
-      "✅ Correct — Authoring tests clarifies requirements (same card: writing tests forces you to clarify requirements)."
-    ]
-  },
-  {
-    q: "When should we write test cases?",
-    opts: ["Before code is written","While writing code","After code is written","All of above"],
-    ans: 3,
-    explanations: [
-      "❌ True in isolation (TDD/test-first) but incomplete — the notes say you can also test during and after.",
-      "❌ True in isolation (tests alongside features) but incomplete.",
-      "❌ True in isolation (regression/backfill) but incomplete.",
-      "✅ Correct — Overview tab: before (TDD), during, and after are all valid; mature projects use more than one timing."
-    ]
-  },
-  {
-    q: "Which statement about manual testing and automated testing is NOT correct?",
-    opts: [
-      "When regression tests are conducted very often, we should prefer doing automated testing.",
-      "To test a Graphics Interface, we should build automated tests after the interface design is stable.",
-      "Tests that don't require re-execution should be done manually.",
-      "Automated tests always find more bugs than manual tests."
-    ],
-    ans: 3,
-    explanations: [
-      "❌ This statement is true — Manual vs automated tab: when the same battery runs often, automation pays off (regression box).",
-      "❌ True — Automate GUI tests after the UI stabilizes; while designs churn, manual checks fit better (same table).",
-      "❌ True — One-off or rarely repeated checks are often cheaper manually (“Reality check” box).",
-      "✅ The claim in D is false — The notes’ table says automated testing does not automatically find more bugs than manual; exploratory manual testing can still uncover issues scripts miss."
-    ]
-  },
-  {
-    q: "Which of the following statements is true about tests?",
-    opts: [
-      "Tests must be written in the form of code",
-      "User interfaces cannot be tested",
-      "Projects can have more test code than source code",
-      "Tests can always spot bugs"
-    ],
-    ans: 2,
-    explanations: [
-      "❌ Incorrect — Notes: tests need not be code; manual plans still count (Test Activities bullet).",
-      "❌ Incorrect — Overview says UIs are testable; automate once layouts and flows stabilize.",
-      "✅ Correct — Overview: in mature projects the test codebase can outgrow production code.",
-      "❌ Incorrect — Testing improves fault detection but cannot guarantee finding every bug (same limits as “fully correct”)."
-    ]
-  },
-  {
-    q: "Which of the following statements about writing tests as a developer is NOT correct?",
-    opts: [
-      "Developers cannot always detect all faults even if they fully understand their implementations.",
-      "More people are encouraged to engage in writing tests in addition to developers.",
-      "When developers construct test suites, they may have a bias on software code or functions.",
-      "Only QA developers should develop test cases since they are experts in testing area."
-    ],
-    ans: 3,
-    explanations: [
-      "❌ This statement is true — Developer bias card: deep understanding does not mean you find every fault.",
-      "❌ True — “Who writes tests” encourages developers, domain experts, and others—not QA alone.",
-      "❌ True — Same bias card: authors may favor paths they believe work.",
-      "✅ This is NOT correct — Notes explicitly reject QA-only ownership; more perspectives reduce blind spots (Who writes tests + bias section)."
-    ]
-  },
-  {
-    q: "Which of the following is true about Black-box testing?",
-    opts: [
-      "It is not feasible to thoroughly exercise all potential test inputs.",
-      "Tests are written with knowledge of the internal workings to thoroughly test what is happening on the inside of the code.",
-      "Black-box testing is good at finding faults of extra logic.",
-      "Black-box testing is better for finding crashes, out of bounds failures, and file not closed failures."
-    ],
-    ans: 0,
-    explanations: [
-      "✅ Correct — Black vs white tab: input space is enormous, so exhaustive black-box testing is infeasible; you sample (ECP/BVA).",
-      "❌ Incorrect — That describes white-box / structural testing (internal workings visible).",
-      "❌ Incorrect — Notes: black-box is weak on redundant/extra internal logic because you do not inspect implementation.",
-      "❌ Incorrect — Low-level structural issues (bounds, resource leaks) align with white-box strengths in the comparison table."
-    ]
-  },
-  {
-    q: "Which of the following statements about White-box testing is NOT correct?",
-    opts: [
-      "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White-box testing.",
-      "Maintaining White-box test scripts could be very difficult if implementation details keep changing frequently.",
-      "White-box testing is usually very simple, so it does not require knowledge of programming and implementation."
-    ],
-    ans: 2,
-    explanations: [
-      "❌ This statement is true — Cross-over box: ECP and BVA are general tactics usable in white-box testing too.",
-      "❌ True — White-box cost card: suites track implementation, so churn raises maintenance cost.",
-      "✅ This is NOT correct — White-box requires programming and internal knowledge; the notes say it is not “easy” and demands coding skill (comparison table + exam tip)."
-    ]
-  },
-  {
-    q: "A developer called Math.log(5) which was supposed to return the natural logarithm of the input, but returns 125 instead. This is an example of:",
-    opts: ["Error","Failure","Fault"],
-    ans: 0,
-    explanations: [
-      "✅ Correct — Error / fault / failure table: an error is the human mistake while coding; the walk-through uses the same Math.log vs Math.pow style example.",
-      "❌ Incorrect — Failure is the observable wrong behavior at runtime (wrong return value), not the mistake category the question highlights first.",
-      "❌ Incorrect — Fault is the defect frozen in the artifact (buggy code); the slip while typing is classified as error in the notes’ terminology."
-    ]
-  },
-  {
-    q: "According to the PIE model, which of the following conditions is NOT correct for a failure to be observed?",
-    opts: [
-      "The location or locations in the program that contain the fault must be reached.",
-      "The state of the program must be incorrect.",
-      "The infected state must NOT propagate to cause some output of the program to be incorrect."
-    ],
-    ans: 2,
-    explanations: [
-      "❌ This condition is correct — Execution: the faulty statement must run (PIE summary cells).",
-      "❌ Correct — Infection: program state must become incorrect.",
-      "✅ This wording is NOT correct for PIE — Propagation to an observable output is required; “must NOT propagate” contradicts the model (red exam tip on propagation)."
-    ]
-  },
-  {
-    q: "Which of the following is NOT a metric for code coverage?",
-    opts: ["Method coverage","Branch coverage","Statement coverage","Parameter coverage"],
-    ans: 3,
-    explanations: [
-      "❌ Method coverage is a standard metric (Code Coverage tab table).",
-      "❌ Branch coverage is standard.",
-      "❌ Statement coverage is standard.",
-      "✅ Correct — “Parameter coverage” is not in the usual taxonomy; metrics tie to executable structure, not parameters alone (exam tip + table)."
-    ]
-  },
-  {
-    q: "\"Dividing input conditions into groups and testing each group of inputs\" describes which technique for Black-box testing?",
-    opts: ["Boundary Value Analysis","Equivalence Class Partitioning","Decision Table Testing","Use case testing"],
-    ans: 1,
-    explanations: [
-      "❌ BVA stresses edges and neighbors (±1) at class boundaries—not the act of forming the groups (ECP vs BVA box).",
-      "✅ Correct — ECP splits inputs into equivalence classes and picks representatives (techniques table: partition, representative).",
-      "❌ Decision tables map combinations of conditions to actions—a rule matrix, not merely grouping inputs by class.",
-      "❌ Use-case testing derives scenarios from user workflows, not the generic partition-then-representative pattern."
-    ]
-  },
-  // ── EXTRA QUESTIONS (shuffled in) ──────────────────────────────────────
-  {
-    q: "Validation is defined as determining whether a system satisfies:",
-    opts: ["The conditions set at the start of the current development phase","Specified requirements — the right product?","Only the non-functional requirements","The internal design document"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — That matches Verification (did we build the phase right?).",
-      "✅ Correct — Validation checks against specified requirements: 'Are we building the right product?' (IEEE 2017).",
-      "❌ Incorrect — Validation covers all requirements, functional and non-functional.",
-      "❌ Incorrect — Internal design is an artifact of the process, not the validation criterion."
-    ]
-  },
-  {
-    q: "Test Execution activity requires which level of knowledge?",
-    opts: ["Deep domain knowledge","Technical testing expertise","Very little knowledge","Strong programming background"],
-    ans: 2,
-    explanations: [
-      "❌ Incorrect — Domain knowledge is needed for Test Evaluation (judging results), not Execution.",
-      "❌ Incorrect — Technical testing expertise is needed for Test Design, not Execution.",
-      "✅ Correct — Test Execution simply runs scripts and records results; very little knowledge is required (Testing Activities tab).",
-      "❌ Incorrect — Programming background belongs to Test Automation."
-    ]
-  },
-  {
-    q: "Which code coverage level checks that every conditional predicate has been both true and false?",
-    opts: ["Method coverage","Statement coverage","Branch/decision coverage","Loop coverage"],
-    ans: 2,
-    explanations: [
-      "❌ Incorrect — Method coverage only checks that every method has been called.",
-      "❌ Incorrect — Statement coverage checks every line is executed but does not require both branches.",
-      "✅ Correct — Branch/decision coverage: every if/while/for must evaluate to both true and false.",
-      "❌ Incorrect — Loop coverage checks 0/1/2/many iterations through a loop."
-    ]
-  },
-  {
-    q: "An infeasible path in a program is one that:",
-    opts: ["Takes too long to execute","Can never be reached by any test input","Is always executed first","Only executes on certain hardware"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — Infeasibility is about reachability, not execution time.",
-      "✅ Correct — An infeasible path cannot be triggered by any possible input; 100% coverage cannot cover it (Code Coverage tab).",
-      "❌ Incorrect — Always-first execution does not make a path infeasible.",
-      "❌ Incorrect — Hardware dependence is a different concern."
-    ]
-  },
-  {
-    q: "The mistake → fault → error → failure chain: what does 'error' specifically refer to?",
-    opts: ["The incorrect line of code","The incorrect program state during execution","The wrong output the user sees","The developer's misunderstanding"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — The incorrect line of code is the Fault (defect).",
-      "✅ Correct — Error: the difference between computed/observed and the correct value — an incorrect intermediate state (Fault & Failure tab).",
-      "❌ Incorrect — Wrong output is the Failure.",
-      "❌ Incorrect — Developer's misunderstanding is the Mistake."
-    ]
-  },
-  {
-    q: "For range input [a, b] in Boundary Value Analysis (integer), which test values are required?",
-    opts: ["Only a and b","a, b, a+1, b-1","a, a+1, a-1, b, b+1, b-1","Only mid-range values"],
-    ans: 2,
-    explanations: [
-      "❌ Incomplete — BVA requires values at and around each boundary, not just the endpoints.",
-      "❌ Incomplete — Missing a-1 and b+1 which test robustness beyond the boundary.",
-      "✅ Correct — BVA for integer range: a, a-1, a+1, b, b-1, b+1 — at boundary and ±1 on each side.",
-      "❌ Incorrect — Mid-range values are used for Equivalence Partitioning, not BVA."
-    ]
-  },
-  {
-    q: "Which condition of PIE explains why passing all tests does NOT guarantee zero bugs?",
-    opts: ["Execution — some statements were not executed","Infection — the fault never corrupted state","Propagation — the error never reached an observable output","All three together"],
-    ans: 3,
-    explanations: [
-      "❌ Partially correct but incomplete — even with 100% execution, I and P may not hold.",
-      "❌ Partially correct but incomplete — alone this explains masked faults, not the whole picture.",
-      "❌ Partially correct but incomplete — propagation failure is one reason but not the only one.",
-      "✅ Correct — Even with 100% statement coverage, a fault might execute (E) but not infect state (I), or infect state but not propagate to an observable output (P). All three together explain why tests cannot prove correctness."
-    ]
-  },
-  {
-    q: "Testing guidelines for collections say to test the collection with exactly one element because:",
-    opts: ["It is faster","Edge cases near empty are common fault locations","It uses less memory","It satisfies statement coverage alone"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — Speed is not the reason for this guideline.",
-      "✅ Correct — The boundary between 'empty' and 'non-empty' is a common fault location; testing with exactly 1 element catches off-by-one errors near empty (Equivalence Partitioning tab).",
-      "❌ Incorrect — Memory usage is irrelevant to this guideline.",
-      "❌ Incorrect — Coverage type is not the motivation; it is about fault-prone boundary behavior."
-    ]
-  },
-  {
-    q: "Scenario-based tests are written based on:",
-    opts: ["Random inputs","User stories and user workflows","The internal code structure","Boundary values only"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — Random inputs describe fuzz testing.",
-      "✅ Correct — Scenario-based tests derive cases from user stories and realistic end-to-end workflows (Test Cases tab: kinds of tests).",
-      "❌ Incorrect — Internal structure drives white-box testing.",
-      "❌ Incorrect — Boundary values are a BVA technique, not scenario-based."
-    ]
-  },
-  {
-    q: "White-box testing is typically conducted:",
-    opts: ["Before black-box testing","After black-box testing","Only on unit tests","Only on system tests"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — The standard order is black-box first to cover requirements-level faults, then white-box.",
-      "✅ Correct — White-box testing is typically conducted after black-box testing to cover remaining code paths (White-Box tab: 'typically after black-box').",
-      "❌ Incorrect — White-box can apply at all test levels.",
-      "❌ Incorrect — White-box applies at unit, integration, and system level."
-    ]
-  },
-  {
-    q: "A test with balance=0, calAmount() returning 10 with oracle 'assertTrue(amount==10)' — which element of PIE is demonstrated when the fault (balance*3 instead of *2) is NOT triggered?",
-    opts: ["Execution fails — the faulty statement never runs","Infection fails — state is not corrupted (0*3=0=0*2)","Propagation fails — the error does not reach output","All three conditions are met"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — The faulty statement balance*3 does execute.",
-      "✅ Correct — When balance=0, 0*3=0 and 0*2=0 — same result. The fault executes (E satisfied) but the state is NOT infected (I fails). This is a masked fault.",
-      "❌ Incorrect — Propagation is irrelevant if Infection never occurs.",
-      "❌ Incorrect — Only E is satisfied; I fails."
-    ]
-  },
-  {
-    q: "Loop coverage requires which of the following test executions?",
-    opts: ["0 iterations only","1 and many iterations","0, 1, 2, and many (n>2) iterations","Only many iterations"],
-    ans: 2,
-    explanations: [
-      "❌ Incorrect — Only 0 misses the important single-pass and multi-pass cases.",
-      "❌ Incorrect — Missing 0 (skip the loop) and 2 (minimal multi-pass).",
-      "✅ Correct — Loop coverage requires: skip (0), single (1), double (2), and many (n>2) passes (Code Coverage tab).",
-      "❌ Incorrect — Only many misses the important empty and single-iteration edge cases."
-    ]
-  },
-  {
-    q: "Regression tests are run to:",
-    opts: ["Find new features to implement","Verify that existing behavior still works after changes","Measure performance under load","Explore the system for unknown faults"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — Feature discovery is not a testing goal.",
-      "✅ Correct — Regression tests verify that changes (fixes, refactors, new features) have not broken previously working functionality (Test Cases tab: regression).",
-      "❌ Incorrect — Load testing measures performance under heavy load.",
-      "❌ Incorrect — Exploring for unknown faults describes exploratory testing."
-    ]
-  },
-  {
-    q: "Which testing activity requires the most expertise and why?",
-    opts: ["Test Execution — because running scripts is complex","Test Design — because it requires domain knowledge and testing expertise to identify meaningful cases","Test Automation — because it requires the most programming skill","Test Evaluation — because it requires management approval"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — Test Execution requires very little knowledge.",
-      "✅ Correct — Test Design requires both domain knowledge (what should the software do?) and testing expertise (how to find meaningful fault-revealing cases). It is the most knowledge-intensive activity.",
-      "❌ Incorrect — Test Automation requires programming skill but Test Design requires broader expertise.",
-      "❌ Incorrect — Test Evaluation requires domain knowledge but not management approval."
-    ]
-  },
-  {
-    q: "True or False: White-box testing can still catch missing logic (faults of omission).",
-    opts: ["True","False"],
-    ans: 1,
-    explanations: [
-      "❌ Incorrect — White-box testing examines existing code paths; it cannot reveal requirements that were never coded. Missing logic is invisible in code.",
-      "✅ Correct — White-box tests only see code that exists. If a requirement was simply never implemented (omission), there are no code paths to cover — white-box cannot detect what was never written."
-    ]
-  },
-  {"q": "Which of the following is a type of code coverage measurement?", "opts": ["Statement coverage", "Method coverage", "Loop coverage", "All of the above"], "ans": 3, "explanations": ["Statement coverage is a common code coverage metric.", "Method coverage is also a code coverage metric.", "Loop coverage is also used as a coverage metric.", "All listed items are types of code coverage measurements."]},
-  {"q": "Which of the following type of code coverage measures the lines covered by test cases?", "opts": ["Method coverage", "Statement coverage", "Branch/Decision coverage", "Condition/Predicate coverage"], "ans": 1, "explanations": ["Method coverage measures whether methods are executed.", "Statement coverage measures whether lines/statements are executed by test cases.", "Branch coverage measures branch outcomes.", "Condition coverage measures predicate truth values."]},
-  {"q": "Which of the following types of code coverage aims to ensure that each one of the possible branches from each decision point is executed at least once?", "opts": ["Branch/Decision coverage", "Loop coverage", "Method coverage", "Statement coverage"], "ans": 0, "explanations": ["Branch/Decision coverage requires each possible branch outcome to be executed at least once.", "Loop coverage focuses on loop execution counts.", "Method coverage focuses on calling methods.", "Statement coverage focuses on executing statements."]},
-  {"q": "Which of the following statements about infeasible paths is NOT correct?", "opts": ["Infeasible paths are those paths which can't be tested and verified by any set of possible input values.", "Infeasible paths are hard to detect by automation process.", "We prefer using Black box testing to find out infeasible paths.", "It usually requires domain knowledge for programmers to identify an infeasible path."], "ans": 2, "explanations": ["This is a correct description of infeasible paths.", "Automation has difficulty identifying infeasible paths.", "Black-box testing is not the preferred way to identify infeasible paths; this statement is not correct.", "Identifying infeasible paths often requires programmer/domain knowledge."]},
-  {"q": "Which of the following is NOT a purpose of testing?", "opts": ["To improve code quality", "To spot code faults", "To document code", "To guarantee code is fully correct"], "ans": 3, "explanations": ["Testing can help improve quality.", "Testing helps discover faults.", "Tests can also serve as documentation in some contexts.", "Testing cannot guarantee that code is fully correct."]},
-  {"q": "Which of the following do NOT belong to the types of test activities?", "opts": ["Test Design", "Test Automation", "Test Implementation", "Test Evaluation"], "ans": 2, "explanations": ["Test design is one of the core test activities.", "Test automation is one of the core test activities.", "Test implementation is not one of the named core test activities.", "Test evaluation is one of the core test activities."]},
-  {"q": "Which of the following test activities embeds test values into executable scripts?", "opts": ["Test Design", "Test Automation", "Test Implementation", "Test Execution"], "ans": 1, "explanations": ["Test design creates test ideas and values, but not executable scripts.", "Test automation embeds test values into executable scripts.", "Test implementation is not the named activity here.", "Test execution runs tests rather than embedding them into scripts."]},
-  {"q": "Which of the following statements about testing activities is correct?", "opts": ["Designing tests requires relatively little knowledge about the domain and programs.", "In order to embed test values into executable scripts, one needs to understand the theory very well.", "It is always efficient to assign the same person for all testing activities.", "Test automation is useful to have but could also be boring to construct."], "ans": 3, "explanations": ["Test design often requires significant domain and program knowledge.", "Automation usually needs practical tooling/implementation understanding, not just theory.", "Using the same person for all activities is not always efficient.", "This is the correct statement from the source material."]},
-  {"q": "Which of the following statements about test cases is correct?", "opts": ["Test cases cannot be used as documents as they are considered as two very different categories.", "Only developers can construct test case for their programs.", "The process of developing test cases can also help developers to understand the requirements."], "ans": 2, "explanations": ["Test cases can often serve documentation roles.", "People besides developers can create test cases.", "Constructing test cases can improve understanding of requirements."]},
-  {"q": "When should we write test cases?", "opts": ["Before code is written", "While writing code", "After code is written", "All of above"], "ans": 3, "explanations": ["Test cases can be written before coding.", "They can also be written while coding.", "They can also be written after coding.", "All of these timings are possible."]},
-  {"q": "Which statement about manual testing and automated testing is NOT correct?", "opts": ["When regression tests are conducted very often, we should prefer doing automated testing.", "To test a Graphics Interface, we should build automated tests after the interface design is stable.", "Tests that don't require re-execution should be done manually.", "Automated tests always finds more bugs than manual tests."], "ans": 3, "explanations": ["Frequent regression testing is a good candidate for automation.", "GUI automation is often better once the interface stabilizes.", "One-off tests are often reasonable to do manually.", "Automated tests do not always find more bugs than manual tests."]},
-  {"q": "Which of the following statements is true about tests?", "opts": ["Tests must be written in the form of code", "User interfaces cannot be tested", "Projects can have more test code than source code", "Tests can always spot bugs"], "ans": 2, "explanations": ["Tests do not always need to be code.", "User interfaces can absolutely be tested.", "Projects can indeed have more test code than production code.", "Tests cannot always spot all bugs."]},
-  {"q": "Which of the following statements about writing tests as a developer is NOT correct?", "opts": ["Developers cannot always detect all faults even if they fully understand their implementations.", "More people are encouraged to engage in writing tests in addition to developers.", "When developers construct test suites, they may have a bias on software code or functions.", "Only QA developers should develop test cases since they are experts in testing area."], "ans": 3, "explanations": ["This statement is correct.", "This statement is correct.", "This statement is correct.", "Writing tests is not only for QA developers; this is the incorrect statement."]},
-  {"q": "Which of the following is true about Black box testing?", "opts": ["It is not feasible to thoroughly exercise all potential tests inputs.", "Tests are written with knowledge of the internal workings to thoroughly test what is happening on the inside of the code.", "Black box testing is good at finding faults of extra logic.", "Black box testing is good and better for finding crashes, out of bounds failures, and file not closed failures."], "ans": 2, "explanations": ["This is generally true but not the target statement here.", "This describes white-box testing.", "According to the source material, black-box testing is good at finding faults of extra logic.", "This option is not the intended answer in the source material."]},
-  {"q": "Which of the following statements about White box testing is NOT correct?", "opts": ["Methods like Equivalence Class and Boundary Value Analysis can also be applied in White box testing.", "Maintaining White box test scripts could be very difficult if implementation details keep changing frequently.", "White box testing is usually very simple, so it does not require knowledge of programming and implementation"], "ans": 2, "explanations": ["This statement is correct.", "This statement is correct.", "White-box testing does require programming and implementation knowledge; this is the incorrect statement."]},
-  {"q": "A developer called Math.log(5) function that was supposed to return the natural logarithm value of the input, but returns 125 instead. According to the lecture slides, this is an example of:", "opts": ["Error", "Failure", "Fault"], "ans": 2, "explanations": ["An error is an incorrect internal program state.", "A failure is externally observable incorrect behavior.", "The wrong implementation is a fault."]},
-  {"q": "According to the PIE model, which of the following conditions is NOT correct for a failure to be observed?", "opts": ["The location or locations in the program that contain the fault must be reached.", "The state of the program must be incorrect.", "The infected state must NOT propagate to cause some output of the program to be incorrect."], "ans": 2, "explanations": ["Execution is required.", "Infection is required.", "Propagation IS required for a failure to be observed, so this statement is not correct."]},
-  {"q": "Which of the following is NOT a metric for code coverage?", "opts": ["Method coverage", "Branch coverage", "Statement coverage", "Parameter coverage"], "ans": 3, "explanations": ["Method coverage is a code coverage metric.", "Branch coverage is a code coverage metric.", "Statement coverage is a code coverage metric.", "Parameter coverage is not one of the standard code coverage metrics listed here."]},
-  {"q": "\"Dividing input conditions into groups and testing each group of inputs\" describes which of the following techniques for Black box testing?", "opts": ["Boundary Value Analysis", "Equivalence Class Partitioning", "Decision Table Testing", "Use case testing"], "ans": 1, "explanations": ["Boundary value analysis focuses on boundaries.", "Equivalence class partitioning divides inputs into groups/classes.", "Decision table testing focuses on combinations of conditions/actions.", "Use case testing focuses on scenarios."]},
-  {"q": "Which of the following is NOT a purpose of testing?", "opts": ["Determine whether the software is sufficiently qualified for the release.", "Finding faults in the software.", "Determine which parts of the software need more testing.", "Guaranteeing there are NO faults in the software."], "ans": 3, "explanations": ["This is a valid purpose of testing.", "This is a valid purpose of testing.", "This is a valid purpose of testing.", "Testing cannot guarantee the complete absence of faults."]},
-  {"q": "Which of the following statements about developers writing tests is NOT correct?", "opts": ["Developers can always detect all faults since they understand their implementations.", "Developers may have biases when writing software code and designing functions.", "More people are encouraged to engage in writing tests in addition to developers."], "ans": 0, "explanations": ["Developers cannot always detect all faults just because they know the implementation.", "This is correct.", "This is correct."]},
-  {"q": "When do we usually want to write Unit tests?", "opts": ["Prior to Integration phase", "Prior to designing phase", "After maintenance phase", "During requirement phase"], "ans": 0, "explanations": ["Unit tests are usually written before integration, while focusing on individual units.", "This is too early in the lifecycle.", "This is too late.", "Requirements phase is not the intended answer here."]},
-  {"q": "Is the following statement True or False: Validation ensures that the new method meets the requirements for its intended use.", "opts": ["True", "False"], "ans": 0, "explanations": ["This is true according to the source material.", "This is false."]},
-  {"q": "Is the following statement True or False: We only need to run test cases before releasing the software to our customers.", "opts": ["True", "False"], "ans": 1, "explanations": ["Testing is needed throughout development, not only before release.", "Correct — testing is not only a pre-release activity."]},
-  {"q": "When do we prefer automated testing to manual testing?", "opts": ["When regression tests are conducted very often.", "Tests that don't require re-execution.", "The software GUI rarely gets updated."], "ans": 0, "explanations": ["Frequent regression testing strongly favors automation.", "One-off tests are more often done manually.", "This is not the intended criterion here."]},
-  {"q": "When do we prefer manual testing instead of automated testing?", "opts": ["When we want to use tests as documentation.", "When the software is not stable.", "When tests only gets executed once."], "ans": 2, "explanations": ["This is not the intended reason here.", "Instability can matter, but the source answer is different.", "Manual testing is preferred when a test will only be executed once."]},
-  {"q": "Which of the following is NOT an advantage of test automation?", "opts": ["It can help in identifying high priority test cases.", "It can be run over and over again.", "It is good for validating functional flows.", "It improves the efficiency of testing."], "ans": 0, "explanations": ["Identifying high-priority test cases is not an advantage of automation itself.", "Repeatability is an advantage of automation.", "Automation can help validate functional flows.", "Automation improves efficiency."]},
-  {"q": "Which of the following statements on test cases is NOT correct?", "opts": ["Test cases can document faults", "Test cases can document code", "One can only build test cases for a specific program if the program is developed by him/her.", "The process of developing test cases can also help find problems in the requirements or design of an application."], "ans": 1, "explanations": ["Test cases can help reveal or document faults.", "Test cases are not the same as code documentation; this is the incorrect statement.", "This is also dubious, but the source marks option 2 as incorrect.", "This is a correct statement."]},
-  {"q": "Which of the following is a type of testing activity?", "opts": ["Test Evaluation", "Test Design", "Test Execution", "All of them"], "ans": 3, "explanations": ["Test evaluation is a testing activity.", "Test design is a testing activity.", "Test execution is a testing activity.", "All listed options are testing activities."]},
-  {"q": "When we conduct tests, the procedure of coming up with a set of interesting input values is considered as:", "opts": ["Test Evaluation", "Test Automation", "Test Execution", "Test Design"], "ans": 3, "explanations": ["Evaluation interprets results.", "Automation scripts tests.", "Execution runs tests.", "Choosing interesting input values is test design."]},
-  {"q": "When we conduct tests, the procedure of understanding the output of the execution of test cases and reporting or documenting the results is considered as:", "opts": ["Test Design", "Test Automation", "Test Execution", "Test Evaluation"], "ans": 3, "explanations": ["Design chooses tests.", "Automation encodes tests.", "Execution runs tests.", "Understanding outputs and documenting results is test evaluation."]},
-  {"q": "Which of the following statements about assigning testing personnel is NOT correct?", "opts": ["Conducting testing design requires the most technical knowledge", "You do not need to know how to program to conduct test automations", "In order to evaluate the test results, domain knowledge is required"], "ans": 0, "explanations": ["This is the incorrect statement according to the source material.", "Programming knowledge is in fact needed for automation.", "Domain knowledge is indeed required for evaluation."]},
-  {"q": "A developer mistyped a variable as \"buildf\" while he was looking for the variable \"build\". According to the lecture slides, this is an example of:", "opts": ["Mistake", "Failure", "Error"], "ans": 0, "explanations": ["The human action is a mistake.", "A failure is externally observable incorrect behavior.", "An error is an incorrect internal state."]},
-  {"q": "An incorrect implementation of an algorithm results in program crashes by the test oracle. According to the lecture slides, this is an example of:", "opts": ["Failure", "Fault", "Error"], "ans": 0, "explanations": ["A crash observed by the oracle is a failure.", "The underlying bad code is a fault.", "An error is an incorrect internal state."]},
-  {"q": "A developer called sqrt(5) function that was supposed to return the square root value of the input but the developer got 25 instead. According to the lecture slides, this is an example of:", "opts": ["Error", "Failure", "Mistake"], "ans": 0, "explanations": ["The incorrect internal/computed state is an error.", "A failure is broader externally visible incorrect behavior.", "The human action that caused it would be a mistake."]},
-  {"q": "According to the PIE model, what conditions are necessary for a failure to be observed?", "opts": ["The location or locations in the program that contain the fault must be reached.", "The state of the program must be incorrect.", "The infected state must propagate to cause some output of the program to be incorrect.", "All of the above."], "ans": 3, "explanations": ["Execution is required.", "Infection is required.", "Propagation is required.", "All three PIE conditions are necessary."]},
-  {"q": "Which of the following is NOT an advantage of using Black-box testing?", "opts": ["Tests are done from a user's perspective and will help in finding inconsistencies between the specifications and real behavior.", "Test cases can be developed as soon as the specifications are ready.", "It can cover most of the potential execution paths.", "Testers do not need to know how the programs are implemented."], "ans": 2, "explanations": ["This is an advantage of black-box testing.", "This is an advantage of black-box testing.", "Covering execution paths is more associated with white-box testing; this is not an advantage of black-box testing.", "This is an advantage of black-box testing."]},
-  {"q": "Which of the following is a disadvantage of using Black box testing?", "opts": ["Maintaining test suites become harder if the implementation changes too frequently.", "It is hard to cover all the program execution paths.", "Testers need a thorough knowledge of the implementation details."], "ans": 1, "explanations": ["This is more closely associated with automation/white-box issues.", "Black-box testing does not target internal execution paths, making path coverage hard.", "Black-box testing does not require detailed implementation knowledge."]},
-  {"q": "Suppose we want to test a new generic sorting algorithm using Black box testing and we have several different sets of testing inputs. Which following set of testing values ONLY contains inputs from an equivalent class?", "opts": ["[1, 2, 3, 4, 5], ['a', 'b', 'c'], ['aa', 'ab', 'ac', 'bd']", "[7, 9, 5, 4, 1], ['a', 'b', 'c'], ['a', 'a', 'b', 'b', 'c', 'c']", "[4, 3, 1, 2, 5], [1, 2, 3, 5], [42, 10, 23, 1], ['3', 'B', 'c']"], "ans": 0, "explanations": ["These inputs are all valid lists of comparable, unique, sorted-ish values within one intended class per set.", "This set mixes different classes such as duplicates.", "This set mixes numeric and string classes in a way the question does not intend."]},
-  {"q": "Which of the following software testing levels do we typically NOT prefer using for Black box testing?", "opts": ["Acceptance Testing", "Unit Testing", "Integration Testing", "System Testing"], "ans": 1, "explanations": ["Acceptance testing often uses black-box approaches.", "Unit testing typically prefers white-box testing, so black-box is less preferred here.", "Integration testing can use black-box approaches.", "System testing often uses black-box approaches."]},
-  {"q": "\"Dividing the input conditions into groups and testing each group of inputs\" describes which of the following techniques for Black box testing?", "opts": ["Use case testing", "Decision Table Testing", "Equivalence Class Partitioning", "Boundary Value Analysis"], "ans": 2, "explanations": ["Use case testing is scenario-based.", "Decision table testing focuses on combinations of rules.", "Equivalence class partitioning divides inputs into groups/classes.", "Boundary value analysis focuses on edges of ranges."]},
-  {"q": "Which of the following is an advantage of using White- box testing?", "opts": ["Tests are done from a user's perspective and will help in finding inconsistencies between the specifications and real behavior.", "Testers do not need to know how the programs are implemented.", "Testers are based on internal code structure, allowing for thorough path and branch coverage."], "ans": 2, "explanations": ["This describes a black-box advantage.", "White-box testing does require implementation knowledge.", "This is the key advantage of white-box testing."]},
-  {"q": "Which of the following is a disadvantage of using White-box testing?", "opts": ["Programmers need a thorough knowledge of implementations to develop a White- box test suite.", "Many program paths will be left untested.", "Without clear specifications, test cases will be hard to design."], "ans": 0, "explanations": ["This is a disadvantage of white-box testing.", "Path coverage is actually a strength, not the main disadvantage listed here.", "This is more associated with black-box/spec-based challenges."]},
-  {"q": "Which of the following is a correct description of the main difference between Black box testing and White-box testing?", "opts": ["The internal structure, design or implementation of the item is given to the test developers.", "Black box testing generally requires testers to have domain knowledge (e.g. programming language of the software implementation)", "White-box testing cannot be applied during Integration test."], "ans": 0, "explanations": ["This describes white-box testing versus black-box testing.", "Black-box testing does not generally require implementation-language knowledge.", "White-box testing can be applied during integration testing."]},
-  {"q": "Which of the following statements about White- box testing is correct?", "opts": ["As a test developer, I do not need to know the details of implementations to develop my White box test suite.", "White- box testing is typically conducted before conducting Black box testing.", "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White- box testing."], "ans": 2, "explanations": ["White-box testing does require implementation knowledge.", "White-box versus black-box order is not a defining truth here.", "This statement is correct according to the source material."]},
-  {"q": "At which software testing level do we typically prefer using White-box Testing?", "opts": ["Unit Testing", "System Testing", "Acceptance Testing"], "ans": 0, "explanations": ["White-box testing is typically preferred at the unit-testing level.", "System testing more commonly uses black-box approaches.", "Acceptance testing more commonly uses black-box approaches."]},
-
+  { q: "Which of the following is NOT a purpose of testing?", opts: [
+    "To improve code quality",
+    "To spot code faults",
+    "To document code",
+    "To guarantee code is fully correct"
+  ], ans: 3, explanations: [
+    "❌ Incorrect — The notes list “improve code quality” as a valid goal: testing finds defects so quality rises (Testing Overview).",
+    "❌ Incorrect — “Spot code faults” is exactly what testing is for (fault detection in the overview table).",
+    "❌ Incorrect — Tests act as executable documentation of behavior (overview table + Test Activities tab: test cases as living documentation).",
+    "✅ Correct — This is NOT a valid claim. The notes stress that testing cannot prove the program is fully correct; the input space is huge and passing all tests still leaves untested paths (overview + red exam tip)."
+  ] },
+  { q: "Which of the following do NOT belong to the types of test activities?", opts: [
+    "Test Design",
+    "Test Automation",
+    "Test Implementation",
+    "Test Evaluation"
+  ], ans: 2, explanations: [
+    "❌ Incorrect — Test Design is one of the four named activities (define cases and expected results).",
+    "❌ Incorrect — Test Automation is one of the four (turn values into runnable scripts).",
+    "✅ Correct — “Test Implementation” is not a named category in this course model. The standard chain is Design → Automation → Execution → Evaluation (Test Activities tab + exam tip).",
+    "❌ Incorrect — Test Evaluation is the fourth activity (interpret results and coverage)."
+  ] },
+  { q: "Which of the following test activities embeds test values into executable scripts?", opts: [
+    "Test Design",
+    "Test Automation",
+    "Test Implementation",
+    "Test Execution"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — Test Design decides inputs and expected results; it does not embed them into scripts (activities table).",
+    "✅ Correct — Test Automation’s job is to take those values and encode them in executable scripts (activities table: “Turn those values into runnable scripts”).",
+    "❌ Incorrect — Not a standard activity name here; scripting falls under Test Automation.",
+    "❌ Incorrect — Test Execution runs tests and collects outcomes; embedding is already done before that."
+  ] },
+  { q: "Which of the following statements about testing activities is correct?", opts: [
+    "Designing tests requires relatively little knowledge about the domain and programs.",
+    "In order to embed test values into executable scripts, one needs to understand the theory very well.",
+    "It is always efficient to assign the same person for all testing activities.",
+    "Test automation is useful to have but could also be boring to construct."
+  ], ans: 3, explanations: [
+    "❌ Incorrect — Test Design requires strong domain knowledge and system understanding (activities table: skills for Test Design).",
+    "❌ Incorrect — Automation needs programming and tool familiarity, not abstract “theory” in this sense; the notes tie automation to coding and frameworks.",
+    "❌ Incorrect — The same person for every activity is not “always” efficient; role split and specialization are common in practice (stated in the original rationale).",
+    "✅ Correct — Matches the Manual vs automated tab: automation pays off for frequent regression, but building and maintaining scripts can be repetitive and tedious (“Reality check” + regression box)."
+  ] },
+  { q: "Which of the following statements about test cases is correct?", opts: [
+    "Test cases cannot be used as documents as they are considered as two very different categories.",
+    "Only developers can construct test cases for their programs.",
+    "The process of developing test cases can also help developers to understand the requirements."
+  ], ans: 2, explanations: [
+    "❌ Incorrect — The notes say tests document expected behavior; teammates can read tests as specs (Test Activities: “Test cases as living documentation”).",
+    "❌ Incorrect — The “Who writes tests” box: developers, domain experts, and others can author tests—not QA only.",
+    "✅ Correct — Authoring tests clarifies requirements (same card: writing tests forces you to clarify requirements)."
+  ] },
+  { q: "When should we write test cases?", opts: [
+    "Before code is written",
+    "While writing code",
+    "After code is written",
+    "All of above"
+  ], ans: 3, explanations: [
+    "❌ True in isolation (TDD/test-first) but incomplete — the notes say you can also test during and after.",
+    "❌ True in isolation (tests alongside features) but incomplete.",
+    "❌ True in isolation (regression/backfill) but incomplete.",
+    "✅ Correct — Overview tab: before (TDD), during, and after are all valid; mature projects use more than one timing."
+  ] },
+  { q: "Which statement about manual testing and automated testing is NOT correct?", opts: [
+    "When regression tests are conducted very often, we should prefer doing automated testing.",
+    "To test a Graphics Interface, we should build automated tests after the interface design is stable.",
+    "Tests that don't require re-execution should be done manually.",
+    "Automated tests always find more bugs than manual tests."
+  ], ans: 3, explanations: [
+    "❌ This statement is true — Manual vs automated tab: when the same battery runs often, automation pays off (regression box).",
+    "❌ True — Automate GUI tests after the UI stabilizes; while designs churn, manual checks fit better (same table).",
+    "❌ True — One-off or rarely repeated checks are often cheaper manually (“Reality check” box).",
+    "✅ The claim in D is false — The notes’ table says automated testing does not automatically find more bugs than manual; exploratory manual testing can still uncover issues scripts miss."
+  ] },
+  { q: "Which of the following statements is true about tests?", opts: [
+    "Tests must be written in the form of code",
+    "User interfaces cannot be tested",
+    "Projects can have more test code than source code",
+    "Tests can always spot bugs"
+  ], ans: 2, explanations: [
+    "❌ Incorrect — Notes: tests need not be code; manual plans still count (Test Activities bullet).",
+    "❌ Incorrect — Overview says UIs are testable; automate once layouts and flows stabilize.",
+    "✅ Correct — Overview: in mature projects the test codebase can outgrow production code.",
+    "❌ Incorrect — Testing improves fault detection but cannot guarantee finding every bug (same limits as “fully correct”)."
+  ] },
+  { q: "Which of the following statements about writing tests as a developer is NOT correct?", opts: [
+    "Developers cannot always detect all faults even if they fully understand their implementations.",
+    "More people are encouraged to engage in writing tests in addition to developers.",
+    "When developers construct test suites, they may have a bias on software code or functions.",
+    "Only QA developers should develop test cases since they are experts in testing area."
+  ], ans: 3, explanations: [
+    "❌ This statement is true — Developer bias card: deep understanding does not mean you find every fault.",
+    "❌ True — “Who writes tests” encourages developers, domain experts, and others—not QA alone.",
+    "❌ True — Same bias card: authors may favor paths they believe work.",
+    "✅ This is NOT correct — Notes explicitly reject QA-only ownership; more perspectives reduce blind spots (Who writes tests + bias section)."
+  ] },
+  { q: "Which of the following is true about Black-box testing?", opts: [
+    "It is not feasible to thoroughly exercise all potential test inputs.",
+    "Tests are written with knowledge of the internal workings to thoroughly test what is happening on the inside of the code.",
+    "Black-box testing is good at finding faults of extra logic.",
+    "Black-box testing is better for finding crashes, out of bounds failures, and file not closed failures."
+  ], ans: 0, explanations: [
+    "✅ Correct — Black vs white tab: input space is enormous, so exhaustive black-box testing is infeasible; you sample (ECP/BVA).",
+    "❌ Incorrect — That describes white-box / structural testing (internal workings visible).",
+    "❌ Incorrect — Notes: black-box is weak on redundant/extra internal logic because you do not inspect implementation.",
+    "❌ Incorrect — Low-level structural issues (bounds, resource leaks) align with white-box strengths in the comparison table."
+  ] },
+  { q: "Which of the following statements about White-box testing is NOT correct?", opts: [
+    "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White-box testing.",
+    "Maintaining White-box test scripts could be very difficult if implementation details keep changing frequently.",
+    "White-box testing is usually very simple, so it does not require knowledge of programming and implementation."
+  ], ans: 2, explanations: [
+    "❌ This statement is true — Cross-over box: ECP and BVA are general tactics usable in white-box testing too.",
+    "❌ True — White-box cost card: suites track implementation, so churn raises maintenance cost.",
+    "✅ This is NOT correct — White-box requires programming and internal knowledge; the notes say it is not “easy” and demands coding skill (comparison table + exam tip)."
+  ] },
+  { q: "A developer called Math.log(5) which was supposed to return the natural logarithm of the input, but returns 125 instead. This is an example of:", opts: [
+    "Error",
+    "Failure",
+    "Fault"
+  ], ans: 0, explanations: [
+    "✅ Correct — Error / fault / failure table: an error is the human mistake while coding; the walk-through uses the same Math.log vs Math.pow style example.",
+    "❌ Incorrect — Failure is the observable wrong behavior at runtime (wrong return value), not the mistake category the question highlights first.",
+    "❌ Incorrect — Fault is the defect frozen in the artifact (buggy code); the slip while typing is classified as error in the notes’ terminology."
+  ] },
+  { q: "According to the PIE model, which of the following conditions is NOT correct for a failure to be observed?", opts: [
+    "The location or locations in the program that contain the fault must be reached.",
+    "The state of the program must be incorrect.",
+    "The infected state must NOT propagate to cause some output of the program to be incorrect."
+  ], ans: 2, explanations: [
+    "❌ This condition is correct — Execution: the faulty statement must run (PIE summary cells).",
+    "❌ Correct — Infection: program state must become incorrect.",
+    "✅ This wording is NOT correct for PIE — Propagation to an observable output is required; “must NOT propagate” contradicts the model (red exam tip on propagation)."
+  ] },
+  { q: "Which of the following is NOT a metric for code coverage?", opts: [
+    "Method coverage",
+    "Branch coverage",
+    "Statement coverage",
+    "Parameter coverage"
+  ], ans: 3, explanations: [
+    "❌ Method coverage is a standard metric (Code Coverage tab table).",
+    "❌ Branch coverage is standard.",
+    "❌ Statement coverage is standard.",
+    "✅ Correct — “Parameter coverage” is not in the usual taxonomy; metrics tie to executable structure, not parameters alone (exam tip + table)."
+  ] },
+  { q: "\"Dividing input conditions into groups and testing each group of inputs\" describes which technique for Black-box testing?", opts: [
+    "Boundary Value Analysis",
+    "Equivalence Class Partitioning",
+    "Decision Table Testing",
+    "Use case testing"
+  ], ans: 1, explanations: [
+    "❌ BVA stresses edges and neighbors (±1) at class boundaries—not the act of forming the groups (ECP vs BVA box).",
+    "✅ Correct — ECP splits inputs into equivalence classes and picks representatives (techniques table: partition, representative).",
+    "❌ Decision tables map combinations of conditions to actions—a rule matrix, not merely grouping inputs by class.",
+    "❌ Use-case testing derives scenarios from user workflows, not the generic partition-then-representative pattern."
+  ] },
+  { q: "Validation is defined as determining whether a system satisfies:", opts: [
+    "The conditions set at the start of the current development phase",
+    "Specified requirements — the right product?",
+    "Only the non-functional requirements",
+    "The internal design document"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — That matches Verification (did we build the phase right?).",
+    "✅ Correct — Validation checks against specified requirements: 'Are we building the right product?' (IEEE 2017).",
+    "❌ Incorrect — Validation covers all requirements, functional and non-functional.",
+    "❌ Incorrect — Internal design is an artifact of the process, not the validation criterion."
+  ] },
+  { q: "Test Execution activity requires which level of knowledge?", opts: [
+    "Deep domain knowledge",
+    "Technical testing expertise",
+    "Very little knowledge",
+    "Strong programming background"
+  ], ans: 2, explanations: [
+    "❌ Incorrect — Domain knowledge is needed for Test Evaluation (judging results), not Execution.",
+    "❌ Incorrect — Technical testing expertise is needed for Test Design, not Execution.",
+    "✅ Correct — Test Execution simply runs scripts and records results; very little knowledge is required (Testing Activities tab).",
+    "❌ Incorrect — Programming background belongs to Test Automation."
+  ] },
+  { q: "Which code coverage level checks that every conditional predicate has been both true and false?", opts: [
+    "Method coverage",
+    "Statement coverage",
+    "Branch/decision coverage",
+    "Loop coverage"
+  ], ans: 2, explanations: [
+    "❌ Incorrect — Method coverage only checks that every method has been called.",
+    "❌ Incorrect — Statement coverage checks every line is executed but does not require both branches.",
+    "✅ Correct — Branch/decision coverage: every if/while/for must evaluate to both true and false.",
+    "❌ Incorrect — Loop coverage checks 0/1/2/many iterations through a loop."
+  ] },
+  { q: "An infeasible path in a program is one that:", opts: [
+    "Takes too long to execute",
+    "Can never be reached by any test input",
+    "Is always executed first",
+    "Only executes on certain hardware"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — Infeasibility is about reachability, not execution time.",
+    "✅ Correct — An infeasible path cannot be triggered by any possible input; 100% coverage cannot cover it (Code Coverage tab).",
+    "❌ Incorrect — Always-first execution does not make a path infeasible.",
+    "❌ Incorrect — Hardware dependence is a different concern."
+  ] },
+  { q: "The mistake → fault → error → failure chain: what does 'error' specifically refer to?", opts: [
+    "The incorrect line of code",
+    "The incorrect program state during execution",
+    "The wrong output the user sees",
+    "The developer's misunderstanding"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — The incorrect line of code is the Fault (defect).",
+    "✅ Correct — Error: the difference between computed/observed and the correct value — an incorrect intermediate state (Fault & Failure tab).",
+    "❌ Incorrect — Wrong output is the Failure.",
+    "❌ Incorrect — Developer's misunderstanding is the Mistake."
+  ] },
+  { q: "For range input [a, b] in Boundary Value Analysis (integer), which test values are required?", opts: [
+    "Only a and b",
+    "a, b, a+1, b-1",
+    "a, a+1, a-1, b, b+1, b-1",
+    "Only mid-range values"
+  ], ans: 2, explanations: [
+    "❌ Incomplete — BVA requires values at and around each boundary, not just the endpoints.",
+    "❌ Incomplete — Missing a-1 and b+1 which test robustness beyond the boundary.",
+    "✅ Correct — BVA for integer range: a, a-1, a+1, b, b-1, b+1 — at boundary and ±1 on each side.",
+    "❌ Incorrect — Mid-range values are used for Equivalence Partitioning, not BVA."
+  ] },
+  { q: "Which condition of PIE explains why passing all tests does NOT guarantee zero bugs?", opts: [
+    "Execution — some statements were not executed",
+    "Infection — the fault never corrupted state",
+    "Propagation — the error never reached an observable output",
+    "All three together"
+  ], ans: 3, explanations: [
+    "❌ Partially correct but incomplete — even with 100% execution, I and P may not hold.",
+    "❌ Partially correct but incomplete — alone this explains masked faults, not the whole picture.",
+    "❌ Partially correct but incomplete — propagation failure is one reason but not the only one.",
+    "✅ Correct — Even with 100% statement coverage, a fault might execute (E) but not infect state (I), or infect state but not propagate to an observable output (P). All three together explain why tests cannot prove correctness."
+  ] },
+  { q: "Testing guidelines for collections say to test the collection with exactly one element because:", opts: [
+    "It is faster",
+    "Edge cases near empty are common fault locations",
+    "It uses less memory",
+    "It satisfies statement coverage alone"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — Speed is not the reason for this guideline.",
+    "✅ Correct — The boundary between 'empty' and 'non-empty' is a common fault location; testing with exactly 1 element catches off-by-one errors near empty (Equivalence Partitioning tab).",
+    "❌ Incorrect — Memory usage is irrelevant to this guideline.",
+    "❌ Incorrect — Coverage type is not the motivation; it is about fault-prone boundary behavior."
+  ] },
+  { q: "Scenario-based tests are written based on:", opts: [
+    "Random inputs",
+    "User stories and user workflows",
+    "The internal code structure",
+    "Boundary values only"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — Random inputs describe fuzz testing.",
+    "✅ Correct — Scenario-based tests derive cases from user stories and realistic end-to-end workflows (Test Cases tab: kinds of tests).",
+    "❌ Incorrect — Internal structure drives white-box testing.",
+    "❌ Incorrect — Boundary values are a BVA technique, not scenario-based."
+  ] },
+  { q: "White-box testing is typically conducted:", opts: [
+    "Before black-box testing",
+    "After black-box testing",
+    "Only on unit tests",
+    "Only on system tests"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — The standard order is black-box first to cover requirements-level faults, then white-box.",
+    "✅ Correct — White-box testing is typically conducted after black-box testing to cover remaining code paths (White-Box tab: 'typically after black-box').",
+    "❌ Incorrect — White-box can apply at all test levels.",
+    "❌ Incorrect — White-box applies at unit, integration, and system level."
+  ] },
+  { q: "A test with balance=0, calAmount() returning 10 with oracle 'assertTrue(amount==10)' — which element of PIE is demonstrated when the fault (balance*3 instead of *2) is NOT triggered?", opts: [
+    "Execution fails — the faulty statement never runs",
+    "Infection fails — state is not corrupted (0*3=0=0*2)",
+    "Propagation fails — the error does not reach output",
+    "All three conditions are met"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — The faulty statement balance*3 does execute.",
+    "✅ Correct — When balance=0, 0*3=0 and 0*2=0 — same result. The fault executes (E satisfied) but the state is NOT infected (I fails). This is a masked fault.",
+    "❌ Incorrect — Propagation is irrelevant if Infection never occurs.",
+    "❌ Incorrect — Only E is satisfied; I fails."
+  ] },
+  { q: "Loop coverage requires which of the following test executions?", opts: [
+    "0 iterations only",
+    "1 and many iterations",
+    "0, 1, 2, and many (n>2) iterations",
+    "Only many iterations"
+  ], ans: 2, explanations: [
+    "❌ Incorrect — Only 0 misses the important single-pass and multi-pass cases.",
+    "❌ Incorrect — Missing 0 (skip the loop) and 2 (minimal multi-pass).",
+    "✅ Correct — Loop coverage requires: skip (0), single (1), double (2), and many (n>2) passes (Code Coverage tab).",
+    "❌ Incorrect — Only many misses the important empty and single-iteration edge cases."
+  ] },
+  { q: "Regression tests are run to:", opts: [
+    "Find new features to implement",
+    "Verify that existing behavior still works after changes",
+    "Measure performance under load",
+    "Explore the system for unknown faults"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — Feature discovery is not a testing goal.",
+    "✅ Correct — Regression tests verify that changes (fixes, refactors, new features) have not broken previously working functionality (Test Cases tab: regression).",
+    "❌ Incorrect — Load testing measures performance under heavy load.",
+    "❌ Incorrect — Exploring for unknown faults describes exploratory testing."
+  ] },
+  { q: "Which testing activity requires the most expertise and why?", opts: [
+    "Test Execution — because running scripts is complex",
+    "Test Design — because it requires domain knowledge and testing expertise to identify meaningful cases",
+    "Test Automation — because it requires the most programming skill",
+    "Test Evaluation — because it requires management approval"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — Test Execution requires very little knowledge.",
+    "✅ Correct — Test Design requires both domain knowledge (what should the software do?) and testing expertise (how to find meaningful fault-revealing cases). It is the most knowledge-intensive activity.",
+    "❌ Incorrect — Test Automation requires programming skill but Test Design requires broader expertise.",
+    "❌ Incorrect — Test Evaluation requires domain knowledge but not management approval."
+  ] },
+  { q: "True or False: White-box testing can still catch missing logic (faults of omission).", opts: [
+    "True",
+    "False"
+  ], ans: 1, explanations: [
+    "❌ Incorrect — White-box testing examines existing code paths; it cannot reveal requirements that were never coded. Missing logic is invisible in code.",
+    "✅ Correct — White-box tests only see code that exists. If a requirement was simply never implemented (omission), there are no code paths to cover — white-box cannot detect what was never written."
+  ] },
+  { q: "Which of the following is a type of code coverage measurement?", opts: [
+    "Statement coverage",
+    "Method coverage",
+    "Loop coverage",
+    "All of the above"
+  ], ans: 3, explanations: [
+    "Statement coverage is a common code coverage metric.",
+    "Method coverage is also a code coverage metric.",
+    "Loop coverage is also used as a coverage metric.",
+    "All listed items are types of code coverage measurements."
+  ] },
+  { q: "Which of the following type of code coverage measures the lines covered by test cases?", opts: [
+    "Method coverage",
+    "Statement coverage",
+    "Branch/Decision coverage",
+    "Condition/Predicate coverage"
+  ], ans: 1, explanations: [
+    "Method coverage measures whether methods are executed.",
+    "Statement coverage measures whether lines/statements are executed by test cases.",
+    "Branch coverage measures branch outcomes.",
+    "Condition coverage measures predicate truth values."
+  ] },
+  { q: "Which of the following types of code coverage aims to ensure that each one of the possible branches from each decision point is executed at least once?", opts: [
+    "Branch/Decision coverage",
+    "Loop coverage",
+    "Method coverage",
+    "Statement coverage"
+  ], ans: 0, explanations: [
+    "Branch/Decision coverage requires each possible branch outcome to be executed at least once.",
+    "Loop coverage focuses on loop execution counts.",
+    "Method coverage focuses on calling methods.",
+    "Statement coverage focuses on executing statements."
+  ] },
+  { q: "Which of the following statements about infeasible paths is NOT correct?", opts: [
+    "Infeasible paths are those paths which can't be tested and verified by any set of possible input values.",
+    "Infeasible paths are hard to detect by automation process.",
+    "We prefer using Black box testing to find out infeasible paths.",
+    "It usually requires domain knowledge for programmers to identify an infeasible path."
+  ], ans: 2, explanations: [
+    "This is a correct description of infeasible paths.",
+    "Automation has difficulty identifying infeasible paths.",
+    "Black-box testing is not the preferred way to identify infeasible paths; this statement is not correct.",
+    "Identifying infeasible paths often requires programmer/domain knowledge."
+  ] },
+  { q: "Which of the following statements about test cases is correct?", opts: [
+    "Test cases cannot be used as documents as they are considered as two very different categories.",
+    "Only developers can construct test case for their programs.",
+    "The process of developing test cases can also help developers to understand the requirements."
+  ], ans: 2, explanations: [
+    "Test cases can often serve documentation roles.",
+    "People besides developers can create test cases.",
+    "Constructing test cases can improve understanding of requirements."
+  ] },
+  { q: "Which statement about manual testing and automated testing is NOT correct?", opts: [
+    "When regression tests are conducted very often, we should prefer doing automated testing.",
+    "To test a Graphics Interface, we should build automated tests after the interface design is stable.",
+    "Tests that don't require re-execution should be done manually.",
+    "Automated tests always finds more bugs than manual tests."
+  ], ans: 3, explanations: [
+    "Frequent regression testing is a good candidate for automation.",
+    "GUI automation is often better once the interface stabilizes.",
+    "One-off tests are often reasonable to do manually.",
+    "Automated tests do not always find more bugs than manual tests."
+  ] },
+  { q: "Which of the following is true about Black box testing?", opts: [
+    "It is not feasible to thoroughly exercise all potential tests inputs.",
+    "Tests are written with knowledge of the internal workings to thoroughly test what is happening on the inside of the code.",
+    "Black box testing is good at finding faults of extra logic.",
+    "Black box testing is good and better for finding crashes, out of bounds failures, and file not closed failures."
+  ], ans: 2, explanations: [
+    "This is generally true but not the target statement here.",
+    "This describes white-box testing.",
+    "According to the source material, black-box testing is good at finding faults of extra logic.",
+    "This option is not the intended answer in the source material."
+  ] },
+  { q: "Which of the following statements about White box testing is NOT correct?", opts: [
+    "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White box testing.",
+    "Maintaining White box test scripts could be very difficult if implementation details keep changing frequently.",
+    "White box testing is usually very simple, so it does not require knowledge of programming and implementation"
+  ], ans: 2, explanations: [
+    "This statement is correct.",
+    "This statement is correct.",
+    "White-box testing does require programming and implementation knowledge; this is the incorrect statement."
+  ] },
+  { q: "A developer called Math.log(5) function that was supposed to return the natural logarithm value of the input, but returns 125 instead. According to the lecture slides, this is an example of:", opts: [
+    "Error",
+    "Failure",
+    "Fault"
+  ], ans: 2, explanations: [
+    "An error is an incorrect internal program state.",
+    "A failure is externally observable incorrect behavior.",
+    "The wrong implementation is a fault."
+  ] },
+  { q: "\"Dividing input conditions into groups and testing each group of inputs\" describes which of the following techniques for Black box testing?", opts: [
+    "Boundary Value Analysis",
+    "Equivalence Class Partitioning",
+    "Decision Table Testing",
+    "Use case testing"
+  ], ans: 1, explanations: [
+    "Boundary value analysis focuses on boundaries.",
+    "Equivalence class partitioning divides inputs into groups/classes.",
+    "Decision table testing focuses on combinations of conditions/actions.",
+    "Use case testing focuses on scenarios."
+  ] },
+  { q: "Which of the following is NOT a purpose of testing?", opts: [
+    "Determine whether the software is sufficiently qualified for the release.",
+    "Finding faults in the software.",
+    "Determine which parts of the software need more testing.",
+    "Guaranteeing there are NO faults in the software."
+  ], ans: 3, explanations: [
+    "This is a valid purpose of testing.",
+    "This is a valid purpose of testing.",
+    "This is a valid purpose of testing.",
+    "Testing cannot guarantee the complete absence of faults."
+  ] },
+  { q: "Which of the following statements about developers writing tests is NOT correct?", opts: [
+    "Developers can always detect all faults since they understand their implementations.",
+    "Developers may have biases when writing software code and designing functions.",
+    "More people are encouraged to engage in writing tests in addition to developers."
+  ], ans: 0, explanations: [
+    "Developers cannot always detect all faults just because they know the implementation.",
+    "This is correct.",
+    "This is correct."
+  ] },
+  { q: "When do we usually want to write Unit tests?", opts: [
+    "Prior to Integration phase",
+    "Prior to designing phase",
+    "After maintenance phase",
+    "During requirement phase"
+  ], ans: 0, explanations: [
+    "Unit tests are usually written before integration, while focusing on individual units.",
+    "This is too early in the lifecycle.",
+    "This is too late.",
+    "Requirements phase is not the intended answer here."
+  ] },
+  { q: "Is the following statement True or False: Validation ensures that the new method meets the requirements for its intended use.", opts: [
+    "True",
+    "False"
+  ], ans: 0, explanations: [
+    "This is true according to the source material.",
+    "This is false."
+  ] },
+  { q: "Is the following statement True or False: We only need to run test cases before releasing the software to our customers.", opts: [
+    "True",
+    "False"
+  ], ans: 1, explanations: [
+    "Testing is needed throughout development, not only before release.",
+    "Correct — testing is not only a pre-release activity."
+  ] },
+  { q: "When do we prefer automated testing to manual testing?", opts: [
+    "When regression tests are conducted very often.",
+    "Tests that don't require re-execution.",
+    "The software GUI rarely gets updated."
+  ], ans: 0, explanations: [
+    "Frequent regression testing strongly favors automation.",
+    "One-off tests are more often done manually.",
+    "This is not the intended criterion here."
+  ] },
+  { q: "When do we prefer manual testing instead of automated testing?", opts: [
+    "When we want to use tests as documentation.",
+    "When the software is not stable.",
+    "When tests only gets executed once."
+  ], ans: 2, explanations: [
+    "This is not the intended reason here.",
+    "Instability can matter, but the source answer is different.",
+    "Manual testing is preferred when a test will only be executed once."
+  ] },
+  { q: "Which of the following is NOT an advantage of test automation?", opts: [
+    "It can help in identifying high priority test cases.",
+    "It can be run over and over again.",
+    "It is good for validating functional flows.",
+    "It improves the efficiency of testing."
+  ], ans: 0, explanations: [
+    "Identifying high-priority test cases is not an advantage of automation itself.",
+    "Repeatability is an advantage of automation.",
+    "Automation can help validate functional flows.",
+    "Automation improves efficiency."
+  ] },
+  { q: "Which of the following statements on test cases is NOT correct?", opts: [
+    "Test cases can document faults",
+    "Test cases can document code",
+    "One can only build test cases for a specific program if the program is developed by him/her.",
+    "The process of developing test cases can also help find problems in the requirements or design of an application."
+  ], ans: 1, explanations: [
+    "Test cases can help reveal or document faults.",
+    "Test cases are not the same as code documentation; this is the incorrect statement.",
+    "This is also dubious, but the source marks option 2 as incorrect.",
+    "This is a correct statement."
+  ] },
+  { q: "Which of the following is a type of testing activity?", opts: [
+    "Test Evaluation",
+    "Test Design",
+    "Test Execution",
+    "All of them"
+  ], ans: 3, explanations: [
+    "Test evaluation is a testing activity.",
+    "Test design is a testing activity.",
+    "Test execution is a testing activity.",
+    "All listed options are testing activities."
+  ] },
+  { q: "When we conduct tests, the procedure of coming up with a set of interesting input values is considered as:", opts: [
+    "Test Evaluation",
+    "Test Automation",
+    "Test Execution",
+    "Test Design"
+  ], ans: 3, explanations: [
+    "Evaluation interprets results.",
+    "Automation scripts tests.",
+    "Execution runs tests.",
+    "Choosing interesting input values is test design."
+  ] },
+  { q: "When we conduct tests, the procedure of understanding the output of the execution of test cases and reporting or documenting the results is considered as:", opts: [
+    "Test Design",
+    "Test Automation",
+    "Test Execution",
+    "Test Evaluation"
+  ], ans: 3, explanations: [
+    "Design chooses tests.",
+    "Automation encodes tests.",
+    "Execution runs tests.",
+    "Understanding outputs and documenting results is test evaluation."
+  ] },
+  { q: "Which of the following statements about assigning testing personnel is NOT correct?", opts: [
+    "Conducting testing design requires the most technical knowledge",
+    "You do not need to know how to program to conduct test automations",
+    "In order to evaluate the test results, domain knowledge is required"
+  ], ans: 0, explanations: [
+    "This is the incorrect statement according to the source material.",
+    "Programming knowledge is in fact needed for automation.",
+    "Domain knowledge is indeed required for evaluation."
+  ] },
+  { q: "A developer mistyped a variable as \"buildf\" while he was looking for the variable \"build\". According to the lecture slides, this is an example of:", opts: [
+    "Mistake",
+    "Failure",
+    "Error"
+  ], ans: 0, explanations: [
+    "The human action is a mistake.",
+    "A failure is externally observable incorrect behavior.",
+    "An error is an incorrect internal state."
+  ] },
+  { q: "An incorrect implementation of an algorithm results in program crashes by the test oracle. According to the lecture slides, this is an example of:", opts: [
+    "Failure",
+    "Fault",
+    "Error"
+  ], ans: 0, explanations: [
+    "A crash observed by the oracle is a failure.",
+    "The underlying bad code is a fault.",
+    "An error is an incorrect internal state."
+  ] },
+  { q: "A developer called sqrt(5) function that was supposed to return the square root value of the input but the developer got 25 instead. According to the lecture slides, this is an example of:", opts: [
+    "Error",
+    "Failure",
+    "Mistake"
+  ], ans: 0, explanations: [
+    "The incorrect internal/computed state is an error.",
+    "A failure is broader externally visible incorrect behavior.",
+    "The human action that caused it would be a mistake."
+  ] },
+  { q: "According to the PIE model, what conditions are necessary for a failure to be observed?", opts: [
+    "The location or locations in the program that contain the fault must be reached.",
+    "The state of the program must be incorrect.",
+    "The infected state must propagate to cause some output of the program to be incorrect.",
+    "All of the above."
+  ], ans: 3, explanations: [
+    "Execution is required.",
+    "Infection is required.",
+    "Propagation is required.",
+    "All three PIE conditions are necessary."
+  ] },
+  { q: "Which of the following is NOT an advantage of using Black-box testing?", opts: [
+    "Tests are done from a user's perspective and will help in finding inconsistencies between the specifications and real behavior.",
+    "Test cases can be developed as soon as the specifications are ready.",
+    "It can cover most of the potential execution paths.",
+    "Testers do not need to know how the programs are implemented."
+  ], ans: 2, explanations: [
+    "This is an advantage of black-box testing.",
+    "This is an advantage of black-box testing.",
+    "Covering execution paths is more associated with white-box testing; this is not an advantage of black-box testing.",
+    "This is an advantage of black-box testing."
+  ] },
+  { q: "Which of the following is a disadvantage of using Black box testing?", opts: [
+    "Maintaining test suites become harder if the implementation changes too frequently.",
+    "It is hard to cover all the program execution paths.",
+    "Testers need a thorough knowledge of the implementation details."
+  ], ans: 1, explanations: [
+    "This is more closely associated with automation/white-box issues.",
+    "Black-box testing does not target internal execution paths, making path coverage hard.",
+    "Black-box testing does not require detailed implementation knowledge."
+  ] },
+  { q: "Suppose we want to test a new generic sorting algorithm using Black box testing and we have several different sets of testing inputs. Which following set of testing values ONLY contains inputs from an equivalent class?", opts: [
+    "[1, 2, 3, 4, 5], ['a', 'b', 'c'], ['aa', 'ab', 'ac', 'bd']",
+    "[7, 9, 5, 4, 1], ['a', 'b', 'c'], ['a', 'a', 'b', 'b', 'c', 'c']",
+    "[4, 3, 1, 2, 5], [1, 2, 3, 5], [42, 10, 23, 1], ['3', 'B', 'c']"
+  ], ans: 0, explanations: [
+    "These inputs are all valid lists of comparable, unique, sorted-ish values within one intended class per set.",
+    "This set mixes different classes such as duplicates.",
+    "This set mixes numeric and string classes in a way the question does not intend."
+  ] },
+  { q: "Which of the following software testing levels do we typically NOT prefer using for Black box testing?", opts: [
+    "Acceptance Testing",
+    "Unit Testing",
+    "Integration Testing",
+    "System Testing"
+  ], ans: 1, explanations: [
+    "Acceptance testing often uses black-box approaches.",
+    "Unit testing typically prefers white-box testing, so black-box is less preferred here.",
+    "Integration testing can use black-box approaches.",
+    "System testing often uses black-box approaches."
+  ] },
+  { q: "\"Dividing the input conditions into groups and testing each group of inputs\" describes which of the following techniques for Black box testing?", opts: [
+    "Use case testing",
+    "Decision Table Testing",
+    "Equivalence Class Partitioning",
+    "Boundary Value Analysis"
+  ], ans: 2, explanations: [
+    "Use case testing is scenario-based.",
+    "Decision table testing focuses on combinations of rules.",
+    "Equivalence class partitioning divides inputs into groups/classes.",
+    "Boundary value analysis focuses on edges of ranges."
+  ] },
+  { q: "Which of the following is an advantage of using White- box testing?", opts: [
+    "Tests are done from a user's perspective and will help in finding inconsistencies between the specifications and real behavior.",
+    "Testers do not need to know how the programs are implemented.",
+    "Testers are based on internal code structure, allowing for thorough path and branch coverage."
+  ], ans: 2, explanations: [
+    "This describes a black-box advantage.",
+    "White-box testing does require implementation knowledge.",
+    "This is the key advantage of white-box testing."
+  ] },
+  { q: "Which of the following is a disadvantage of using White-box testing?", opts: [
+    "Programmers need a thorough knowledge of implementations to develop a White- box test suite.",
+    "Many program paths will be left untested.",
+    "Without clear specifications, test cases will be hard to design."
+  ], ans: 0, explanations: [
+    "This is a disadvantage of white-box testing.",
+    "Path coverage is actually a strength, not the main disadvantage listed here.",
+    "This is more associated with black-box/spec-based challenges."
+  ] },
+  { q: "Which of the following is a correct description of the main difference between Black box testing and White-box testing?", opts: [
+    "The internal structure, design or implementation of the item is given to the test developers.",
+    "Black box testing generally requires testers to have domain knowledge (e.g. programming language of the software implementation)",
+    "White-box testing cannot be applied during Integration test."
+  ], ans: 0, explanations: [
+    "This describes white-box testing versus black-box testing.",
+    "Black-box testing does not generally require implementation-language knowledge.",
+    "White-box testing can be applied during integration testing."
+  ] },
+  { q: "Which of the following statements about White- box testing is correct?", opts: [
+    "As a test developer, I do not need to know the details of implementations to develop my White box test suite.",
+    "White- box testing is typically conducted before conducting Black box testing.",
+    "Methods like Equivalence Class and Boundary Value Analysis can also be applied in White- box testing."
+  ], ans: 2, explanations: [
+    "White-box testing does require implementation knowledge.",
+    "White-box versus black-box order is not a defining truth here.",
+    "This statement is correct according to the source material."
+  ] },
+  { q: "At which software testing level do we typically prefer using White-box Testing?", opts: [
+    "Unit Testing",
+    "System Testing",
+    "Acceptance Testing"
+  ], ans: 0, explanations: [
+    "White-box testing is typically preferred at the unit-testing level.",
+    "System testing more commonly uses black-box approaches.",
+    "Acceptance testing more commonly uses black-box approaches."
+  ] }
 ];
 
 // Shuffle helper

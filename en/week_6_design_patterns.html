@@ -445,576 +445,461 @@ Both can move behavior out of a monolithic class, but they solve different probl
 </div>
 <script>
 const questions = [
-{
-    num: 1,
-    text: "Which of the following patterns does NOT belong to software Design pattern categories?",
-    options: ["Creational patterns", "Structural patterns", "Behavioral patterns", "None of the above"],
-    correct: 3,
-    explanations: [
-      "❌ Creational patterns — This IS a valid GoF design pattern category; covers object creation mechanisms.",
-      "❌ Structural patterns — This IS a valid GoF category; deals with class/object composition.",
-      "❌ Behavioral patterns — This IS a valid GoF category; characterizes object interaction and responsibility.",
-      "✅ None of the above — All three options (Creational, Structural, Behavioral) are legitimate GoF categories, so none of them fails to belong. The correct answer is 'None of the above'."
-    ]
-  },
-  {
-    num: 2,
-    text: "Which of the following statements is true about the Observer pattern?",
-    options: [
-      "The state of the observed subject cannot be changed once initialized",
-      "There can be only one observer",
-      "It separates the display of object state from the object itself",
-      "It separates the display and the display implementation"
-    ],
-    correct: 2,
-    explanations: [
-      "❌ The state of the observed subject cannot be changed once initialized — False; the whole purpose of Observer is to notify observers when the subject's state changes.",
-      "❌ There can be only one observer — False; Observer supports multiple observers registered to a single subject.",
-      "✅ It separates the display of object state from the object itself — True; Observer decouples the subject (state holder) from its observers (display/reaction logic), allowing independent variation.",
-      "❌ It separates the display and the display implementation — This describes a different concern (closer to MVC or Strategy); it is not the core definition of Observer."
-    ]
-  },
-  {
-    num: 3,
-    text: "Which of the following is true about Behavioral patterns?",
-    options: [
-      "Concerned with the process of object creation",
-      "Deal with the composition of classes or objects",
-      "Characterize the ways in which classes or objects interact and distribute responsibility",
-      "None of the above"
-    ],
-    correct: 2,
-    explanations: [
-      "❌ Concerned with the process of object creation — This describes Creational patterns, not Behavioral.",
-      "❌ Deal with the composition of classes or objects — This describes Structural patterns, not Behavioral.",
-      "✅ Characterize the ways in which classes or objects interact and distribute responsibility — This is the textbook definition of Behavioral patterns (e.g., Observer, Strategy, Iterator, Interpreter).",
-      "❌ None of the above — Incorrect; option 3 is accurate."
-    ]
-  },
-  {
-    num: 4,
-    text: "Which of the following statements is NOT true about using Design patterns?",
-    options: [
-      "Design patterns are reusable templates that help programmers solve some reoccurring issues in software development",
-      "A class cannot participate in more than one Design pattern",
-      "Using Design patterns improves code readability and flexibility"
-    ],
-    correct: 1,
-    explanations: [
-      "❌ Design patterns are reusable templates that help programmers solve some reoccurring issues in software development — This IS true; design patterns are reusable solutions to common problems.",
-      "✅ A class cannot participate in more than one Design pattern — This is NOT true. A single class can and often does participate in multiple design patterns simultaneously.",
-      "❌ Using Design patterns improves code readability and flexibility — This IS true; patterns provide shared vocabulary and proven structure that improve maintainability."
-    ]
-  },
-  {
-    num: 5,
-    text: "Which of the following patterns allows a class behavior or its algorithm to be changed at run time?",
-    options: ["Composite pattern", "Visitor pattern", "Iterator pattern", "Strategy pattern"],
-    correct: 3,
-    explanations: [
-      "❌ Composite pattern — Addresses tree structures of objects; not about swapping algorithms at runtime.",
-      "❌ Visitor pattern — Adds operations to objects without modifying them; behavior switching is not its primary purpose.",
-      "❌ Iterator pattern — Provides sequential access to collection elements; unrelated to runtime algorithm switching.",
-      "✅ Strategy pattern — Defines a family of algorithms, encapsulates each one, and makes them interchangeable at runtime without changing the client."
-    ]
-  },
-  {
-    num: 6,
-    text: "Which of the following is NOT true about the Composite pattern?",
-    options: [
-      "The Leaf class implements all methods in the Component interface",
-      "The Composite class implements methods to manipulate children",
-      "The Component interface is the abstraction for all components, including composite ones",
-      "The Component interface includes methods to manipulate children"
-    ],
-    correct: 3,
-    explanations: [
-      "❌ The Leaf class implements all methods in the Component interface — True; Leaf must implement the Component interface even if child-management methods are no-ops.",
-      "❌ The Composite class implements methods to manipulate children — True; Composite holds and manages child components.",
-      "❌ The Component interface is the abstraction for all components, including composite ones — True; both Leaf and Composite implement Component.",
-      "✅ The Component interface includes methods to manipulate children — NOT true. Child-manipulation methods (add, remove, getChild) belong to the Composite class, not the Component interface. The interface only declares common operations shared by all components."
-    ]
-  },
-  {
-    num: 7,
-    text: "In a 3D object manipulation library, objects as well as groups of objects need to support similar 3D transformations (e.g. resize, rotation). Which pattern could be best suitable?",
-    options: ["Observer pattern", "Composite pattern", "Iterator pattern", "State pattern"],
-    correct: 1,
-    explanations: [
-      "❌ Observer pattern — Handles publish-subscribe notification; not about treating individual and grouped objects uniformly.",
-      "✅ Composite pattern — Ideal here: individual 3D objects (Leaf) and groups of objects (Composite) both implement the same Component interface, allowing uniform application of transformations.",
-      "❌ Iterator pattern — Provides sequential traversal; does not address uniform treatment of objects and groups.",
-      "❌ State pattern — Manages state-dependent behavior changes; unrelated to tree-structured object hierarchies."
-    ]
-  },
-  {
-    num: 8,
-    text: "A hedge fund uses multiple trading strategies that need to be switched on-the-fly during a trading session. Which pattern could be best suitable?",
-    options: ["Observer pattern", "Strategy pattern", "Iterator pattern", "Visitor pattern"],
-    correct: 1,
-    explanations: [
-      "❌ Observer pattern — Suited for event notification across multiple listeners; not for swapping algorithms dynamically.",
-      "✅ Strategy pattern — Designed exactly for this: encapsulate each trading strategy as an interchangeable object and swap them at runtime without changing the surrounding context.",
-      "❌ Iterator pattern — Provides sequential access to elements; not relevant to algorithm switching.",
-      "❌ Visitor pattern — Adds operations to an object structure without modifying it; does not address runtime strategy switching."
-    ]
-  },
-  {
-    num: 9,
-    text: "Which of the following is NOT True about the Interpreter pattern?",
-    options: [
-      "The interpret method has \"Context\" as one of its method parameter types",
-      "The TerminalExpression class has no children and can be interpreted directly",
-      "The abstract syntax tree is made with Context instances",
-      "The NonTerminalExpression maintains a list of Expressions as children"
-    ],
-    correct: 2,
-    explanations: [
-      "❌ The interpret method has \"Context\" as one of its method parameter types — True; the interpret(Context) signature passes shared state through the tree.",
-      "❌ The TerminalExpression class has no children and can be interpreted directly — True; terminal expressions are leaf nodes that evaluate themselves.",
-      "✅ The abstract syntax tree is made with Context instances — NOT true. The abstract syntax tree is composed of Expression instances (Terminal and NonTerminal). Context carries global information used during interpretation, but does not form the tree itself.",
-      "❌ The NonTerminalExpression maintains a list of Expressions as children — True; NonTerminalExpression holds child expressions and delegates interpretation to them."
-    ]
-  },
-  {
-    num: 10,
-    text: "What type of design pattern is the Strategy pattern?",
-    options: ["Behavioral pattern", "Creational pattern", "Structural pattern"],
-    correct: 0,
-    explanations: [
-      "✅ Behavioral pattern",
-      "❌ Creational pattern",
-      "❌ Structural pattern"
-]
-  },
-  {
-    num: 11,
-    text: "True or False:\nThe Strategy pattern implements different algorithms by using delegation.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 12,
-    text: "Which of the following is NOT an advantage of the Strategy pattern?",
-    options: ["Enables the client to choose from multiple ways to finish a task", "Hides implementation details about an algorithm from other classes", "The client does not need to know the availability of different strategies", "Can be used to eliminate a large number of if or case statements"],
-    correct: 2,
-    explanations: [
-      "❌ Enables the client to choose from multiple ways to finish a task",
-      "❌ Hides implementation details about an algorithm from other classes",
-      "✅ The client does not need to know the availability of different strategies",
-      "❌ Can be used to eliminate a large number of if or case statements"
-]
-  },
-  {
-    num: 13,
-    text: "True or False:\nUnlike the Strategy pattern, the template method pattern cannot be used for algorithm selection at run time.",
-    options: ["True", "False"],
-    correct: 1,
-    explanations: [
-      "❌ True",
-      "✅ False"
-]
-  },
-  {
-    num: 14,
-    text: "True or False:\nThe Strategy pattern may increase the number of objects in the application.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 15,
-    text: "Which of the following is NOT a type of Design pattern?",
-    options: ["Creation pattern", "Structural pattern", "Behavioral pattern", "Logic pattern"],
-    correct: 3,
-    explanations: [
-      "❌ Creation pattern",
-      "❌ Structural pattern",
-      "❌ Behavioral pattern",
-      "✅ Logic pattern"
-]
-  },
-  {
-    num: 16,
-    text: "Who first systematically categorized Design patterns?",
-    options: ["The Three Musketeers", "The Gang of Four", "The Big Four", "Richard Stallman"],
-    correct: 1,
-    explanations: [
-      "❌ The Three Musketeers",
-      "✅ The Gang of Four",
-      "❌ The Big Four",
-      "❌ Richard Stallman"
-]
-  },
-  {
-    num: 17,
-    text: "Which type of design pattern is the Singleton pattern?",
-    options: ["Creation pattern", "Behavioral pattern", "Structural pattern", "Logic pattern"],
-    correct: 0,
-    explanations: [
-      "✅ Creation pattern",
-      "❌ Behavioral pattern",
-      "❌ Structural pattern",
-      "❌ Logic pattern"
-]
-  },
-  {
-    num: 18,
-    text: "Which of the following is NOT true about Design patterns?",
-    options: ["Design patterns are available for Java programming language only", "Good use of design patterns makes a program simpler", "A design pattern is a description of classes and objects to solve a general design problem"],
-    correct: 0,
-    explanations: [
-      "✅ Design patterns are available for Java programming language only",
-      "❌ Good use of design patterns makes a program simpler",
-      "❌ A design pattern is a description of classes and objects to solve a general design problem"
-]
-  },
-  {
-    num: 19,
-    text: "True or False:\nA Design pattern suitable for one programming language may not be directly applicable in another programming language.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 20,
-    text: "What type of Design pattern is the Observer pattern?",
-    options: ["Creational pattern", "Structural pattern", "Behavioral pattern"],
-    correct: 2,
-    explanations: [
-      "❌ Creational pattern",
-      "❌ Structural pattern",
-      "✅ Behavioral pattern"
-]
-  },
-  {
-    num: 21,
-    text: "Which of the following architectures usually involves the Observer pattern?",
-    options: ["Active record", "Model-View-Controller", "Data transfer object", "Data access object"],
-    correct: 1,
-    explanations: [
-      "❌ Active record",
-      "✅ Model-View-Controller",
-      "❌ Data transfer object",
-      "❌ Data access object"
-]
-  },
-  {
-    num: 22,
-    text: "Which class implements the visual representation of data when the Observer pattern is used for multiple displays of the same data?",
-    options: ["Observer", "Observable", "ConcreteObserver", "ConcreteObservable"],
-    correct: 2,
-    explanations: [
-      "❌ Observer",
-      "❌ Observable",
-      "✅ ConcreteObserver",
-      "❌ ConcreteObservable"
-]
-  },
-  {
-    num: 23,
-    text: "Suppose you are implementing a subscription service for a video website, the User should be a subclass of ________ and the Channel should be a subclass of ________.",
-    options: ["Observer; Observable", "Observer; Observer", "Observable; Observer", "Observable; Observable"],
-    correct: 0,
-    explanations: [
-      "✅ Observer; Observable",
-      "❌ Observer; Observer",
-      "❌ Observable; Observer",
-      "❌ Observable; Observable"
-]
-  },
-  {
-    num: 24,
-    text: "Which of the following is NOT a consequence of the Observer pattern?",
-    options: ["Reduce couplings", "Multiple objects can be updated automatically when one object changes state", "Subject does not need to know when update happens", "Observer can \"pull\" information from the Subject"],
-    correct: 2,
-    explanations: [
-      "❌ Reduce couplings",
-      "❌ Multiple objects can be updated automatically when one object changes state",
-      "✅ Subject does not need to know when update happens",
-      "❌ Observer can \"pull\" information from the Subject"
-]
-  },
-  {
-    num: 25,
-    text: "What type of Design pattern is the Composite pattern?",
-    options: ["Behavioral", "Structural", "Creational"],
-    correct: 1,
-    explanations: [
-      "❌ Behavioral",
-      "✅ Structural",
-      "❌ Creational"
-]
-  },
-  {
-    num: 26,
-    text: "True or False:\nComposite pattern should be used when multiple classes share similar code.",
-    options: ["True", "False"],
-    correct: 1,
-    explanations: [
-      "❌ True",
-      "✅ False"
-]
-  },
-  {
-    num: 27,
-    text: "True or False:\nIn the Composite pattern, the addChild method can be called on a Composite object, but not on a Leaf object.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 28,
-    text: "Which of the following is NOT a desirable situation to use the Composite pattern?",
-    options: ["The problem is to represent a \"whole-part\" hierarchical relationship", "All Composite classes declare a one-to-many \"has a\" relationship to the interface", "All Composite and Leaf classes declare an \"is a\" relationship to the interface", "The operations on the Composite are difficult to be delegated to its children directly"],
-    correct: 3,
-    explanations: [
-      "❌ The problem is to represent a \"whole-part\" hierarchical relationship",
-      "❌ All Composite classes declare a one-to-many \"has a\" relationship to the interface",
-      "❌ All Composite and Leaf classes declare an \"is a\" relationship to the interface",
-      "✅ The operations on the Composite are difficult to be delegated to its children directly"
-]
-  },
-  {
-    num: 29,
-    text: "Which of the following is not an approach to ensure consistency when a component knows its parent?",
-    options: ["Update the parent of Components only in the addChild operation", "Make addChild only available to Composites", "Make client responsible for keeping track of the parent"],
-    correct: 2,
-    explanations: [
-      "❌ Update the parent of Components only in the addChild operation",
-      "❌ Make addChild only available to Composites",
-      "✅ Make client responsible for keeping track of the parent"
-]
-  },
-  {
-    num: 30,
-    text: "Which pattern can be used to represent the syntax tree?",
-    options: ["Decorator", "Composite pattern", "Bridge", "Proxy"],
-    correct: 1,
-    explanations: [
-      "❌ Decorator",
-      "✅ Composite pattern",
-      "❌ Bridge",
-      "❌ Proxy"
-]
-  },
-  {
-    num: 31,
-    text: "What type of Design pattern is the Interpreter pattern?",
-    options: ["Structural pattern", "Behavioral pattern", "Creational pattern"],
-    correct: 1,
-    explanations: [
-      "❌ Structural pattern",
-      "✅ Behavioral pattern",
-      "❌ Creational pattern"
-]
-  },
-  {
-    num: 32,
-    text: "When should one use the Interpreter Pattern?",
-    options: ["To represent whole-part hierarchies", "When designing an automated translation system", "To define the grammar of a language and specify how to evaluate sentences in the language", "To create an object-oriented state machine"],
-    correct: 2,
-    explanations: [
-      "❌ To represent whole-part hierarchies",
-      "❌ When designing an automated translation system",
-      "✅ To define the grammar of a language and specify how to evaluate sentences in the language",
-      "❌ To create an object-oriented state machine"
-]
-  },
-  {
-    num: 33,
-    text: "Each rule in the grammar corresponds to _____.",
-    options: ["An Expression instance", "An Expression subclass", "A Context instance", "A Context subclass"],
-    correct: 1,
-    explanations: [
-      "❌ An Expression instance",
-      "✅ An Expression subclass",
-      "❌ A Context instance",
-      "❌ A Context subclass"
-]
-  },
-  {
-    num: 34,
-    text: "Which of the following is NOT true about Context?",
-    options: ["Context provides input and output", "Context can be used to record states", "Context defines evaluation rules for expressions"],
-    correct: 2,
-    explanations: [
-      "❌ Context provides input and output",
-      "❌ Context can be used to record states",
-      "✅ Context defines evaluation rules for expressions"
-]
-  },
-  {
-    num: 35,
-    text: "What type of Design pattern is the Visitor pattern?",
-    options: ["Creational pattern", "Structural pattern", "Behavioral pattern"],
-    correct: 2,
-    explanations: [
-      "❌ Creational pattern",
-      "❌ Structural pattern",
-      "✅ Behavioral pattern"
-]
-  },
-  {
-    num: 36,
-    text: "Which of the following is an advantage of the Visitor pattern?",
-    options: ["It is easy to add operations", "It is easy to add elements", "Elements do not need to be changed when adding new operations"],
-    correct: 0,
-    explanations: [
-      "✅ It is easy to add operations",
-      "❌ It is easy to add elements",
-      "❌ Elements do not need to be changed when adding new operations"
-]
-  },
-  {
-    num: 37,
-    text: "True or False:\nThe subclass of Element should have a visit operation for each concrete Visitor class.",
-    options: ["True", "False"],
-    correct: 1,
-    explanations: [
-      "❌ True",
-      "✅ False"
-]
-  },
-  {
-    num: 38,
-    text: "You are implementing a \"PrettyPrint\" printer class for a set of classes. You want to add \"UglyPrint\" and \"FancyPrint\" printer classes later. Which class should PrettyPrint inherit from?",
-    options: ["Element", "Visitor", "Context", "Expression"],
-    correct: 1,
-    explanations: [
-      "❌ Element",
-      "✅ Visitor",
-      "❌ Context",
-      "❌ Expression"
-]
-  },
-  {
-    num: 39,
-    text: "True or False:\nIf a new Element is added, all visitor classes are affected.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 40,
-    text: "Which type of Design pattern is the template method pattern?",
-    options: ["Behavioral pattern", "Creational pattern", "Structural pattern"],
-    correct: 0,
-    explanations: [
-      "✅ Behavioral pattern",
-      "❌ Creational pattern",
-      "❌ Structural pattern"
-]
-  },
-  {
-    num: 41,
-    text: "Which of the following is TRUE about the template method pattern?",
-    options: ["The skeleton method in the abstract class should be made final", "The concrete classes should override the templateMethod()", "The AbstractClass can be made into an interface"],
-    correct: 0,
-    explanations: [
-      "✅ The skeleton method in the abstract class should be made final",
-      "❌ The concrete classes should override the templateMethod()",
-      "❌ The AbstractClass can be made into an interface"
-]
-  },
-  {
-    num: 42,
-    text: "True or False:\nIn the template method pattern, the skeleton of the algorithm must be first specified.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 43,
-    text: "True or False:\nThe template method pattern implements multiple algorithms by using delegation.",
-    options: ["True", "False"],
-    correct: 1,
-    explanations: [
-      "❌ True",
-      "✅ False"
-]
-  },
-  {
-    num: 44,
-    text: "True or False:\nIn the template method pattern, the Concrete classes are highly coupled to the abstract class.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 45,
-    text: "What type of Design pattern is the Iterator pattern?",
-    options: ["Behavioral pattern", "Creational pattern", "Structural pattern"],
-    correct: 0,
-    explanations: [
-      "✅ Behavioral pattern",
-      "❌ Creational pattern",
-      "❌ Structural pattern"
-]
-  },
-  {
-    num: 46,
-    text: "True or False:\nThe underlying data structure must be exposed to the iterator class.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 47,
-    text: "True or False:\nThe Iterator pattern can be used to traverse the tree structure of a Composite tree.",
-    options: ["True", "False"],
-    correct: 0,
-    explanations: [
-      "✅ True",
-      "❌ False"
-]
-  },
-  {
-    num: 48,
-    text: "Which of the following is NOT a method normally implemented by an iterator?",
-    options: ["loop()", "next()", "hasNext()"],
-    correct: 0,
-    explanations: [
-      "✅ loop()",
-      "❌ next()",
-      "❌ hasNext()"
-]
-  },
-  {
-    num: 49,
-    text: "True or False:\nThe iterator() method in the Aggregate class should return a concrete iterator.",
-    options: ["True", "False"],
-    correct: 1,
-    explanations: [
-      "❌ True",
-      "✅ False"
-]
-  }
+  { num: 1, text: "Which of the following patterns does NOT belong to software Design pattern categories?", options: [
+    "Creational patterns",
+    "Structural patterns",
+    "Behavioral patterns",
+    "None of the above"
+  ], correct: 3, explanations: [
+    "❌ Creational patterns — This IS a valid GoF design pattern category; covers object creation mechanisms.",
+    "❌ Structural patterns — This IS a valid GoF category; deals with class/object composition.",
+    "❌ Behavioral patterns — This IS a valid GoF category; characterizes object interaction and responsibility.",
+    "✅ None of the above — All three options (Creational, Structural, Behavioral) are legitimate GoF categories, so none of them fails to belong. The correct answer is 'None of the above'."
+  ] },
+  { num: 2, text: "Which of the following statements is true about the Observer pattern?", options: [
+    "The state of the observed subject cannot be changed once initialized",
+    "There can be only one observer",
+    "It separates the display of object state from the object itself",
+    "It separates the display and the display implementation"
+  ], correct: 2, explanations: [
+    "❌ The state of the observed subject cannot be changed once initialized — False; the whole purpose of Observer is to notify observers when the subject's state changes.",
+    "❌ There can be only one observer — False; Observer supports multiple observers registered to a single subject.",
+    "✅ It separates the display of object state from the object itself — True; Observer decouples the subject (state holder) from its observers (display/reaction logic), allowing independent variation.",
+    "❌ It separates the display and the display implementation — This describes a different concern (closer to MVC or Strategy); it is not the core definition of Observer."
+  ] },
+  { num: 3, text: "Which of the following is true about Behavioral patterns?", options: [
+    "Concerned with the process of object creation",
+    "Deal with the composition of classes or objects",
+    "Characterize the ways in which classes or objects interact and distribute responsibility",
+    "None of the above"
+  ], correct: 2, explanations: [
+    "❌ Concerned with the process of object creation — This describes Creational patterns, not Behavioral.",
+    "❌ Deal with the composition of classes or objects — This describes Structural patterns, not Behavioral.",
+    "✅ Characterize the ways in which classes or objects interact and distribute responsibility — This is the textbook definition of Behavioral patterns (e.g., Observer, Strategy, Iterator, Interpreter).",
+    "❌ None of the above — Incorrect; option 3 is accurate."
+  ] },
+  { num: 4, text: "Which of the following statements is NOT true about using Design patterns?", options: [
+    "Design patterns are reusable templates that help programmers solve some reoccurring issues in software development",
+    "A class cannot participate in more than one Design pattern",
+    "Using Design patterns improves code readability and flexibility"
+  ], correct: 1, explanations: [
+    "❌ Design patterns are reusable templates that help programmers solve some reoccurring issues in software development — This IS true; design patterns are reusable solutions to common problems.",
+    "✅ A class cannot participate in more than one Design pattern — This is NOT true. A single class can and often does participate in multiple design patterns simultaneously.",
+    "❌ Using Design patterns improves code readability and flexibility — This IS true; patterns provide shared vocabulary and proven structure that improve maintainability."
+  ] },
+  { num: 5, text: "Which of the following patterns allows a class behavior or its algorithm to be changed at run time?", options: [
+    "Composite pattern",
+    "Visitor pattern",
+    "Iterator pattern",
+    "Strategy pattern"
+  ], correct: 3, explanations: [
+    "❌ Composite pattern — Addresses tree structures of objects; not about swapping algorithms at runtime.",
+    "❌ Visitor pattern — Adds operations to objects without modifying them; behavior switching is not its primary purpose.",
+    "❌ Iterator pattern — Provides sequential access to collection elements; unrelated to runtime algorithm switching.",
+    "✅ Strategy pattern — Defines a family of algorithms, encapsulates each one, and makes them interchangeable at runtime without changing the client."
+  ] },
+  { num: 6, text: "Which of the following is NOT true about the Composite pattern?", options: [
+    "The Leaf class implements all methods in the Component interface",
+    "The Composite class implements methods to manipulate children",
+    "The Component interface is the abstraction for all components, including composite ones",
+    "The Component interface includes methods to manipulate children"
+  ], correct: 3, explanations: [
+    "❌ The Leaf class implements all methods in the Component interface — True; Leaf must implement the Component interface even if child-management methods are no-ops.",
+    "❌ The Composite class implements methods to manipulate children — True; Composite holds and manages child components.",
+    "❌ The Component interface is the abstraction for all components, including composite ones — True; both Leaf and Composite implement Component.",
+    "✅ The Component interface includes methods to manipulate children — NOT true. Child-manipulation methods (add, remove, getChild) belong to the Composite class, not the Component interface. The interface only declares common operations shared by all components."
+  ] },
+  { num: 7, text: "In a 3D object manipulation library, objects as well as groups of objects need to support similar 3D transformations (e.g. resize, rotation). Which pattern could be best suitable?", options: [
+    "Observer pattern",
+    "Composite pattern",
+    "Iterator pattern",
+    "State pattern"
+  ], correct: 1, explanations: [
+    "❌ Observer pattern — Handles publish-subscribe notification; not about treating individual and grouped objects uniformly.",
+    "✅ Composite pattern — Ideal here: individual 3D objects (Leaf) and groups of objects (Composite) both implement the same Component interface, allowing uniform application of transformations.",
+    "❌ Iterator pattern — Provides sequential traversal; does not address uniform treatment of objects and groups.",
+    "❌ State pattern — Manages state-dependent behavior changes; unrelated to tree-structured object hierarchies."
+  ] },
+  { num: 8, text: "A hedge fund uses multiple trading strategies that need to be switched on-the-fly during a trading session. Which pattern could be best suitable?", options: [
+    "Observer pattern",
+    "Strategy pattern",
+    "Iterator pattern",
+    "Visitor pattern"
+  ], correct: 1, explanations: [
+    "❌ Observer pattern — Suited for event notification across multiple listeners; not for swapping algorithms dynamically.",
+    "✅ Strategy pattern — Designed exactly for this: encapsulate each trading strategy as an interchangeable object and swap them at runtime without changing the surrounding context.",
+    "❌ Iterator pattern — Provides sequential access to elements; not relevant to algorithm switching.",
+    "❌ Visitor pattern — Adds operations to an object structure without modifying it; does not address runtime strategy switching."
+  ] },
+  { num: 9, text: "Which of the following is NOT True about the Interpreter pattern?", options: [
+    "The interpret method has \"Context\" as one of its method parameter types",
+    "The TerminalExpression class has no children and can be interpreted directly",
+    "The abstract syntax tree is made with Context instances",
+    "The NonTerminalExpression maintains a list of Expressions as children"
+  ], correct: 2, explanations: [
+    "❌ The interpret method has \"Context\" as one of its method parameter types — True; the interpret(Context) signature passes shared state through the tree.",
+    "❌ The TerminalExpression class has no children and can be interpreted directly — True; terminal expressions are leaf nodes that evaluate themselves.",
+    "✅ The abstract syntax tree is made with Context instances — NOT true. The abstract syntax tree is composed of Expression instances (Terminal and NonTerminal). Context carries global information used during interpretation, but does not form the tree itself.",
+    "❌ The NonTerminalExpression maintains a list of Expressions as children — True; NonTerminalExpression holds child expressions and delegates interpretation to them."
+  ] },
+  { num: 10, text: "What type of design pattern is the Strategy pattern?", options: [
+    "Behavioral pattern",
+    "Creational pattern",
+    "Structural pattern"
+  ], correct: 0, explanations: [
+    "✅ Behavioral pattern",
+    "❌ Creational pattern",
+    "❌ Structural pattern"
+  ] },
+  { num: 11, text: "True or False:\nThe Strategy pattern implements different algorithms by using delegation.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 12, text: "Which of the following is NOT an advantage of the Strategy pattern?", options: [
+    "Enables the client to choose from multiple ways to finish a task",
+    "Hides implementation details about an algorithm from other classes",
+    "The client does not need to know the availability of different strategies",
+    "Can be used to eliminate a large number of if or case statements"
+  ], correct: 2, explanations: [
+    "❌ Enables the client to choose from multiple ways to finish a task",
+    "❌ Hides implementation details about an algorithm from other classes",
+    "✅ The client does not need to know the availability of different strategies",
+    "❌ Can be used to eliminate a large number of if or case statements"
+  ] },
+  { num: 13, text: "True or False:\nUnlike the Strategy pattern, the template method pattern cannot be used for algorithm selection at run time.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True",
+    "✅ False"
+  ] },
+  { num: 14, text: "True or False:\nThe Strategy pattern may increase the number of objects in the application.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 15, text: "Which of the following is NOT a type of Design pattern?", options: [
+    "Creation pattern",
+    "Structural pattern",
+    "Behavioral pattern",
+    "Logic pattern"
+  ], correct: 3, explanations: [
+    "❌ Creation pattern",
+    "❌ Structural pattern",
+    "❌ Behavioral pattern",
+    "✅ Logic pattern"
+  ] },
+  { num: 16, text: "Who first systematically categorized Design patterns?", options: [
+    "The Three Musketeers",
+    "The Gang of Four",
+    "The Big Four",
+    "Richard Stallman"
+  ], correct: 1, explanations: [
+    "❌ The Three Musketeers",
+    "✅ The Gang of Four",
+    "❌ The Big Four",
+    "❌ Richard Stallman"
+  ] },
+  { num: 17, text: "Which type of design pattern is the Singleton pattern?", options: [
+    "Creation pattern",
+    "Behavioral pattern",
+    "Structural pattern",
+    "Logic pattern"
+  ], correct: 0, explanations: [
+    "✅ Creation pattern",
+    "❌ Behavioral pattern",
+    "❌ Structural pattern",
+    "❌ Logic pattern"
+  ] },
+  { num: 18, text: "Which of the following is NOT true about Design patterns?", options: [
+    "Design patterns are available for Java programming language only",
+    "Good use of design patterns makes a program simpler",
+    "A design pattern is a description of classes and objects to solve a general design problem"
+  ], correct: 0, explanations: [
+    "✅ Design patterns are available for Java programming language only",
+    "❌ Good use of design patterns makes a program simpler",
+    "❌ A design pattern is a description of classes and objects to solve a general design problem"
+  ] },
+  { num: 19, text: "True or False:\nA Design pattern suitable for one programming language may not be directly applicable in another programming language.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 20, text: "What type of Design pattern is the Observer pattern?", options: [
+    "Creational pattern",
+    "Structural pattern",
+    "Behavioral pattern"
+  ], correct: 2, explanations: [
+    "❌ Creational pattern",
+    "❌ Structural pattern",
+    "✅ Behavioral pattern"
+  ] },
+  { num: 21, text: "Which of the following architectures usually involves the Observer pattern?", options: [
+    "Active record",
+    "Model-View-Controller",
+    "Data transfer object",
+    "Data access object"
+  ], correct: 1, explanations: [
+    "❌ Active record",
+    "✅ Model-View-Controller",
+    "❌ Data transfer object",
+    "❌ Data access object"
+  ] },
+  { num: 22, text: "Which class implements the visual representation of data when the Observer pattern is used for multiple displays of the same data?", options: [
+    "Observer",
+    "Observable",
+    "ConcreteObserver",
+    "ConcreteObservable"
+  ], correct: 2, explanations: [
+    "❌ Observer",
+    "❌ Observable",
+    "✅ ConcreteObserver",
+    "❌ ConcreteObservable"
+  ] },
+  { num: 23, text: "Suppose you are implementing a subscription service for a video website, the User should be a subclass of ________ and the Channel should be a subclass of ________.", options: [
+    "Observer; Observable",
+    "Observer; Observer",
+    "Observable; Observer",
+    "Observable; Observable"
+  ], correct: 0, explanations: [
+    "✅ Observer; Observable",
+    "❌ Observer; Observer",
+    "❌ Observable; Observer",
+    "❌ Observable; Observable"
+  ] },
+  { num: 24, text: "Which of the following is NOT a consequence of the Observer pattern?", options: [
+    "Reduce couplings",
+    "Multiple objects can be updated automatically when one object changes state",
+    "Subject does not need to know when update happens",
+    "Observer can \"pull\" information from the Subject"
+  ], correct: 2, explanations: [
+    "❌ Reduce couplings",
+    "❌ Multiple objects can be updated automatically when one object changes state",
+    "✅ Subject does not need to know when update happens",
+    "❌ Observer can \"pull\" information from the Subject"
+  ] },
+  { num: 25, text: "What type of Design pattern is the Composite pattern?", options: [
+    "Behavioral",
+    "Structural",
+    "Creational"
+  ], correct: 1, explanations: [
+    "❌ Behavioral",
+    "✅ Structural",
+    "❌ Creational"
+  ] },
+  { num: 26, text: "True or False:\nComposite pattern should be used when multiple classes share similar code.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True",
+    "✅ False"
+  ] },
+  { num: 27, text: "True or False:\nIn the Composite pattern, the addChild method can be called on a Composite object, but not on a Leaf object.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 28, text: "Which of the following is NOT a desirable situation to use the Composite pattern?", options: [
+    "The problem is to represent a \"whole-part\" hierarchical relationship",
+    "All Composite classes declare a one-to-many \"has a\" relationship to the interface",
+    "All Composite and Leaf classes declare an \"is a\" relationship to the interface",
+    "The operations on the Composite are difficult to be delegated to its children directly"
+  ], correct: 3, explanations: [
+    "❌ The problem is to represent a \"whole-part\" hierarchical relationship",
+    "❌ All Composite classes declare a one-to-many \"has a\" relationship to the interface",
+    "❌ All Composite and Leaf classes declare an \"is a\" relationship to the interface",
+    "✅ The operations on the Composite are difficult to be delegated to its children directly"
+  ] },
+  { num: 29, text: "Which of the following is not an approach to ensure consistency when a component knows its parent?", options: [
+    "Update the parent of Components only in the addChild operation",
+    "Make addChild only available to Composites",
+    "Make client responsible for keeping track of the parent"
+  ], correct: 2, explanations: [
+    "❌ Update the parent of Components only in the addChild operation",
+    "❌ Make addChild only available to Composites",
+    "✅ Make client responsible for keeping track of the parent"
+  ] },
+  { num: 30, text: "Which pattern can be used to represent the syntax tree?", options: [
+    "Decorator",
+    "Composite pattern",
+    "Bridge",
+    "Proxy"
+  ], correct: 1, explanations: [
+    "❌ Decorator",
+    "✅ Composite pattern",
+    "❌ Bridge",
+    "❌ Proxy"
+  ] },
+  { num: 31, text: "What type of Design pattern is the Interpreter pattern?", options: [
+    "Structural pattern",
+    "Behavioral pattern",
+    "Creational pattern"
+  ], correct: 1, explanations: [
+    "❌ Structural pattern",
+    "✅ Behavioral pattern",
+    "❌ Creational pattern"
+  ] },
+  { num: 32, text: "When should one use the Interpreter Pattern?", options: [
+    "To represent whole-part hierarchies",
+    "When designing an automated translation system",
+    "To define the grammar of a language and specify how to evaluate sentences in the language",
+    "To create an object-oriented state machine"
+  ], correct: 2, explanations: [
+    "❌ To represent whole-part hierarchies",
+    "❌ When designing an automated translation system",
+    "✅ To define the grammar of a language and specify how to evaluate sentences in the language",
+    "❌ To create an object-oriented state machine"
+  ] },
+  { num: 33, text: "Each rule in the grammar corresponds to _____.", options: [
+    "An Expression instance",
+    "An Expression subclass",
+    "A Context instance",
+    "A Context subclass"
+  ], correct: 1, explanations: [
+    "❌ An Expression instance",
+    "✅ An Expression subclass",
+    "❌ A Context instance",
+    "❌ A Context subclass"
+  ] },
+  { num: 34, text: "Which of the following is NOT true about Context?", options: [
+    "Context provides input and output",
+    "Context can be used to record states",
+    "Context defines evaluation rules for expressions"
+  ], correct: 2, explanations: [
+    "❌ Context provides input and output",
+    "❌ Context can be used to record states",
+    "✅ Context defines evaluation rules for expressions"
+  ] },
+  { num: 35, text: "What type of Design pattern is the Visitor pattern?", options: [
+    "Creational pattern",
+    "Structural pattern",
+    "Behavioral pattern"
+  ], correct: 2, explanations: [
+    "❌ Creational pattern",
+    "❌ Structural pattern",
+    "✅ Behavioral pattern"
+  ] },
+  { num: 36, text: "Which of the following is an advantage of the Visitor pattern?", options: [
+    "It is easy to add operations",
+    "It is easy to add elements",
+    "Elements do not need to be changed when adding new operations"
+  ], correct: 0, explanations: [
+    "✅ It is easy to add operations",
+    "❌ It is easy to add elements",
+    "❌ Elements do not need to be changed when adding new operations"
+  ] },
+  { num: 37, text: "True or False:\nThe subclass of Element should have a visit operation for each concrete Visitor class.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True",
+    "✅ False"
+  ] },
+  { num: 38, text: "You are implementing a \"PrettyPrint\" printer class for a set of classes. You want to add \"UglyPrint\" and \"FancyPrint\" printer classes later. Which class should PrettyPrint inherit from?", options: [
+    "Element",
+    "Visitor",
+    "Context",
+    "Expression"
+  ], correct: 1, explanations: [
+    "❌ Element",
+    "✅ Visitor",
+    "❌ Context",
+    "❌ Expression"
+  ] },
+  { num: 39, text: "True or False:\nIf a new Element is added, all visitor classes are affected.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 40, text: "Which type of Design pattern is the template method pattern?", options: [
+    "Behavioral pattern",
+    "Creational pattern",
+    "Structural pattern"
+  ], correct: 0, explanations: [
+    "✅ Behavioral pattern",
+    "❌ Creational pattern",
+    "❌ Structural pattern"
+  ] },
+  { num: 41, text: "Which of the following is TRUE about the template method pattern?", options: [
+    "The skeleton method in the abstract class should be made final",
+    "The concrete classes should override the templateMethod()",
+    "The AbstractClass can be made into an interface"
+  ], correct: 0, explanations: [
+    "✅ The skeleton method in the abstract class should be made final",
+    "❌ The concrete classes should override the templateMethod()",
+    "❌ The AbstractClass can be made into an interface"
+  ] },
+  { num: 42, text: "True or False:\nIn the template method pattern, the skeleton of the algorithm must be first specified.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 43, text: "True or False:\nThe template method pattern implements multiple algorithms by using delegation.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True",
+    "✅ False"
+  ] },
+  { num: 44, text: "True or False:\nIn the template method pattern, the Concrete classes are highly coupled to the abstract class.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 45, text: "What type of Design pattern is the Iterator pattern?", options: [
+    "Behavioral pattern",
+    "Creational pattern",
+    "Structural pattern"
+  ], correct: 0, explanations: [
+    "✅ Behavioral pattern",
+    "❌ Creational pattern",
+    "❌ Structural pattern"
+  ] },
+  { num: 46, text: "True or False:\nThe underlying data structure must be exposed to the iterator class.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 47, text: "True or False:\nThe Iterator pattern can be used to traverse the tree structure of a Composite tree.", options: [
+    "True",
+    "False"
+  ], correct: 0, explanations: [
+    "✅ True",
+    "❌ False"
+  ] },
+  { num: 48, text: "Which of the following is NOT a method normally implemented by an iterator?", options: [
+    "loop()",
+    "next()",
+    "hasNext()"
+  ], correct: 0, explanations: [
+    "✅ loop()",
+    "❌ next()",
+    "❌ hasNext()"
+  ] },
+  { num: 49, text: "True or False:\nThe iterator() method in the Aggregate class should return a concrete iterator.", options: [
+    "True",
+    "False"
+  ], correct: 1, explanations: [
+    "❌ True",
+    "✅ False"
+  ] }
 ];
 </script>
 <script src="../js/quiz-pane.js?v=20260419"></script>

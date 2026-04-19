@@ -159,3 +159,27 @@ body.study-sidebar-collapsed .study-nav-toggle span:nth-child(3){transform:trans
 @media (max-width:420px){
   .study-nav-list{grid-template-columns:1fr;}
 }
+
+
+/* theme toggle + dark mode */
+.theme-toggle-wrap{margin-top:10px;padding:0 14px 14px;}
+.theme-toggle{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border:1px solid var(--border,#d8dce3);border-radius:10px;background:var(--surface,#fff);color:var(--text,#1f2937);font:600 0.85rem/1 'Source Sans 3',sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.theme-toggle:hover{filter:brightness(.98)}
+html[data-theme='dark'],body[data-theme='dark']{--bg:#0f172a;--surface:#111827;--surface2:#1f2937;--border:#334155;--text:#e5e7eb;--text2:#cbd5e1;--muted:#94a3b8;--tag-bg:#243244;--accent:#60a5fa;--accent-light:#0f2747;--accent2:#f59e0b;--accent2-light:#3a2a08;--blue:#93c5fd;--blue-light:#10233f;--red:#fca5a5;--red-light:#3b1218;--green:#34d399;--green-light:#052e25;--correct-bg:#052e1d;--correct-text:#bbf7d0;--wrong-bg:#3f1115;--wrong-text:#fecaca;--reveal-bg:#132d52;--reveal-text:#bfdbfe;background:var(--bg)!important;color:var(--text)!important;}
+body[data-theme='dark'] .study-nav, body[data-theme='dark'] .pane, body[data-theme='dark'] .card, body[data-theme='dark'] .q-card, body[data-theme='dark'] .exam-toolbar, body[data-theme='dark'] .hud-pill, body[data-theme='dark'] .qz-wrap, body[data-theme='dark'] .qz-tab-panel, body[data-theme='dark'] .summary-cell{background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important;}
+body[data-theme='dark'] .qz-opt, body[data-theme='dark'] .btn-secondary, body[data-theme='dark'] .wf-btn, body[data-theme='dark'] .qz-submit, body[data-theme='dark'] .score-pill, body[data-theme='dark'] .kw, body[data-theme='dark'] .chip, body[data-theme='dark'] select, body[data-theme='dark'] input{background:var(--surface2)!important;color:var(--text)!important;border-color:var(--border)!important;}
+body[data-theme='dark'] table, body[data-theme='dark'] th, body[data-theme='dark'] td{border-color:var(--border)!important;color:var(--text)!important;}
+body[data-theme='dark'] .note-box, body[data-theme='dark'] .green-box, body[data-theme='dark'] .blue-box, body[data-theme='dark'] .red-box{filter:brightness(.92)}
+body[data-theme='dark'] a{color:#93c5fd}
+
+
+body[data-theme='dark'] .page-split,
+body[data-theme='dark'] .notes-pane,
+body[data-theme='dark'] .quiz-pane,
+body[data-theme='dark'] .exam-shell,
+body[data-theme='dark'] .container,
+html[data-theme='dark'] .page-split,
+html[data-theme='dark'] .notes-pane,
+html[data-theme='dark'] .quiz-pane,
+html[data-theme='dark'] .exam-shell,
+html[data-theme='dark'] .container{background:var(--bg)!important;color:var(--text)!important;}

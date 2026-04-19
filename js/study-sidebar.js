@@ -155,6 +155,45 @@
     });
   }
 
+
+
+  /* ── theme toggle ───────────────────────────────────────────── */
+
+  function applyTheme(theme) {
+    var t = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    document.body.setAttribute('data-theme', t);
+    try { localStorage.setItem('studyTheme', t); } catch (e) {}
+    var btn = document.querySelector('.theme-toggle');
+    if (btn) btn.textContent = t === 'dark' ? '☀️ Light mode' : '🌙 Dark mode';
+    try {
+      window.dispatchEvent(new CustomEvent('study-theme-change', { detail: { theme: t } }));
+    } catch (e) {}
+  }
+
+  function getPreferredTheme() {
+    try {
+      var saved = localStorage.getItem('studyTheme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch (e) {}
+    return 'light';
+  }
+
+  function mountThemeToggle(host) {
+    if (!host || host.querySelector('.theme-toggle')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'theme-toggle-wrap';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'theme-toggle';
+    btn.addEventListener('click', function () {
+      applyTheme(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+    wrap.appendChild(btn);
+    host.appendChild(wrap);
+    applyTheme(getPreferredTheme());
+  }
+
   /* ── mount full sidebar ──────────────────────────────────────── */
 
   function mountStudySidebar() {
@@ -190,6 +229,7 @@
     aside.appendChild(langRoot);
 
     root.appendChild(aside);
+    mountThemeToggle(aside);
 
     if (typeof window.mountStudyLangSwitch === 'function') {
       window.mountStudyLangSwitch(langRoot, { inIndex: false });
@@ -228,10 +268,12 @@
     var currentId = document.body.getAttribute('data-study-week') || '';
     syncNotesTitleWithSidebar(currentId);
 
+    applyTheme(getPreferredTheme());
     if (document.getElementById('study-sidebar-root')) {
       mountStudySidebar();
     } else {
       enhanceSidebarToggle(document.querySelector('.study-nav'));
+      mountThemeToggle(document.querySelector('.study-nav') || document.body);
     }
 
     window.addEventListener('resize', onResize);

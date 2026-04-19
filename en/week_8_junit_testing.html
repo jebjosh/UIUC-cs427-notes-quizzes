@@ -136,6 +136,15 @@ code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--t
 <button class="tab-btn" onclick="switchTab('annotations',this)" type="button">Annotations</button>
 <button class="tab-btn" onclick="switchTab('parameterized',this)" type="button">Parameterized tests</button>
 <button class="tab-btn" onclick="switchTab('generalize',this)" type="button">Test generalization</button>
+
+<button type="button" class="tab-btn" onclick="switchTab('8-2',this)">8.2 JUnit Overview</button>
+<button type="button" class="tab-btn" onclick="switchTab('8-3',this)">8.3 Assertions</button>
+<button type="button" class="tab-btn" onclick="switchTab('8-4',this)">8.4 Assumptions</button>
+<button type="button" class="tab-btn" onclick="switchTab('8-5',this)">8.5 Param Tests</button>
+<button type="button" class="tab-btn" onclick="switchTab('8-6',this)">8.6 Complex Params</button>
+<button type="button" class="tab-btn" onclick="switchTab('8-7',this)">8.7 Writing Param Tests</button>
+<button type="button" class="tab-btn" onclick="switchTab('8-8',this)">8.8 Test Generalization</button>
+<button type="button" class="tab-btn" onclick="switchTab('summary',this)">Summary</button>
 </nav>
 <div class="tab-panel active" id="tab-basics">
 <div class="card">
@@ -314,218 +323,1326 @@ code{font-family:'Source Code Pro',monospace;font-size:0.85em;background:var(--t
 </div>
 </div>
 </div>
+
+
+<div class="tab-panel" id="tab-8-2">
+
+<div class="card">
+<div class="card-title">JUnit Framework</div>
+<div class="keywords">
+<span class="kw green">JUnit 5</span><span class="kw green">Assertions</span><span class="kw green">Assumptions</span><span class="kw blue">Annotations</span><span class="kw">Test Suites</span><span class="kw">Automated Tests</span>
+</div>
+<ul class="blist">
+<li>Open source Java unit testing framework (<code>junit.org</code>) for writing and running repeatable <strong>automated tests</strong></li>
+<li>The latest version is JUnit 5, requiring Java 8 (or higher) at runtime; can still test code compiled with previous JDK versions</li>
+<li>Main JUnit features:
+<ul class="blist" style="margin-top:6px;margin-bottom:0;">
+<li><span class="hl-green">Assertions</span> for checking expected results</li>
+<li><span class="hl-amber">Assumptions</span> for filtering out tests</li>
+<li><span class="hl-blue">Annotations</span> for configuring tests and extending the framework — disabling tests, conditional test execution, displaying names, tagging and filtering</li>
+<li><span class="hl">Test suites</span> for organizing and running tests</li>
+<li><span class="hl">Console launcher / test engines</span> for executing tests</li>
+</ul>
+</li>
+</ul>
+<div class="green-box"><div class="note-label">Q1</div>Which of the following is a JUnit feature? → <strong>All of the above</strong> (Assertion, Assumption, Annotation are all JUnit features)</div>
+<div class="note-box"><div class="note-label">Q3</div>A test method annotated with <code>@Ignore</code> will not be executed. → <strong>True</strong></div>
+</div>
+
+<div class="card">
+<div class="card-title">Example JUnit Test Case</div>
+<div class="keywords">
+<span class="kw green">@Test</span><span class="kw blue">@DisplayName</span><span class="kw">assertEquals</span><span class="kw">assertFalse</span>
+</div>
+<div class="card-body"><span class="hl">Class under test:</span> <code>java.util.Stack</code> — Test classes/methods don't need to be public.</div>
+<pre class="pre-block">import java.util.Stack;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class TestingAStackDemo
+{
+    @Test
+    @DisplayName("Push an element into empty stack")
+    void testPushOneElem()
+    {
+        String element1 = "element1";
+        Stack&lt;Object&gt; stack = new Stack&lt;&gt;();
+        stack.push(element1);
+        assertEquals(element1, stack.peek());
+        assertFalse(stack.isEmpty());
+    }
+}</pre>
+<div class="blue-box"><div class="note-label">Q4</div>We use <code>@DisplayName</code> to specify a custom name that is easy to read and provides information about the annotated test class or method. → <strong>True</strong></div>
+</div>
+
+<div class="card">
+<div class="card-title">@BeforeEach and @AfterEach</div>
+<div class="keywords">
+<span class="kw green">@BeforeEach</span><span class="kw green">@AfterEach</span><span class="kw">Initialization</span><span class="kw">Cleanup</span><span class="kw">Lifecycle</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Annotation</th><th>When it runs</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td><code>@BeforeEach</code></td><td>Before each <code>@Test</code></td><td>Initialize shared objects (e.g. create a fresh stack)</td></tr>
+<tr><td><code>@AfterEach</code></td><td>After each <code>@Test</code></td><td>Clean up state and resources</td></tr>
+</tbody>
+</table>
+</div>
+<div class="pre-grid">
+<pre class="pre-block">class TestingAStackDemo
+{
+  Stack&lt;Object&gt; stack;
+  String element1 = "element1";
+  String element2 = "element2";
+  @BeforeEach
+  void createNewStack() {
+    stack = new Stack&lt;&gt;();
+  }
+
+  @Test
+  void testAddOneElem()
+  {
+    stack.push(element1);
+    assertEquals(element1,
+      stack.peek());
+  }</pre>
+<pre class="pre-block">  @Test
+  void testAddTwoElems()
+  {
+    stack.push(element1);
+    stack.push(element2);
+    assertEquals(element2,
+      stack.peek());
+  }
+
+  @AfterEach
+  void createNewStack() {
+    assertFalse(
+      stack.isEmpty());
+  }
+}</pre>
+</div>
+<div class="note-box"><div class="note-label">Q2</div>Annotating a public void method with <code>@BeforeEach</code> causes that method to be run before each test method. → <strong>True</strong></div>
+</div>
+
+<div class="card">
+<div class="card-title">Anti-Pattern: Tests Combined</div>
+<div class="keywords">
+<span class="kw red">Anti-Pattern</span><span class="kw red">Fail Fast</span><span class="kw">State-modifying</span>
+</div>
+<div class="card-body">Avoid combining multiple unit tests into a single big test. If an earlier assertion fails, the whole test stops — later assertions never run, limiting debugging information.</div>
+<div class="pre-grid">
+<pre class="pre-block">class TestingAStackDemo
+{
+  Stack&lt;Object&gt; stack;
+  String element1 = "element1";
+  String element2 = "element2";
+  @BeforeEach
+  void createNewStack() {
+    stack = new Stack&lt;&gt;();
+  }
+
+  @Test
+  void testAddOneAndTwoElems()
+  {
+    stack.push(element1);
+    assertEquals(element1,
+      stack.peek());
+    stack.push(element2);
+    assertEquals(element2,
+      stack.peek());
+  }</pre>
+<pre class="pre-block">  @AfterEach
+  void createNewStack() {
+    assertFalse(
+      stack.isEmpty());
+  }
+}</pre>
+</div>
+<div class="red-box"><div class="note-label">Q5 — Exam tip</div>A big test is better than several small tests. → <strong>False</strong>. Avoid placing state-modifying calls between assertions; break combined tests into separate small tests.</div>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-8-3">
+
+<div class="card">
+<div class="card-title">Assertions — assertEquals &amp; assertSame</div>
+<div class="keywords">
+<span class="kw green">assertEquals</span><span class="kw blue">assertSame</span><span class="kw amber">delta</span><span class="kw">org.junit.jupiter.api.Assertions</span>
+</div>
+<div class="card-body">Static methods defined in <code>org.junit.jupiter.api.Assertions</code>. Assertions appear at the end of a test method; if one fails, execution stops and the following assertions do not run.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Signature</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>assertEquals(byte expected, byte actual)</code></td><td>Exact equality for primitives</td></tr>
+<tr><td><code>assertEquals(char expected, char actual)</code></td><td>Exact equality for primitives</td></tr>
+<tr><td><code>assertEquals(int expected, int actual)</code></td><td>Exact equality for primitives</td></tr>
+<tr><td><code>assertEquals(long expected, long actual)</code></td><td>Exact equality for primitives</td></tr>
+<tr><td><code>assertEquals(short expected, short actual)</code></td><td>Exact equality for primitives</td></tr>
+<tr><td><code>assertEquals(double expected, double actual, double delta)</code></td><td style="color:var(--accent);font-weight:600">delta required — asserts equal within the given delta</td></tr>
+<tr><td><code>assertEquals(float expected, float actual, float delta)</code></td><td style="color:var(--accent);font-weight:600">delta required — asserts equal within the given delta</td></tr>
+<tr><td><code>assertEquals(Object expected, Object actual)</code></td><td>Uses <code>equals()</code> — value equality</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card-body">Only <code>double</code> and <code>float</code> have the <code>delta</code> overload. This is because floating-point arithmetic can introduce rounding errors, so two values that should be equal may not compare as exactly equal; <code>delta</code> specifies the allowable difference.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Signature</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>assertSame(Object expected, Object actual)</code></td><td>Reference equality — asserts both refer to the <strong>same object</strong></td></tr>
+</tbody>
+</table>
+</div>
+<div class="card-body"><code>assertEquals(Object, Object)</code> calls <code>equals()</code> on the objects — it checks <span class="hl">value equality</span>. 
+  <br><code>assertSame</code> checks <span class="hl-blue">reference identity</span>: it asserts that the expected and actual refer to the exact same object in memory. 
+  <br>The two behave identically only when <code>equals()</code> has not been overridden, because the default <code>equals()</code> is itself reference-based.</div>
+</div>
+
+<div class="card">
+<div class="card-title">assertAll</div>
+<div class="keywords">
+<span class="kw green">assertAll</span><span class="kw">Executable</span><span class="kw blue">Grouped Assertions</span>
+</div>
+<div class="card-body"><code>static void assertAll(String heading, Executable… executables)</code></div>
+<div class="card-body">Asserts that all supplied executables do not throw exceptions. Every executable is run to completion <span class="hl">regardless of whether earlier ones fail</span> — this is the key difference from writing assertions sequentially, where the first failure immediately stops the test. With <code>assertAll</code>, all failures are collected and reported together under the given heading.</div>
+<pre class="pre-block">@Test
+void groupedAssertions() {
+    // In a grouped assertion all assertions are executed, and any
+    // failures will be reported together.
+    assertAll("person",
+        () -> assertEquals("John", person.getFirstName()),
+        () -> assertEquals("Doe",  person.getLastName())
+    );
+}</pre>
+</div>
+
+<div class="card">
+<div class="card-title">assertThrows</div>
+<div class="keywords">
+<span class="kw green">assertThrows</span><span class="kw">Executable</span><span class="kw amber">expectedType</span><span class="kw">Exception Testing</span>
+</div>
+<div class="card-body"><code>static &lt;T extends Throwable&gt; T assertThrows(Class&lt;T&gt; expectedType, Executable executable)</code></div>
+<div class="card-body">Asserts that execution of the supplied executable throws an exception of the <code>expectedType</code>. The thrown exception is <span class="hl">returned</span> by the method, so it can be further inspected — for example, by checking its message with <code>assertEquals</code>.</div>
+<pre class="pre-block">@Test
+void exceptionTesting() {
+    Throwable exception = assertThrows(
+        IllegalArgumentException.class, () -> {
+            throw new IllegalArgumentException("a message");
+        });
+    assertEquals("a message", exception.getMessage());
+}</pre>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-8-4">
+
+<div class="card">
+<div class="card-title">assumeTrue &amp; assumeFalse</div>
+<div class="keywords">
+<span class="kw green">assumeTrue</span><span class="kw green">assumeFalse</span><span class="kw">org.junit.jupiter.api.Assumptions</span>
+</div>
+<div class="card-body">Static methods in <code>org.junit.jupiter.api.Assumptions</code>. If the assumption fails, the rest of the test is <strong>skipped</strong> (aborted), not failed. Common use: guard a test that only makes sense in a specific environment.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Method</th><th>Condition true</th><th>Condition false</th></tr></thead>
+<tbody>
+<tr><td><code>assumeTrue(boolean)</code></td><td>Continue rest of test</td><td>Skip (abort) rest of test</td></tr>
+<tr><td><code>assumeFalse(boolean)</code></td><td>Skip (abort) rest of test</td><td>Continue rest of test</td></tr>
+</tbody>
+</table>
+</div>
+<div class="pre-block"><pre>@Test
+void onlyOnCI() {
+    assumeTrue("CI".equals(System.getenv("ENV")));
+    // only executes when ENV=CI; skipped otherwise
+    assertEquals(expected, actual);
+}</pre></div>
+</div>
+
+<div class="card">
+<div class="card-title">assumingThat</div>
+<div class="keywords">
+<span class="kw blue">assumingThat</span><span class="kw amber">Executable</span>
+</div>
+<div class="card-body"><code>assumingThat(boolean assumption, Executable executable)</code> — argument order: <strong>Boolean first, Executable second</strong>.<br><br>
+If assumption is <strong>true</strong>: the executable block runs.<br>
+If assumption is <strong>false</strong>: the executable block is skipped.<br><br>
+Either way, <strong>code after <code>assumingThat</code> always continues</strong> — unlike <code>assumeTrue</code>/<code>assumeFalse</code> which abort the entire remainder of the test.</div>
+<div class="pre-block"><pre>@Test
+void test() {
+    assumingThat(
+        "CI".equals(System.getenv("ENV")),
+        () -> { assertEquals(2, 2); }  // skipped when ENV != CI
+    );
+    System.out.print("2");  // always executes
+}</pre></div>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-8-5">
+
+<div class="card">
+<div class="card-title">Parameterized Tests</div>
+<div class="keywords">
+<span class="kw green">@ParameterizedTest</span><span class="kw blue">parameters</span><span class="kw">JUnit 5</span>
+</div>
+<ul class="blist">
+<li>A parameterized test is a <strong>unit test with parameters</strong>; conventional unit tests have no parameters</li>
+<li>The same test method is invoked <strong>multiple times</strong>, once per argument value from the source</li>
+<li>Must annotate the test method with <code>@ParameterizedTest</code> (not <code>@Test</code>)</li>
+</ul>
+<div class="green-box"><div class="note-label">Quiz Q1 &amp; Q2</div>Purpose: run a test <strong>many times with different sets of parameters</strong>. Required annotation: <code>@ParameterizedTest</code>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">@ValueSource &amp; @EnumSource</div>
+<div class="keywords">
+<span class="kw green">@ValueSource</span><span class="kw green">@EnumSource</span><span class="kw amber">names</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Annotation</th><th>Argument type</th><th>Key detail</th></tr></thead>
+<tbody>
+<tr><td><code>@ValueSource</code></td><td>Simple literal array (short, byte, int, long, float, double, char, String, Class)</td><td>Single argument per invocation; each literal produces one test run</td></tr>
+<tr><td><code>@EnumSource</code></td><td>Enum constants</td><td>Use <code>names = {"DAYS","HOURS"}</code> to filter specific constants only</td></tr>
+</tbody>
+</table>
+</div>
+<div class="pre-block"><pre>@ParameterizedTest
+@ValueSource(strings = {"racecar", "radar"})
+void isPalindrome(String candidate) { ... }
+
+@ParameterizedTest
+@EnumSource(value = TimeUnit.class, names = {"DAYS", "HOURS"})
+void testWithEnum(TimeUnit unit) { ... }</pre></div>
+<div class="blue-box"><div class="note-label">Quiz Q3 &amp; Q4</div>Supply a simple literal array → <code>@ValueSource</code> (not @CsvSource / @EnumSource / @ArgumentsSource). Filter specific enum constants → use <code>@EnumSource</code> <strong>names</strong> parameter. → Both <strong>True / @ValueSource</strong>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">@MethodSource</div>
+<div class="keywords">
+<span class="kw blue">@MethodSource</span><span class="kw amber">static factory</span><span class="kw">Stream</span><span class="kw">Arguments</span>
+</div>
+<ul class="blist">
+<li>Specifies one or more <strong>factory methods</strong> (on the test class or an external class) that supply arguments</li>
+<li>Factory method <strong>must be static</strong> (unless <code>@TestInstance(PER_CLASS)</code> is used)</li>
+<li>Return types: <code>Stream</code>, <code>Iterator</code>, <code>Iterable</code>, or array</li>
+<li>For <strong>multiple parameters</strong>: return <code>Stream&lt;Arguments&gt;</code>, wrap each set with <code>Arguments.of(…)</code></li>
+<li>External factory: use fully qualified name <code>"com.example.Class#method"</code></li>
+</ul>
+<div class="pre-block"><pre>@ParameterizedTest
+@MethodSource("stringProvider")
+void test(String arg) { ... }
+
+static Stream&lt;String&gt; stringProvider() {
+    return Stream.of("foo", "bar");
+}
+
+// multiple parameters
+static Stream&lt;Arguments&gt; multiProvider() {
+    return Stream.of(Arguments.of("Alice", 1, true));
+}</pre></div>
+<div class="note-box"><div class="note-label">Quiz Q5</div><code>@MethodSource</code> factory method should be <strong>static</strong>. → <strong>True</strong>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">@CsvSource, @CsvFileSource &amp; @ArgumentsSource</div>
+<div class="keywords">
+<span class="kw green">@CsvSource</span><span class="kw green">@CsvFileSource</span><span class="kw blue">@ArgumentsSource</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Annotation</th><th>How arguments are supplied</th><th>Key detail</th></tr></thead>
+<tbody>
+<tr><td><code>@CsvSource</code></td><td>Inline comma-separated string literals</td><td>Implicit type conversion (<code>"1"</code> → <code>int</code>); single quotes for quoted strings</td></tr>
+<tr><td><code>@CsvFileSource</code></td><td>CSV file from the classpath</td><td><code>numLinesToSkip = 1</code> skips header; double quotes for quoted fields</td></tr>
+<tr><td><code>@ArgumentsSource</code></td><td>Custom <code>ArgumentsProvider</code> class (top-level or static nested)</td><td>Most flexible; implement <code>provideArguments()</code></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-8-6">
+
+<div class="card">
+<div class="card-title">Implicit Conversion</div>
+<div class="keywords">
+<span class="kw green">Implicit conversion</span><span class="kw">String literals</span><span class="kw blue">@CsvSource</span><span class="kw blue">@ValueSource</span>
+</div>
+<ul class="blist">
+<li>When argument sources supply <strong>string literals</strong>, JUnit automatically converts each cell to the declared parameter type (no annotation needed)</li>
+<li>Applies to <code>@CsvSource</code>, <code>@ValueSource</code>, and other string-based sources</li>
+</ul>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Target type</th><th>Example conversion</th></tr></thead>
+<tbody>
+<tr><td><code>boolean / Boolean</code></td><td><code>"true"</code> → <code>true</code></td></tr>
+<tr><td><code>char / Character</code></td><td>single-char string → <code>’a’</code></td></tr>
+<tr><td><code>int / Integer</code></td><td><code>"42"</code> → <code>42</code></td></tr>
+<tr><td><code>float / Float</code></td><td><code>"3.14"</code> → <code>3.14f</code></td></tr>
+<tr><td><code>short / Short</code></td><td><code>"7"</code> → <code>7</code></td></tr>
+<tr><td>Enum subclass</td><td><code>"SECONDS"</code> → <code>TimeUnit.SECONDS</code></td></tr>
+<tr><td><code>java.io.File</code></td><td>string used as file path</td></tr>
+</tbody>
+</table>
+</div>
+<div class="green-box"><div class="note-label">Quiz Q1 &amp; Q2</div>JUnit provides implicit conversion for <code>@CsvSource</code> (and others). Covered types include Float, Short, and Enum subclass, so the answer to "which types?" is <strong>All</strong>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">Implicit Conversation (conti.): Fallback String-to-Object Conversion</div>
+<div class="keywords">
+<span class="kw green">Fallback</span><span class="kw amber">factory method</span><span class="kw amber">constructor</span>
+</div>
+<ul class="blist">
+<li>Target type is a custom class (e.g. <code>Student</code>)</li>
+<li>JUnit falls back automatically</li>
+</ul>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>What JUnit looks for</th><th>Requirement</th></tr></thead>
+<tbody>
+<tr><td>Static factory method</td><td>Non-private, single <code>String</code> arg, returns target type</td></tr>
+<tr><td>Constructor</td><td>Non-private, single <code>String</code> arg</td></tr>
+</tbody>
+</table>
+</div>
+<ul class="blist">
+<li><strong>Factory method wins</strong> over constructor if both exist</li>
+<li>If <strong>multiple</strong> factory methods qualify → <strong>none</strong> is applied (ambiguous)</li>
+</ul>
+<div class="blue-box"><div class="note-label">Quiz Q3</div><code>@ValueSource(strings = "42 Cats")</code> with parameter type <code>Student</code> uses <strong>Implicit Conversion</strong> (fallback). It is not explicit because there is no <code>@ConvertWith</code>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">Explicit Conversion: @ConvertWith</div>
+<div class="keywords">
+<span class="kw green">@ConvertWith</span><span class="kw amber">Explicit conversion</span><span class="kw">Custom converter</span>
+</div>
+<ul class="blist">
+<li>Annotate the parameter with <code>@ConvertWith(MyConverter.class)</code></li>
+<li>JUnit uses your converter class to convert the source value to the target type</li>
+<li>Unlike fallback, this is <strong>explicitly declared</strong> by the developer</li>
+</ul>
+<div class="pre-block"><pre>@ParameterizedTest
+@ValueSource(strings = {"1, 2", "1, 2, 3"})
+void test(@ConvertWith(CSVtoArray.class) String... arg) { ... }
+
+public static class CSVtoArray extends SimpleArgumentConverter {
+    @Override
+    protected Object convert(Object source, Class&lt;?&gt; targetType) {
+        return ((String) source).split("\\s*,\\s*");
+    }
+}</pre></div>
+<div class="red-box"><div class="note-label">Quiz Q4</div>Explicit conversion must use <code>@ConvertWith</code>. → <strong>True</strong></div>
+</div>
+
+<div class="card">
+<div class="card-title">ArgumentsAccessor &amp; @AggregateWith</div>
+<div class="keywords">
+<span class="kw blue">ArgumentsAccessor</span><span class="kw amber">@AggregateWith</span>
+</div>
+<ul class="blist">
+<li><strong>ArgumentsAccessor</strong>: use as a parameter to access individual CSV cells inside the test body
+  <ul style="margin-top:4px;padding-left:16px;list-style:disc;">
+    <li><code>accessor.getString(0)</code>, <code>accessor.get(2, Gender.class)</code></li>
+    <li>Construct the target object (e.g. <code>new Person(…)</code>) inside the test method</li>
+  </ul>
+</li>
+<li><strong>@AggregateWith</strong>: moves object construction <em>outside</em> the test method into a dedicated aggregator class
+  <ul style="margin-top:4px;padding-left:16px;list-style:disc;">
+    <li>Annotate the parameter: <code>@AggregateWith(PersonAggregator.class)</code></li>
+    <li>Aggregator must be a <strong>public</strong> class (top-level or static nested)</li>
+    <li>Non-private method takes <code>ArgumentsAccessor</code> + <code>ParameterContext</code>, returns target type</li>
+  </ul>
+</li>
+</ul>
+<div class="note-box"><div class="note-label">Quiz Q5</div>We can use <code>@AggregateWith</code> to specify a custom aggregator. → <strong>True</strong></div>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-8-7">
+
+<div class="card">
+<div class="card-title">Separation of Concerns and Automatic Test Generation</div>
+<div class="keywords">
+<span class="kw green">Concern 1: behavior</span><span class="kw blue">Concern 2: inputs</span><span class="kw amber">Auto test generation</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Concern</th><th>What it covers</th><th>How to supply</th></tr></thead>
+<tbody>
+<tr><td>Behavior</td><td>Assertions + method call sequence; defines what the test checks</td><td>Written in the test body</td></tr>
+<tr><td>Inputs</td><td>Values for test parameters; kept outside the test body</td><td><code>@ValueSource</code> / other annotations, or auto-generation tools</td></tr>
+</tbody>
+</table>
+</div>
+<ul class="blist">
+<li>Automatic tools aim to build a <strong>small</strong> test suite with <strong>high coverage</strong>, without manually listing every value</li>
+<li>Java tools: AgitarOne JUnit Generator, Parasoft Jtest</li>
+<li>.NET (C#) tool: Microsoft IntelliTest (Visual Studio Enterprise)</li>
+</ul>
+<div class="green-box"><div class="note-label">Quiz Q1</div>An automatic test generation tool can construct a small test suite with high coverage. → <strong>True</strong></div>
+</div>
+
+<div class="card">
+<div class="card-title">4A Pattern: Assume, Arrange, Act, Assert</div>
+<div class="keywords">
+<span class="kw green">Assume</span><span class="kw green">Arrange</span><span class="kw blue">Act</span><span class="kw blue">Assert</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Phase</th><th>Purpose</th><th>Example line</th></tr></thead>
+<tbody>
+<tr><td><span class="hl-green">Assume</span></td><td>Filter invalid inputs; if assumption fails, test is skipped (not failed)</td><td><code>assumeTrue(stk != null)</code></td></tr>
+<tr><td><span class="hl">Arrange</span></td><td>Bring object to the right state; cache values for later assertions</td><td><code>int oldSize = stk.size()</code></td></tr>
+<tr><td><span class="hl-blue">Act</span></td><td>Invoke the method under test</td><td><code>stk.push(elem)</code></td></tr>
+<tr><td><span class="hl-blue">Assert</span></td><td>Verify expected behavior; may use cached values from Arrange</td><td><code>assertEquals(oldSize + 1, stk.size())</code></td></tr>
+</tbody>
+</table>
+</div>
+<div class="pre-block"><pre>@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack&lt;Integer&gt; stk) {
+    assumeTrue(stk != null);                    // Assume
+    int oldSize = stk.size();                   // Arrange
+    stk.push(elem);                             // Act
+    assertEquals(oldSize + 1, stk.size());      // Assert
+}</pre></div>
+<div class="blue-box"><div class="note-label">Quiz Q2 &amp; Q3</div><code>assumeTrue(stk != null)</code> → <strong>Assume</strong>. &nbsp; <code>stk.push(elem)</code> → <strong>Act</strong>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">Property-First vs Assumption-First Guidelines</div>
+<div class="keywords">
+<span class="kw green">Property-first</span><span class="kw blue">Assumption-first</span><span class="kw amber">Modifiers</span><span class="kw amber">Observers</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Guideline</th><th>Starting point</th><th>Steps</th></tr></thead>
+<tbody>
+<tr><td><span class="hl-green">Property-first</span></td><td>General properties of the class</td><td>1. Classify methods into <strong>modifiers</strong> (change state: constructor, insert, remove) and <strong>observers</strong> (return info: member, isEmpty)<br>2. Pairwise-combine: each observer with a modifier; each modifier with another modifier<br>3. Add assumptions at the start of each pair-sequence</td></tr>
+<tr><td><span class="hl-blue">Assumption-first</span></td><td>Specific observer-return combinations</td><td>1. Enumerate all feasible combinations of observer return values (e.g. isMember true/false, isEmpty true/false)<br>2. For each combination, formulate the properties that hold under those conditions<br>3. Continue with property-first steps</td></tr>
+</tbody>
+</table>
+</div>
+<div class="red-box"><div class="note-label">Quiz Q4</div>"Formulate properties specific to each feasible combination of observers’ returns as assumptions" belongs to <strong>Assumption-first</strong>, NOT Property-first. → This option does <strong>not</strong> belong to the Property-first guideline.</div>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-8-8">
+
+<div class="card">
+<div class="card-title">4 Steps of Test Generalization</div>
+<div class="keywords">
+<span class="kw green">Parameterize</span><span class="kw green">Generalize Test Oracle</span><span class="kw blue">Add Assumptions</span><span class="kw amber">Cross Test Generalize</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Step</th><th>What you do</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>1. Parameterize</td><td>Promote primitive values and non-primitive objects (e.g. receiver objects) from the test body to parameters of the parameterized test</td><td><code>int elem = 1</code> becomes a parameter <code>int elem</code>; empty <code>Stack</code> becomes parameter <code>Stack stk</code></td></tr>
+<tr><td>2. Generalize test oracle</td><td>Replace constant values in assertions with generalized expressions that remain valid for any parameter value</td><td><code>assertEquals(1, stk.size())</code> becomes <code>assertEquals(oldSize + 1, stk.size())</code></td></tr>
+<tr><td>3. Add assumptions</td><td>Add <code>assumeTrue</code> / <code>assumeFalse</code> at the start to prevent illegal parameter values from causing errors</td><td><code>assumeTrue(stk != null)</code> filters out null references that would cause exceptions</td></tr>
+<tr><td>4. Cross test generalize</td><td>Merge or generalize further across multiple parameterized tests to produce a single, more general test</td><td>Two tests pushing 1 element each merged into one test iterating over an int array and checking <code>stk.size() == arr.length</code></td></tr>
+</tbody>
+</table>
+</div>
+<div class="green-box"><div class="note-label">Quiz Q1 — Q5</div>
+<strong>NOT a step:</strong> "Classify methods" (that belongs to the Property-first guideline, not test generalization).<br>
+Q2 promoting primitives as arguments → <strong>Parameterize</strong>.<br>
+Q3 replacing constants in assertions → <strong>Generalize test oracle</strong>.<br>
+Q4 adding assumptions for illegal values → <strong>Add assumptions</strong>.<br>
+Q5 generalizing further across multiple tests → <strong>Cross test generalize</strong>.
+</div>
+</div>
+
+<div class="card">
+<div class="card-title">Example: Conventional Tests to Parameterized Test</div>
+<div class="keywords">
+<span class="kw">Stack</span><span class="kw green">before / after</span>
+</div>
+<div class="pre-grid">
+<div>
+<div style="font-family:'Source Code Pro',monospace;font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Conventional tests (redundant)</div>
+<div class="pre-block"><pre>void CT1() {
+    Stack stk = new Stack();
+    stk.push(1);
+    assertEquals(1, stk.size());
+}
+void CT2() {
+    Stack stk = new Stack();
+    stk.push(30);
+    assertEquals(1, stk.size());
+}</pre></div>
+</div>
+<div>
+<div style="font-family:'Source Code Pro',monospace;font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">After generalization</div>
+<div class="pre-block"><pre>@ParameterizedTest
+@MethodSource(...)
+void PT(int elem, Stack stk) {
+    assumeTrue(stk != null);      // Step 3
+    int oldSize = stk.size();
+    stk.push(elem);               // Step 1
+    assertEquals(               // Step 2
+        oldSize + 1, stk.size());
+}</pre></div>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="tab-panel" id="tab-summary">
+<div class="card">
+<div class="card-title">What software testing is for</div>
+<div class="keywords">
+<span class="kw green">Testing</span><span class="kw">Functional Requirements</span><span class="kw">Verification</span>
+</div>
+<div class="card-body">Software testing runs test cases, compares actual results to expectations, and finds defects—checking that behavior matches what was specified.</div>
+<div class="green-box"><div class="note-label">Core idea</div>Testing is the process of checking that the software satisfies its <strong>functional requirements</strong>.</div>
+</div>
+<div class="card">
+<div class="card-title">Small tests vs. big tests</div>
+<div class="keywords">
+<span class="kw amber">Test Granularity</span><span class="kw">Assertion</span><span class="kw red">Fail Fast</span>
+</div>
+<div class="card-body">In one large test, if an early assertion fails, later assertions often never run, which makes diagnosis harder. Several smaller tests fail independently and are easier to maintain.</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Style</th><th>What happens</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>Big test</td><td>An early failure usually stops the rest of the assertions from running.</td><td style="color:var(--red);font-weight:600">Avoid</td></tr>
+<tr><td>Small tests</td><td>Each test runs on its own; one failure does not block the others.</td><td style="color:var(--accent);font-weight:600">Prefer</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box"><div class="note-label">Exam tip</div>Why “one big test is worse than several small tests”: <strong>when an assertion fails first, the following assertions may not execute at all.</strong></div>
+</div>
+
+<div class="card">
+<div class="card-title">assumeTrue &amp; assumeFalse</div>
+<div class="keywords">
+<span class="kw green">assumeTrue</span><span class="kw green">assumeFalse</span><span class="kw">org.junit.jupiter.api.Assumptions</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Method</th><th>Behavior when condition is <strong>true</strong></th><th>Behavior when condition is <strong>false</strong></th></tr></thead>
+<tbody>
+<tr><td><code>assumeTrue(boolean)</code></td><td>Continue rest of test</td><td>Skip (abort) rest of test — test is not failed, just skipped</td></tr>
+<tr><td><code>assumeFalse(boolean)</code></td><td>Skip (abort) rest of test</td><td>Continue rest of test</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card-body">Both are static methods in <code>org.junit.jupiter.api.Assumptions</code>. A skipped test is recorded as <em>aborted</em>, not failed. Common use: guard a test that only makes sense in a specific environment.</div>
+<div class="pre-block"><pre>@Test
+void onlyOnCI() {
+    assumeTrue("CI".equals(System.getenv("ENV")));
+    // only executes when ENV=CI; skipped otherwise
+    assertEquals(expected, actual);
+}</pre></div>
+</div>
+
+<div class="card">
+<div class="card-title">assumingThat</div>
+<div class="keywords">
+<span class="kw blue">assumingThat</span><span class="kw amber">Executable</span>
+</div>
+<div class="card-body"><code>assumingThat(boolean assumption, Executable executable)</code><br><br>
+Argument order: <strong>Boolean assumption first, Executable second</strong>.<br><br>
+If assumption is <strong>true</strong>: the executable block runs.<br>
+If assumption is <strong>false</strong>: the executable block is skipped.<br><br>
+Either way, <strong>the remaining test code after <code>assumingThat</code> always continues</strong> — unlike <code>assumeTrue</code>/<code>assumeFalse</code> which abort the whole remainder.</div>
+<div class="pre-block"><pre>@Test
+void test() {
+    assumingThat(
+        "CI".equals(System.getenv("ENV")),
+        () -> { assertEquals(2, 2); }  // skipped when ENV != CI
+    );
+    System.out.print("2");  // always executes
+}</pre></div>
+</div>
+
+
+<div class="card">
+<div class="card-title">What JUnit gives you</div>
+<div class="keywords">
+<span class="kw green">JUnit</span><span class="kw">Test Runner</span><span class="kw">Automation</span><span class="kw">Immediate Feedback</span>
+</div>
+<ul class="blist">
+<li><span class="hl">Test runners</span> execute tests for you.</li>
+<li>Tests report <span class="hl-green">immediate pass/fail feedback</span> without manual checking.</li>
+</ul>
+<div class="green-box"><div class="note-label">Exam tip</div>For “Which is correct about JUnit?”, a frequent answer is <strong>Both A and B</strong> (runners + automatic pass/fail).</div>
+</div>
+<div class="card">
+<div class="card-title"><code>assertEquals</code> overloads and <code>delta</code></div>
+<div class="keywords">
+<span class="kw blue">assertEquals</span><span class="kw">double</span><span class="kw">delta</span><span class="kw red">API Signature</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Signature</th><th>Valid?</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td><code>assertEquals(double expected, double actual, double delta)</code></td><td style="color:var(--accent);font-weight:600">✓</td><td>Floating-point equality needs a tolerance.</td></tr>
+<tr><td><code>assertEquals(char expected, char actual, double delta)</code></td><td style="color:var(--red);font-weight:600">✗</td><td>No <code>delta</code> overload for <code>char</code>.</td></tr>
+<tr><td><code>assertEquals(long expected, long actual, double delta)</code></td><td style="color:var(--red);font-weight:600">✗</td><td>No <code>delta</code> overload for <code>long</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box"><div class="note-label">Rule</div>Use <strong><code>delta</code> only with <code>float</code>/<code>double</code></strong> comparisons.</div>
+</div>
+<div class="card">
+<div class="card-title"><code>Assume</code> and the AAA pattern</div>
+<div class="keywords">
+<span class="kw amber">Assume</span><span class="kw">Arrange</span><span class="kw">Act</span><span class="kw">Assert</span>
+</div>
+<div class="card-body"><code>assumeTrue()</code> / <code>assumeFalse()</code> express preconditions. If an assumption fails, JUnit <strong>skips</strong> the test; it does not count as a failed assertion.</div>
+<div class="blue-box"><div class="note-label">Example</div><code>assumeTrue(System.getProperty("os.name").contains("Windows"))</code> — on a non-Windows OS the rest of the test body (e.g. lines marked <code>// line*</code>) does not run.</div>
+</div>
+
+<div class="card">
+<div class="card-title">JUnit lifecycle annotations</div>
+<div class="keywords">
+<span class="kw green">@Test</span><span class="kw green">@BeforeEach</span><span class="kw green">@AfterEach</span><span class="kw">Lifecycle</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Annotation</th><th>When it runs</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td><code>@Test</code></td><td>When the runner executes the method</td><td>Declares a test method.</td></tr>
+<tr><td><code>@BeforeEach</code></td><td>Before each <code>@Test</code></td><td>Set up objects and data.</td></tr>
+<tr><td><code>@AfterEach</code></td><td>After each <code>@Test</code></td><td>Tear down state and resources.</td></tr>
+<tr><td><code>@BeforeAll</code></td><td>Once before any test in the class</td><td>Expensive one-time setup (often <code>static</code>).</td></tr>
+<tr><td><code>@AfterAll</code></td><td>Once after all tests in the class</td><td>One-time cleanup.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="red-box"><div class="note-label">Common mistake</div><code>@AfterEach</code> runs <strong>after</strong> each test, not before.</div>
+</div>
+<div class="card">
+<div class="card-title"><code>@ParameterizedTest</code> and argument sources</div>
+<div class="keywords">
+<span class="kw blue">@ParameterizedTest</span><span class="kw blue">@ValueSource</span><span class="kw">@CsvSource</span><span class="kw">@MethodSource</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Annotation</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td><code>@ParameterizedTest</code></td><td>Marks a parameterized test method.</td></tr>
+<tr><td><code>@ValueSource</code></td><td>Supplies a simple list of literal values.</td></tr>
+<tr><td><code>@CsvSource</code></td><td>Supplies rows of CSV-style arguments.</td></tr>
+<tr><td><code>@MethodSource</code></td><td>Supplies arguments from a factory method.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<div class="card-title">Where arguments come from</div>
+<div class="keywords">
+<span class="kw blue">@ValueSource</span><span class="kw blue">@CsvSource</span><span class="kw blue">@MethodSource</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Source</th><th>Best for</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>@ValueSource</code></td><td>One simple parameter per invocation</td><td>Lightest-weight option.</td></tr>
+<tr><td><code>@CsvSource</code></td><td>Multiple parameters per row</td><td>Delimiter can be customized.</td></tr>
+<tr><td><code>@MethodSource</code></td><td>Rich or object arguments</td><td>Factory may return a <code>Stream</code>, <code>Iterator</code>, <code>Iterable</code>, or array.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="green-box"><div class="note-label">Exam tip</div>Acceptable return types for a <code>@MethodSource</code> factory include <strong><code>Stream</code>, <code>Iterator</code>, <code>Iterable</code>, and arrays</strong>.</div>
+</div>
+<div class="card">
+<div class="card-title">Implicit vs explicit conversion</div>
+<div class="keywords">
+<span class="kw amber">Implicit Conversion</span><span class="kw amber">Explicit Conversion</span><span class="kw">TypeConverter</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Kind</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Implicit conversion</td><td>JUnit maps string inputs to the target type using built-in rules.</td></tr>
+<tr><td>Explicit conversion</td><td>You supply a custom converter (e.g. <code>TypeConverter</code> / <code>@ConvertWith</code>).</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note-box"><div class="note-label">Exam tip</div>If the stem mentions a <strong>custom converter</strong>, pick <strong>explicit conversion</strong>.</div>
+</div>
+
+<div class="card">
+<div class="card-title">Property-first vs assumption-first</div>
+<div class="keywords">
+<span class="kw blue">Property-first guideline</span><span class="kw">Assumption-first guideline</span><span class="kw">Observer</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Guideline</th><th>What to stress</th></tr></thead>
+<tbody>
+<tr><td>Property-first</td><td>Classify <strong>modifiers vs observers</strong>, then <strong>pairwise-combine</strong> methods and add <strong>assumptions</strong> so stated equalities hold.</td></tr>
+<tr><td>Assumption-first</td><td><strong>Combine possible returns of observers</strong> first; under each case, formulate properties (extra assumptions), then continue like property-first.</td></tr>
+</tbody>
+</table>
+</div>
+<ul class="blist">
+<li>Wording like “listed … all possible returns of observers” → <strong>assumption-first</strong>.</li>
+<li>Steps that add <code>assumeTrue</code> / <code>assumeFalse</code> are usually called <strong>Add assumptions</strong> (distinct from the guideline name, which quizzes often test separately).</li>
+</ul>
+<div class="note-box"><div class="note-label">Drill</div>Compare the two rows above; when arguments are non-primitive objects, the generalization step is usually <strong>Parameterize</strong>.</div>
+</div>
+<div class="card">
+<div class="card-title">Four test-generalization moves</div>
+<div class="keywords">
+<span class="kw green">Parameterize</span><span class="kw green">Generalize Test Oracle</span><span class="kw green">Add Assumptions</span><span class="kw green">Cross Test Generalize</span>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Step</th><th>What you do</th><th>Typical APIs / techniques</th></tr></thead>
+<tbody>
+<tr><td>Parameterize</td><td>Turn literals into parameters (including non-primitive objects).</td><td><code>@ParameterizedTest</code>, <code>@MethodSource</code></td></tr>
+<tr><td>Generalize test oracle</td><td>Replace specific expected values with broader properties.</td><td>Property-style expectations</td></tr>
+<tr><td>Add assumptions</td><td>Constrain inputs with explicit preconditions.</td><td><code>assumeTrue</code>, <code>assumeFalse</code></td></tr>
+<tr><td>Cross-test generalize</td><td>Factor shared logic out of several tests.</td><td>Shared helpers, fixtures, setup</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
 </div>
 </div>
 <div class="quiz-pane pane">
 <div class="qz-wrap">
-<div class="qz-toolbar">
-<h2 class="qz-heading">Week 8 — quiz</h2>
+<div class="qz-header">
+<h2>Week 8 — quiz</h2>
+</div>
+<div class="qz-tab-panel active" id="qz-panel-summary">
+<div class="qz-panel-toolbar">
 <div class="qz-actions">
 <button class="qz-reset" onclick="resetQuiz()" type="button">Reset</button>
-<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 90</span></div>
+<div class="score-bar">Score: <span class="score-pill" id="score-display">— / 16</span></div>
 </div>
 </div>
 <div id="questions-container"></div>
 </div>
+<div class="qz-tab-panel" id="qz-panel-q82">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz82()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-82">— / 5</span></div>
+</div>
+</div>
+<div id="questions-container-82"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-q83">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz83()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-83">— / 5</span></div>
+</div>
+</div>
+<div id="questions-container-83"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-q84">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz84()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-84">— / 4</span></div>
+</div>
+</div>
+<div id="questions-container-84"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-q85">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz85()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-85">— / 5</span></div>
+</div>
+</div>
+<div id="questions-container-85"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-q86">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz86()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-86">— / 5</span></div>
+</div>
+</div>
+<div id="questions-container-86"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-q87">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz87()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-87">— / 4</span></div>
+</div>
+</div>
+<div id="questions-container-87"></div>
+</div>
+<div class="qz-tab-panel" id="qz-panel-q88">
+<div class="qz-panel-toolbar">
+<div class="qz-actions">
+<button class="qz-reset" onclick="resetQuiz88()" type="button">Reset</button>
+<div class="score-bar">Score: <span class="score-pill" id="score-display-88">— / 5</span></div>
+</div>
+</div>
+<div id="questions-container-88"></div>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+
 <script>
 const rawQuestions = [
-  { q: "True or False: A reason that a big test is worse than several small tests is that the later assertions won't be executed if the preceding assertion fails.", opts: ["True","False"], ans: 0, exp: "Big tests often stop at the first failing assertion, so later checks are skipped." },
-  { q: "Which of the following is a valid JUnit API method signature?", opts: ["static void assertEquals(char expected, char actual, double delta)","static void assertEquals(double expected, double actual, double delta)","static void assertEquals(long expected, long actual, double delta)"], ans: 1, exp: "The delta overload is used for floating-point comparison (double/float)." },
-  { q: "Which of the following is correct about JUnit?", opts: ["It provides test runners to run tests","JUnit tests can run automatically and self-check results","Both A and B","Neither A nor B"], ans: 2, exp: "JUnit provides test runners and automatic pass/fail feedback." },
-  { q: "True or False: Testing can be used to check whether software works correctly as per functional requirements.", opts: ["True","False"], ans: 0, exp: "That statement matches the core purpose of software testing." },
-  { q: "True or False: Annotating a public void method with @AfterEach causes it to run before each @Test method.", opts: ["True","False"], ans: 1, exp: "@AfterEach runs after each test, not before." },
-  { q: "Consider the following code. What will be the results of the above two assertions after the two test methods are run?", code: `public class A {\n    private int i;\n    public A(int i) { this.i = i; }\n\n    @Override\n    public boolean equals(Object o){\n        if (this == o) { return true; }\n        else if (o == null) { return false; }\n        else if (getClass() != o.getClass()) { return false; }\n        else {\n            final A a = (A) o;\n            if (this.i == a.i)\n                return true;\n            else\n                return Objects.equals(a, a);\n        }\n    }\n}\n\npublic class TestA {\n    final A a1 = new A(0);\n    final A a2 = new A(0);\n\n    @Test\n    public void assertsame_tTestAssertSame(){\n        assertSame(a1, a2);\n    }\n\n    @Test\n    public void assertsame_tTestAssertEquals(){\n        assertEquals(a1, a2);\n    }\n}`, opts: ["Pass, Pass","Pass, Fail","Fail, Pass","Fail, Fail"], ans: 2, exp: "assertSame checks reference identity while assertEquals uses equals(). The first fails and the second passes." },
-  { q: "Consider the following code. True or False: The above two unit tests have exactly the same effect at runtime.", code: `public void shouldTellIfPrime(){\n    Assertions.assertAll(\n            () -> assertTrue(isPrime(2)),\n            () -> assertFalse(isPrime(4))\n    );\n}\n\npublic void shouldTellIfPrime(){\n    Assertions.assertTrue(isPrime(2));\n    Assertions.assertFalse(isPrime(4));\n}`, opts: ["True","False"], ans: 1, expItems: ["assertAll: Even if the first lambda fails, JUnit still runs the second lambda, then reports all failures together.", "Plain sequential calls: If assertTrue(isPrime(2)) fails, it throws immediately and assertFalse(isPrime(4)) never runs.", "So: assertAll = run everything, aggregate failures; sequential = stop at the first failure.", "That is why assertAll exists—to surface every failure in one go instead of fix-one-then-discover-the-next."] },
-  { q: "Consider the following code. Will the line annotated with comment of 'line*' get executed in a Windows operating system?", code: `public class ExampleUnitTest {\n    @Test\n    public void addition_isCorrect() throws Exception {\n        Assume.assumeFalse(System.getProperty("os.name").contains("Windows"));\n        assertEquals(4, 2 + 2);    //line *\n    }\n}`, opts: ["Yes","No"], ans: 1, exp: "On Windows the assumption fails, so the test is skipped and line* is not executed." },
-  { q: "If a test method is a parameterized test, which tag should provide arguments for each invocation?", opts: ["@Test","@ValueSource","@ParameterizedTest","@Class"], ans: 1, exp: "@ValueSource is one valid source annotation used to provide arguments." },
-  { q: "True or False: We can pass CSV values to test methods and specify delimiter for multiple arguments.", opts: ["True","False"], ans: 0, exp: "@CsvSource supports multiple values and configurable delimiter." },
-  { q: "True or False: @MethodSource factory method can return Stream, Iterator, Iterable, or array of element sets.", opts: ["True","False"], ans: 0, exp: "Those are all supported return forms for @MethodSource." },
-  { q: "Consider the following code. What type of conversion does it use?", code: `@ParameterizedTest\n@ValueSource(strings={"1, 2", "1, 2, 3"})\nvoid testWithArrayOfStrings(@ConvertWith(CSVtoArray.class)String... arg)  {\n  // some code\n}\n\npublic static class CSVtoArray extends SimpleArgumentConverter {\n    @Override\n    protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {\n        String s = (String) source;\n        return s.split("\\\\s*,\\\\s*");\n    }\n}`, opts: ["Implicit Conversion","Explicit Conversion"], ans: 1, exp: "@ConvertWith with a custom converter indicates explicit conversion." },
-  { q: "Consider the following code. Which refers to the line annotated with comment 'line1'?", code: `@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}`, opts: ["Assume","Arrange","Act","Assert"], ans: 0, exp: "line1 is an assumption check used to guard test preconditions." },
-  { q: "We specifically listed, formulated, and tested all possible returns of observers. What guideline is this?", opts: ["Assumption-first guideline","Property-first guideline"], ans: 1, exp: "Enumerating all possible observer returns is property-first." },
-  { q: "Which test generalization step has non-primitive objects as arguments?", opts: ["Parameterize","Generalize test oracle","Add assumptions","Cross test generalize"], ans: 0, exp: "Introducing object parameters belongs to the parameterize step." },
-  { q: "Which test-generalization step uses AssumeTrue or AssumeFalse?", opts: ["Parameterize","Generalize test oracle","Add assumptions","Cross test generalize"], ans: 2, exp: "AssumeTrue/AssumeFalse are used in the add assumptions step." },
-  // ── EXTRA QUESTIONS ──────────────────────────────────────────────────────
-  { q: "True or False: Unit tests act as documentation for how a class should be used.", opts: ["True","False"], ans: 0, exp: "Unit tests demonstrate correct usage with concrete inputs and expected outputs — they are executable documentation." },
-  { q: "The quality of a unit test suite depends on both coverage and assertions because:", opts: ["High coverage with no assertions proves the code runs but checks nothing","High assertions with low coverage checks a few things exhaustively but misses most code","Both together ensure code runs AND behaves correctly","All of the above"], ans: 3, exp: "Experience: just high coverage OR many assertions alone is insufficient — both together are required for quality." },
-  { q: "@BeforeAll in JUnit 5 must be:", opts: ["Instance method","Static method","Private method","Abstract method"], ans: 1, exp: "@BeforeAll (and @AfterAll) must be static because they run before any test instance is created." },
-  { q: "True or False: assertThrows returns the thrown exception so you can inspect its message.", opts: ["True","False"], ans: 0, exp: "assertThrows(Type.class, executable) returns the exception — you can then assert on exception.getMessage() etc." },
-  { q: "When should you use assertAll instead of separate assertions?", opts: ["When you want to stop at the first failure","When you want ALL failures reported in a single test run","When assertions involve floating-point","When testing exceptions"], ans: 1, exp: "assertAll executes all lambdas regardless of earlier failures, reporting every problem at once." },
-  { q: "In @CsvSource, the value \"'baz, qux', 3\" uses single quotes to:", opts: ["Indicate a char type","Wrap a string value that contains a comma","Mark it as nullable","Denote an enum constant"], ans: 1, exp: "Single quotes in @CsvSource wrap strings containing commas so they are treated as one argument." },
-  { q: "@MethodSource factory method must be:", opts: ["Instance method only","Static method or external static method","Any visibility","Private method"], ans: 1, exp: "@MethodSource requires a static factory method (in the same class or an external class with fully qualified name)." },
-  { q: "Property-first guideline Step 1 is to classify methods as:", opts: ["Public and private","Modifiers and observers","Static and instance","Abstract and concrete"], ans: 1, exp: "Step 1: classify methods as modifiers (change state) or observers (return value without modifying state)." },
-  { q: "Test generalization Step 4 (Cross-test generalize) transforms:", opts: ["Constants into parameters","Multiple similar parameterized tests into one more general test","Test oracles into assumptions","Individual tests into a test suite"], ans: 1, exp: "Step 4 merges similar PTs (e.g., PT1 push 1 elem + PT3 push 2 elems) into one general PT(int[] elems)." },
-  { q: "True or False: @AfterEach can be used to verify postconditions that should hold after every test.", opts: ["True","False"], ans: 0, exp: "Yes — @AfterEach can assert invariants or postconditions that must hold after every test method completes." },
-  { q: "Implicit string conversion in @ValueSource allows:", opts: ["Passing null directly","JUnit to automatically convert a String to int, boolean, Enum, File, etc.","Converting objects to JSON","Only converting to primitives"], ans: 1, exp: "JUnit 5 implicit conversion: 'true'→boolean, '1'→int, 'SECONDS'→TimeUnit, '/path'→File, etc." },
-  { q: "ArgumentsAccessor is used in parameterized tests to:", opts: ["Validate argument types at compile time","Access multiple CSV columns by index and convert to typed values","Generate random test inputs","Replace @MethodSource"], ans: 1, exp: "ArgumentsAccessor gives you arguments.getString(0), arguments.get(2, Gender.class), etc. for multi-column CSV." },
-  { q: "assumingThat(condition, executable) — if condition is false:", opts: ["Test FAILS","Test is ABORTED","The executable runs anyway","An exception is thrown"], ans: 1, exp: "If the condition is false, the executable is skipped — but the test CONTINUES (unlike assumeTrue which aborts)." },
-  { q: "True or False: Two conventional tests CT1 (push elem=1) and CT2 (push elem=30) are redundant with respect to each other after test generalization.", opts: ["True","False"], ans: 0, exp: "After generalization, both map to the same PT1(int elem, Stack stk) — CT2 covers the same partition and is redundant." }
-,
-
-  // Added Week 8 batch
-  { q: "What is test-driven development (TDD)?", opts: ["Software testers perform the development", "The code is implemented first and then tests are written", "The tests are written before the implementation", "Write code without unit tests"], ans: 2, exp: "In TDD, tests are written before implementation." },
-  { q: "Which of the following assert functions checks that an object isn't null?", opts: ["void assert(Object object, boolean toCheckAsNull)", "void assertCheck(Object object, boolean toCheckAsNull)", "void assertNotNull(Object object)", "void assertChecks(Object object, boolean toCheckAsNull)"], ans: 2, exp: "assertNotNull(object) verifies the reference is not null." },
-  { q: "Which of the following is the purpose of JUnit Test?", opts: ["To check whether the behaviors of the previous versions are preserved during software evolution", "To provide a short feedback loop, because unit tests excise small portions of the code, one at the time", "To provide clear and useful documentation that enables developers or other users of the system to better understand its behavior and how it operates in different scenarios.", "All"], ans: 3, exp: "All listed choices are recognized purposes/benefits of JUnit tests." },
-  { q: "How do you ensure that a test is readable?", opts: ["A. Describing the intentions of the unit test", "B. Delete duplicated or redundant tests", "C. Neither A nor B", "D. Both A and B"], ans: 3, exp: "Readable tests describe intent and avoid duplication." },
-  { q: "How can we determine the quality of the unit tests?", opts: ["A. Code coverage: all parts of the program under test are exercised by the unit tests", "B. Reflect the expected behaviors of the code", "C. Neither A nor B", "D. Both A and B"], ans: 3, exp: "Quality depends on both coverage and reflection of expected behavior." },
-  { q: "Which of the following is a JUnit feature?", opts: ["Assertion", "Assumption", "Annotation", "All of above"], ans: 3, exp: "Assertion, assumption, and annotation are all JUnit features." },
-  { q: "True or False: Annotating a public void method with @BeforeEach causes that method to be run before each test method.", opts: ["True", "False"], ans: 0, exp: "@BeforeEach methods run before each test." },
-  { q: "True or False: A test method annotated with @Ignore will not be executed.", opts: ["True", "False"], ans: 0, exp: "Ignored tests are skipped." },
-  { q: "True or False: We use @DisplayName to specify a custom name that is easy to read and provides information about the annotated test class or method.", opts: ["True", "False"], ans: 0, exp: "@DisplayName provides a custom readable name." },
-  { q: "True or False: A big test is better than several small tests.", opts: ["True", "False"], ans: 1, exp: "Several small focused tests are generally preferable." },
-  { q: "Which of the following is a valid method signature in JUnit API?", opts: ["static void assertEquals(byte expected, byte actual, double delta)", "static void assertEquals(double expected, double actual, double delta)", "static void assertEquals(double expected, double actual)"], ans: 1, exp: "The valid floating-point overload includes expected, actual, and delta for doubles." },
-  { q: "True or False: If the equal method doesn’t get overwritten, assertSame and assertEquals work in the same way.", opts: ["True", "False"], ans: 0, exp: "Without overriding equals, assertEquals behaves like reference equality." },
-  { q: "True or False: assertSame asserts that the expected and actual objects refer to the same object.", opts: ["True", "False"], ans: 0, exp: "assertSame checks object identity." },
-  { q: "True or False: assertAll won’t continue checks if one of the assertions does not pass.", opts: ["True", "False"], ans: 1, exp: "assertAll continues and reports all grouped failures together." },
-  { q: "True or False: assertThrows asserts that execution of the supplied executable throws an exception of the expectedType and returns the exception.", opts: ["True", "False"], ans: 0, exp: "assertThrows verifies and returns the thrown exception." },
-  { q: "`assumingThat` method has two arguments, they should be ordered by:", opts: ["The first one as Boolean assumption, second one being Executable", "The first one as Executable, second one being Boolean assumption"], ans: 0, exp: "assumingThat takes the boolean condition first and the executable second." },
-  { q: "True or False: In JUnit 5, if the condition passed to 'assumingThat' evaluates to false, only the code inside the 'assumingThat' block is skipped, while the rest of the test method continues to execute.", opts: ["True", "False"], ans: 0, exp: "assumingThat skips only its block and the rest of the test continues." },
-  { q: "Will “1” get printed?", code: `@Test
-void test() {
-    assumingThat(
-        false,
-        () -> { System.out.print("1"); }
-    );
-
-    System.out.print("2");
-}`, opts: ["Yes", "No"], ans: 1, exp: "The executable block is skipped because the condition is false." },
-  { q: "Will “2” get printed?", code: `@Test
-void test() {
-    assumingThat(
-        false,
-        () -> { System.out.print("1"); }
-    );
-
-    System.out.print("2");
-}`, opts: ["Yes", "No"], ans: 0, exp: "Code after assumingThat still executes." },
-  { q: "What are Parameterized tests used for in JUnit?", opts: ["Run a test many times with different sets of parameters", "Run a test with no parameters", "Run a test with only String parameters", "Run a test once with fixed set of parameters"], ans: 0, exp: "Parameterized tests rerun the same test with different parameters." },
-  { q: "Which annotation must a parameterized test class carry?", opts: ["@Test", "@ParameterisedClass", "@ParameterizedTest", "@Class"], ans: 2, exp: "Parameterized test methods use @ParameterizedTest." },
-  { q: "Which annotation allows you to supply a simple array of literal values (e.g., int, String, double) directly to a parameterized test?", opts: ["@CsvSource", "@EnumSource", "@ValueSource", "@ArgumentsSource"], ans: 2, exp: "@ValueSource provides simple literal values directly." },
-  { q: "True or False: If we want only specific values from the Enum, we can do that using @EnumSource name parameter.", opts: ["True", "False"], ans: 0, exp: "@EnumSource can select specific enum names." },
-  { q: "True or False: We can use @MethodSource to specify a factory method for test arguments. The factory method should be static.", opts: ["True", "False"], ans: 0, exp: "The factory method is typically static for @MethodSource." },
-  { q: "True or False: To support the @csvSource, JUnit provides conversions to convert String to target types.", opts: ["True", "False"], ans: 0, exp: "JUnit supports conversion from CSV/String input to target types." },
-  { q: "Which of the following types can be converted by implicit conversion?", opts: ["Float", "Short", "Enum subclass", "All"], ans: 3, exp: "All listed types can be supported via implicit conversion." },
-  { q: "What type of conversion does it use?", code: `@ParameterizedTest
-@ValueSource(strings = "42 Cats")
-void testWithImplicitFallbackArgumentConversion(Student s) {
-    assertEquals("Jane", student.getName());
-}`, opts: ["Implicit Conversion", "Explicit Conversion"], ans: 0, exp: "This example is categorized as implicit conversion." },
-  { q: "True or False: Explicit conversion should be used with @ConvertWith.", opts: ["True", "False"], ans: 0, exp: "Custom explicit conversion uses @ConvertWith." },
-  { q: "True or False: We can use @AggregateWith to specify a custom aggregator.", opts: ["True", "False"], ans: 0, exp: "@AggregateWith wires a custom aggregator." },
-  { q: "True or False: One can use an automatic test generation tool to construct a small test suite with high coverage.", opts: ["True", "False"], ans: 0, exp: "Automatic generation tools can build compact high-coverage suites." },
-  { q: "Which of the following refers to line4 \"assumeTrue(stk != null);\" ?", code: `@ParameterizedTest
-@ValueSource(...)
-void PT1(int elem, Stack<Integer> stk) {
-    assumeTrue(stk != null);
-    int oldSize = stk.size();
-    stk.push(elem);
-    assertEquals(oldSize + 1, stk.size());
-}`, opts: ["Assume", "Arrange", "Act", "Assert"], ans: 0, exp: "The precondition check is the Assume step." },
-  { q: "Which of the following refers to line6?", code: `@ParameterizedTest
-@ValueSource(...)
-void PT1(int elem, Stack<Integer> stk) {
-    assumeTrue(stk != null);
-    int oldSize = stk.size();
-    stk.push(elem);
-    assertEquals(oldSize + 1, stk.size());
-}`, opts: ["Assume", "Arrange", "Act", "Assert"], ans: 2, exp: "The push operation is the Act step." },
-  { q: "Which of the following does NOT belong to the Property-First Guideline?", opts: ["Classify methods", "Pairwise-combine methods to formulate properties", "Formulate properties specific to each feasible combination of observers' returns as assumptions", "Add proper assumptions to make the properties"], ans: 2, exp: "That option is not one of the Property-First Guideline steps." },
-  { q: "Which of the following is NOT a test generalization step?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Classify methods"], ans: 3, exp: "Classify methods is not a test generalization step." },
-  { q: "Which step does promoting all primitive values as arguments refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 0, exp: "Promoting primitive constants into parameters is Parameterize." },
-  { q: "Which step does replacing constant values in assertions with some generalized expressions refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 1, exp: "Generalizing concrete expected values is Generalize test oracle." },
-  { q: "Which step does adding assumptions to prevent illegal values for the parameters refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 2, exp: "Adding preconditions is the Add assumptions step." },
-  { q: "Which step does generalizing further across multiple tests refer to?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 3, exp: "Further generalizing across tests is Cross test generalize." },
-  { q: "True or False: A reason that a big test is worse than several small tests is that the later assertions won't be executed if the preceding assertion fails.", opts: ["True", "False"], ans: 0, exp: "A failing earlier assertion in a big test can prevent later assertions from running." },
-  { q: "Which of the following is a valid JUnit API method signature?", opts: ["static void assertEquals(char expected, char actual, double delta)", "static void assertEquals(double expected, double actual, double delta)", "static void assertEquals(long expected, long actual, double delta)"], ans: 1, exp: "The valid signature here is the floating-point overload for doubles." },
-  { q: "Which of the following is correct about JUnit?", opts: ["It provides test runners to run tests", "JUnit tests can be run automatically and they check their own test results and provide immediate feedback of failing or passing", "Both A and B", "Neither A nor B"], ans: 2, exp: "Both statements are correct." },
-  { q: "True or False: Testing can be used in the process of checking the functionalities of a software application to whether it is working correctly as per its functional requirements.", opts: ["True", "False"], ans: 0, exp: "Testing checks whether functionality meets requirements." },
-  { q: "True or False: Annotating a public void method with @AfterEach causes that method to be run before each test method (i.e., a method annotated with @Test).", opts: ["True", "False"], ans: 1, exp: "@AfterEach runs after each test, not before." },
-  { q: "What will be the results of the above two assertions after the two test methods are run?", code: `public class A {
-    private int i;
-    public A(int i) { this.i = i; }
-
-    @Override
-    public boolean equals(Object o){
-        if (this == o) { return true; }
-        else if (o == null) { return false; }
-        else if (getClass() != o.getClass()) { return false; }
-        else {
-            final A a = (A) o;
-            if (this.i == a.i)
-                return true;
-            else
-                return Objects.equals(a, a);
-        }
-    }
-}
-
-public class TestA {
-    final A a1 = new A(0);
-    final A a2 = new A(0);
-
-    @Test
-    public void assertsame_tTestAssertSame(){
-        assertSame(a1, a2);
-    }
-
-    @Test
-    public void assertsame_tTestAssertEquals(){
-        assertEquals(a1, a2);
-    }
-}`, opts: ["Pass, Pass", "Pass, Fail", "Fail, Pass", "Fail, Fail"], ans: 2, exp: "assertSame fails because the references differ, while assertEquals passes because equals compares state." },
-  { q: "True or False: The above two unit tests have exactly the same effect at runtime.", code: `public void shouldTellIfPrime(){
-    Assertions.assertAll(
-        () -> assertTrue(isPrime(2)),
-        () -> assertFalse(isPrime(4))
-    );
-}
-
-public void shouldTellIfPrime(){
-    Assertions.assertTrue(isPrime(2));
-    Assertions.assertFalse(isPrime(4));
-}`, opts: ["True", "False"], ans: 1, exp: "assertAll continues grouping checks; sequential asserts stop at the first failure." },
-  { q: "Will the line annotated with comment of \"line*\" get executed in a Windows operating system?", code: `public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        Assume.assumeFalse(System.getProperty("os.name").contains("Windows"));
-        assertEquals(4, 2 + 2);    // line*
-    }
-}`, opts: ["Yes", "No"], ans: 1, exp: "On Windows the assumption fails, so line* is skipped." },
-  { q: "If a test method is a parameterized test, then the method should use the tag of ________ to provide arguments for each invocation of the parameterized test, that is, to specify the source of its arguments.", opts: ["@Test", "@ValueSource", "@ParameterizedTest", "@Class"], ans: 1, exp: "@ValueSource is the source annotation used here." },
-  { q: "True or False: We can pass CSV values to test methods. We can specify the delimiter for multiple arguments in the test method.", opts: ["True", "False"], ans: 0, exp: "CSV-based sources allow multiple arguments and delimiters." },
-  { q: "True or False: We can use @MethodSource to specify a parameterized factory method. Then the return type of this factory method can be Stream, Iterator, Iterable, or array of element sets.", opts: ["True", "False"], ans: 0, exp: "Those are accepted return types for @MethodSource." },
-  { q: "What type of conversion does it use?", code: `@ParameterizedTest
-@ValueSource(strings={"1, 2", "1, 2, 3"})
-void testWithArrayOfStrings(@ConvertWith(CSVtoArray.class) String... arg) {
-    // some code
-}
-
-public static class CSVtoArray extends SimpleArgumentConverter {
-    @Override
-    protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {
-        String s = (String) source;
-        return s.split("\s*,\s*");
-    }
-}`, opts: ["Implicit Conversion", "Explicit Conversion"], ans: 1, exp: "Using @ConvertWith and a custom converter is explicit conversion." },
-  { q: "Which of the followings refers to the line annotated with comment \"line1\"?", code: `@ParameterizedTest
-@ValueSource(...)
-void PT1(int elem, Stack<Integer> stk) {
-    assumeTrue(stk != null);   // line1
-    int oldSize = stk.size();
-    stk.push(elem);
-    assertEquals(oldSize + 1, stk.size());
-}`, opts: ["Assume", "Arrange", "Act", "Assert"], ans: 0, exp: "The line is the Assume step." },
-  { q: "We specifically listed, formulated, and tested all possible returns of observers. What guideline is this?", opts: ["Assumption first guideline", "Property first guideline"], ans: 1, exp: "That wording refers to the Property first guideline." },
-  { q: "Which test generalization step has non-primitive objects as arguments?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 0, exp: "Non-primitive objects as arguments are introduced in Parameterize." },
-  { q: "Which test generalization step uses AssumeTrue or AssumeFalse?", opts: ["Parameterize", "Generalize test oracle", "Add assumptions", "Cross test generalize"], ans: 2, exp: "AssumeTrue/AssumeFalse belong to Add assumptions." },
-  { q: "Which of the following is NOT a purpose of testing?", opts: ["To improve code quality", "To spot code faults", "To document code", "To guarantee code is fully correct"], ans: 3, exp: "Testing cannot guarantee a program is fully correct." },
-  { q: "Which of the following do NOT belong to the types of test activities?", opts: ["Test Design", "Test Automation", "Test Implementation", "Test Evaluation"], ans: 2, exp: "Test implementation is not one of the four named test activities here." },
-  { q: "Which of the following test activities embeds test values into executable scripts?", opts: ["Test Design", "Test Automation", "Test Implementation", "Test Execution"], ans: 1, exp: "Test automation turns test values into executable scripts." },
-  { q: "Which of the following statements about testing activities is correct?", opts: ["Designing tests requires relatively little knowledge about the domain and programs.", "In order to embed test values into executable scripts, one needs to understand the theory very well.", "It is always efficient to assign the same person for all testing activities.", "Test automation is useful to have but could also be boring to construct."], ans: 3, exp: "The final statement is the correct one." },
-  { q: "Which of the following statements about test cases is correct?", opts: ["Test cases cannot be used as documents as they are considered as two very different categories.", "Only developers can construct test case for their programs.", "The process of developing test cases can also help developers to understand the requirements."], ans: 2, exp: "Developing test cases can help clarify and understand requirements." }
+  { q: "True or False: A reason that a big test is worse than several small tests is that the later assertions won't be executed if the preceding assertion fails.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Big tests often stop at the first failing assertion, so later checks are skipped." },
+  { q: "Which of the following is a valid JUnit API method signature?", opts: [
+    "static void assertEquals(char expected, char actual, double delta)",
+    "static void assertEquals(double expected, double actual, double delta)",
+    "static void assertEquals(long expected, long actual, double delta)"
+  ], ans: 1, exp: "The delta overload is used for floating-point comparison (double/float)." },
+  { q: "Which of the following is correct about JUnit?", opts: [
+    "It provides test runners to run tests",
+    "JUnit tests can run automatically and self-check results",
+    "Both A and B",
+    "Neither A nor B"
+  ], ans: 2, exp: "JUnit provides test runners and automatic pass/fail feedback." },
+  { q: "True or False: Testing can be used to check whether software works correctly as per functional requirements.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "That statement matches the core purpose of software testing." },
+  { q: "True or False: Annotating a public void method with @AfterEach causes it to run before each @Test method.", opts: [
+    "True",
+    "False"
+  ], ans: 1, exp: "@AfterEach runs after each test, not before." },
+  { q: "Consider the following code. What will be the results of the above two assertions after the two test methods are run?", code: "public class A {\n    private int i;\n    public A(int i) { this.i = i; }\n\n    @Override\n    public boolean equals(Object o){\n        if (this == o) { return true; }\n        else if (o == null) { return false; }\n        else if (getClass() != o.getClass()) { return false; }\n        else {\n            final A a = (A) o;\n            if (this.i == a.i)\n                return true;\n            else\n                return Objects.equals(a, a);\n        }\n    }\n}\n\npublic class TestA {\n    final A a1 = new A(0);\n    final A a2 = new A(0);\n\n    @Test\n    public void assertsame_tTestAssertSame(){\n        assertSame(a1, a2);\n    }\n\n    @Test\n    public void assertsame_tTestAssertEquals(){\n        assertEquals(a1, a2);\n    }\n}", opts: [
+    "Pass, Pass",
+    "Pass, Fail",
+    "Fail, Pass",
+    "Fail, Fail"
+  ], ans: 2, exp: "assertSame checks reference identity while assertEquals uses equals(). The first fails and the second passes." },
+  { q: "Consider the following code. True or False: The above two unit tests have exactly the same effect at runtime.", code: "public void shouldTellIfPrime(){\n    Assertions.assertAll(\n            () -> assertTrue(isPrime(2)),\n            () -> assertFalse(isPrime(4))\n    );\n}\n\npublic void shouldTellIfPrime(){\n    Assertions.assertTrue(isPrime(2));\n    Assertions.assertFalse(isPrime(4));\n}", opts: [
+    "True",
+    "False"
+  ], ans: 1, expItems: [
+    "assertAll: Even if the first lambda fails, JUnit still runs the second lambda, then reports all failures together.",
+    "Plain sequential calls: If assertTrue(isPrime(2)) fails, it throws immediately and assertFalse(isPrime(4)) never runs.",
+    "So: assertAll = run everything, aggregate failures; sequential = stop at the first failure.",
+    "That is why assertAll exists—to surface every failure in one go instead of fix-one-then-discover-the-next."
+  ] },
+  { q: "Consider the following code. Will the line annotated with comment of 'line*' get executed in a Windows operating system?", code: "public class ExampleUnitTest {\n    @Test\n    public void addition_isCorrect() throws Exception {\n        Assume.assumeFalse(System.getProperty(\"os.name\").contains(\"Windows\"));\n        assertEquals(4, 2 + 2);    //line *\n    }\n}", opts: [
+    "Yes",
+    "No"
+  ], ans: 1, exp: "On Windows the assumption fails, so the test is skipped and line* is not executed." },
+  { q: "If a test method is a parameterized test, which tag should provide arguments for each invocation?", opts: [
+    "@Test",
+    "@ValueSource",
+    "@ParameterizedTest",
+    "@Class"
+  ], ans: 1, exp: "@ValueSource is one valid source annotation used to provide arguments." },
+  { q: "True or False: We can pass CSV values to test methods and specify delimiter for multiple arguments.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "@CsvSource supports multiple values and configurable delimiter." },
+  { q: "True or False: @MethodSource factory method can return Stream, Iterator, Iterable, or array of element sets.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Those are all supported return forms for @MethodSource." },
+  { q: "Consider the following code. What type of conversion does it use?", code: "@ParameterizedTest\n@ValueSource(strings={\"1, 2\", \"1, 2, 3\"})\nvoid testWithArrayOfStrings(@ConvertWith(CSVtoArray.class)String... arg)  {\n  // some code\n}\n\npublic static class CSVtoArray extends SimpleArgumentConverter {\n    @Override\n    protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {\n        String s = (String) source;\n        return s.split(\"\\\\s*,\\\\s*\");\n    }\n}", opts: [
+    "Implicit Conversion",
+    "Explicit Conversion"
+  ], ans: 1, exp: "@ConvertWith with a custom converter indicates explicit conversion." },
+  { q: "Consider the following code. Which refers to the line annotated with comment 'line1'?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
+    "Assume",
+    "Arrange",
+    "Act",
+    "Assert"
+  ], ans: 0, exp: "line1 is an assumption check used to guard test preconditions." },
+  { q: "We specifically listed, formulated, and tested all possible returns of observers. What guideline is this?", opts: [
+    "Assumption-first guideline",
+    "Property-first guideline"
+  ], ans: 1, exp: "Enumerating all possible observer returns is property-first." },
+  { q: "Which test generalization step has non-primitive objects as arguments?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 0, exp: "Introducing object parameters belongs to the parameterize step." },
+  { q: "Which test-generalization step uses AssumeTrue or AssumeFalse?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 2, exp: "AssumeTrue/AssumeFalse are used in the add assumptions step." },
+  { q: "True or False: Unit tests act as documentation for how a class should be used.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Unit tests demonstrate correct usage with concrete inputs and expected outputs — they are executable documentation." },
+  { q: "The quality of a unit test suite depends on both coverage and assertions because:", opts: [
+    "High coverage with no assertions proves the code runs but checks nothing",
+    "High assertions with low coverage checks a few things exhaustively but misses most code",
+    "Both together ensure code runs AND behaves correctly",
+    "All of the above"
+  ], ans: 3, exp: "Experience: just high coverage OR many assertions alone is insufficient — both together are required for quality." },
+  { q: "@BeforeAll in JUnit 5 must be:", opts: [
+    "Instance method",
+    "Static method",
+    "Private method",
+    "Abstract method"
+  ], ans: 1, exp: "@BeforeAll (and @AfterAll) must be static because they run before any test instance is created." },
+  { q: "True or False: assertThrows returns the thrown exception so you can inspect its message.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "assertThrows(Type.class, executable) returns the exception — you can then assert on exception.getMessage() etc." },
+  { q: "When should you use assertAll instead of separate assertions?", opts: [
+    "When you want to stop at the first failure",
+    "When you want ALL failures reported in a single test run",
+    "When assertions involve floating-point",
+    "When testing exceptions"
+  ], ans: 1, exp: "assertAll executes all lambdas regardless of earlier failures, reporting every problem at once." },
+  { q: "In @CsvSource, the value \"'baz, qux', 3\" uses single quotes to:", opts: [
+    "Indicate a char type",
+    "Wrap a string value that contains a comma",
+    "Mark it as nullable",
+    "Denote an enum constant"
+  ], ans: 1, exp: "Single quotes in @CsvSource wrap strings containing commas so they are treated as one argument." },
+  { q: "@MethodSource factory method must be:", opts: [
+    "Instance method only",
+    "Static method or external static method",
+    "Any visibility",
+    "Private method"
+  ], ans: 1, exp: "@MethodSource requires a static factory method (in the same class or an external class with fully qualified name)." },
+  { q: "Property-first guideline Step 1 is to classify methods as:", opts: [
+    "Public and private",
+    "Modifiers and observers",
+    "Static and instance",
+    "Abstract and concrete"
+  ], ans: 1, exp: "Step 1: classify methods as modifiers (change state) or observers (return value without modifying state)." },
+  { q: "Test generalization Step 4 (Cross-test generalize) transforms:", opts: [
+    "Constants into parameters",
+    "Multiple similar parameterized tests into one more general test",
+    "Test oracles into assumptions",
+    "Individual tests into a test suite"
+  ], ans: 1, exp: "Step 4 merges similar PTs (e.g., PT1 push 1 elem + PT3 push 2 elems) into one general PT(int[] elems)." },
+  { q: "True or False: @AfterEach can be used to verify postconditions that should hold after every test.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Yes — @AfterEach can assert invariants or postconditions that must hold after every test method completes." },
+  { q: "Implicit string conversion in @ValueSource allows:", opts: [
+    "Passing null directly",
+    "JUnit to automatically convert a String to int, boolean, Enum, File, etc.",
+    "Converting objects to JSON",
+    "Only converting to primitives"
+  ], ans: 1, exp: "JUnit 5 implicit conversion: 'true'→boolean, '1'→int, 'SECONDS'→TimeUnit, '/path'→File, etc." },
+  { q: "ArgumentsAccessor is used in parameterized tests to:", opts: [
+    "Validate argument types at compile time",
+    "Access multiple CSV columns by index and convert to typed values",
+    "Generate random test inputs",
+    "Replace @MethodSource"
+  ], ans: 1, exp: "ArgumentsAccessor gives you arguments.getString(0), arguments.get(2, Gender.class), etc. for multi-column CSV." },
+  { q: "assumingThat(condition, executable) — if condition is false:", opts: [
+    "Test FAILS",
+    "Test is ABORTED",
+    "The executable runs anyway",
+    "An exception is thrown"
+  ], ans: 1, exp: "If the condition is false, the executable is skipped — but the test CONTINUES (unlike assumeTrue which aborts)." },
+  { q: "True or False: Two conventional tests CT1 (push elem=1) and CT2 (push elem=30) are redundant with respect to each other after test generalization.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "After generalization, both map to the same PT1(int elem, Stack stk) — CT2 covers the same partition and is redundant." },
+  { q: "What is test-driven development (TDD)?", opts: [
+    "Software testers perform the development",
+    "The code is implemented first and then tests are written",
+    "The tests are written before the implementation",
+    "Write code without unit tests"
+  ], ans: 2, exp: "In TDD, tests are written before implementation." },
+  { q: "Which of the following assert functions checks that an object isn't null?", opts: [
+    "void assert(Object object, boolean toCheckAsNull)",
+    "void assertCheck(Object object, boolean toCheckAsNull)",
+    "void assertNotNull(Object object)",
+    "void assertChecks(Object object, boolean toCheckAsNull)"
+  ], ans: 2, exp: "assertNotNull(object) verifies the reference is not null." },
+  { q: "Which of the following is the purpose of JUnit Test?", opts: [
+    "To check whether the behaviors of the previous versions are preserved during software evolution",
+    "To provide a short feedback loop, because unit tests excise small portions of the code, one at the time",
+    "To provide clear and useful documentation that enables developers or other users of the system to better understand its behavior and how it operates in different scenarios.",
+    "All"
+  ], ans: 3, exp: "All listed choices are recognized purposes/benefits of JUnit tests." },
+  { q: "How do you ensure that a test is readable?", opts: [
+    "A. Describing the intentions of the unit test",
+    "B. Delete duplicated or redundant tests",
+    "C. Neither A nor B",
+    "D. Both A and B"
+  ], ans: 3, exp: "Readable tests describe intent and avoid duplication." },
+  { q: "How can we determine the quality of the unit tests?", opts: [
+    "A. Code coverage: all parts of the program under test are exercised by the unit tests",
+    "B. Reflect the expected behaviors of the code",
+    "C. Neither A nor B",
+    "D. Both A and B"
+  ], ans: 3, exp: "Quality depends on both coverage and reflection of expected behavior." },
+  { q: "Which of the following is a JUnit feature?", opts: [
+    "Assertion",
+    "Assumption",
+    "Annotation",
+    "All of above"
+  ], ans: 3, exp: "Assertion, assumption, and annotation are all JUnit features." },
+  { q: "True or False: Annotating a public void method with @BeforeEach causes that method to be run before each test method.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "@BeforeEach methods run before each test." },
+  { q: "True or False: A test method annotated with @Ignore will not be executed.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Ignored tests are skipped." },
+  { q: "True or False: We use @DisplayName to specify a custom name that is easy to read and provides information about the annotated test class or method.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "@DisplayName provides a custom readable name." },
+  { q: "True or False: A big test is better than several small tests.", opts: [
+    "True",
+    "False"
+  ], ans: 1, exp: "Several small focused tests are generally preferable." },
+  { q: "Which of the following is a valid method signature in JUnit API?", opts: [
+    "static void assertEquals(byte expected, byte actual, double delta)",
+    "static void assertEquals(double expected, double actual, double delta)",
+    "static void assertEquals(double expected, double actual)"
+  ], ans: 1, exp: "The valid floating-point overload includes expected, actual, and delta for doubles." },
+  { q: "True or False: If the equal method doesn’t get overwritten, assertSame and assertEquals work in the same way.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Without overriding equals, assertEquals behaves like reference equality." },
+  { q: "True or False: assertSame asserts that the expected and actual objects refer to the same object.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "assertSame checks object identity." },
+  { q: "True or False: assertAll won’t continue checks if one of the assertions does not pass.", opts: [
+    "True",
+    "False"
+  ], ans: 1, exp: "assertAll continues and reports all grouped failures together." },
+  { q: "True or False: assertThrows asserts that execution of the supplied executable throws an exception of the expectedType and returns the exception.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "assertThrows verifies and returns the thrown exception." },
+  { q: "`assumingThat` method has two arguments, they should be ordered by:", opts: [
+    "The first one as Boolean assumption, second one being Executable",
+    "The first one as Executable, second one being Boolean assumption"
+  ], ans: 0, exp: "assumingThat takes the boolean condition first and the executable second." },
+  { q: "True or False: In JUnit 5, if the condition passed to 'assumingThat' evaluates to false, only the code inside the 'assumingThat' block is skipped, while the rest of the test method continues to execute.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "assumingThat skips only its block and the rest of the test continues." },
+  { q: "Will “1” get printed?", code: "@Test\nvoid test() {\n    assumingThat(\n        false,\n        () -> { System.out.print(\"1\"); }\n    );\n\n    System.out.print(\"2\");\n}", opts: [
+    "Yes",
+    "No"
+  ], ans: 1, exp: "The executable block is skipped because the condition is false." },
+  { q: "Will “2” get printed?", code: "@Test\nvoid test() {\n    assumingThat(\n        false,\n        () -> { System.out.print(\"1\"); }\n    );\n\n    System.out.print(\"2\");\n}", opts: [
+    "Yes",
+    "No"
+  ], ans: 0, exp: "Code after assumingThat still executes." },
+  { q: "What are Parameterized tests used for in JUnit?", opts: [
+    "Run a test many times with different sets of parameters",
+    "Run a test with no parameters",
+    "Run a test with only String parameters",
+    "Run a test once with fixed set of parameters"
+  ], ans: 0, exp: "Parameterized tests rerun the same test with different parameters." },
+  { q: "Which annotation must a parameterized test class carry?", opts: [
+    "@Test",
+    "@ParameterisedClass",
+    "@ParameterizedTest",
+    "@Class"
+  ], ans: 2, exp: "Parameterized test methods use @ParameterizedTest." },
+  { q: "Which annotation allows you to supply a simple array of literal values (e.g., int, String, double) directly to a parameterized test?", opts: [
+    "@CsvSource",
+    "@EnumSource",
+    "@ValueSource",
+    "@ArgumentsSource"
+  ], ans: 2, exp: "@ValueSource provides simple literal values directly." },
+  { q: "True or False: If we want only specific values from the Enum, we can do that using @EnumSource name parameter.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "@EnumSource can select specific enum names." },
+  { q: "True or False: We can use @MethodSource to specify a factory method for test arguments. The factory method should be static.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "The factory method is typically static for @MethodSource." },
+  { q: "True or False: To support the @csvSource, JUnit provides conversions to convert String to target types.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "JUnit supports conversion from CSV/String input to target types." },
+  { q: "Which of the following types can be converted by implicit conversion?", opts: [
+    "Float",
+    "Short",
+    "Enum subclass",
+    "All"
+  ], ans: 3, exp: "All listed types can be supported via implicit conversion." },
+  { q: "What type of conversion does it use?", code: "@ParameterizedTest\n@ValueSource(strings = \"42 Cats\")\nvoid testWithImplicitFallbackArgumentConversion(Student s) {\n    assertEquals(\"Jane\", student.getName());\n}", opts: [
+    "Implicit Conversion",
+    "Explicit Conversion"
+  ], ans: 0, exp: "This example is categorized as implicit conversion." },
+  { q: "True or False: Explicit conversion should be used with @ConvertWith.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Custom explicit conversion uses @ConvertWith." },
+  { q: "True or False: We can use @AggregateWith to specify a custom aggregator.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "@AggregateWith wires a custom aggregator." },
+  { q: "True or False: One can use an automatic test generation tool to construct a small test suite with high coverage.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Automatic generation tools can build compact high-coverage suites." },
+  { q: "Which of the following refers to line4 \"assumeTrue(stk != null);\" ?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);\n    int oldSize = stk.size();\n    stk.push(elem);\n    assertEquals(oldSize + 1, stk.size());\n}", opts: [
+    "Assume",
+    "Arrange",
+    "Act",
+    "Assert"
+  ], ans: 0, exp: "The precondition check is the Assume step." },
+  { q: "Which of the following refers to line6?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);\n    int oldSize = stk.size();\n    stk.push(elem);\n    assertEquals(oldSize + 1, stk.size());\n}", opts: [
+    "Assume",
+    "Arrange",
+    "Act",
+    "Assert"
+  ], ans: 2, exp: "The push operation is the Act step." },
+  { q: "Which of the following does NOT belong to the Property-First Guideline?", opts: [
+    "Classify methods",
+    "Pairwise-combine methods to formulate properties",
+    "Formulate properties specific to each feasible combination of observers' returns as assumptions",
+    "Add proper assumptions to make the properties"
+  ], ans: 2, exp: "That option is not one of the Property-First Guideline steps." },
+  { q: "Which of the following is NOT a test generalization step?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Classify methods"
+  ], ans: 3, exp: "Classify methods is not a test generalization step." },
+  { q: "Which step does promoting all primitive values as arguments refer to?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 0, exp: "Promoting primitive constants into parameters is Parameterize." },
+  { q: "Which step does replacing constant values in assertions with some generalized expressions refer to?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 1, exp: "Generalizing concrete expected values is Generalize test oracle." },
+  { q: "Which step does adding assumptions to prevent illegal values for the parameters refer to?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 2, exp: "Adding preconditions is the Add assumptions step." },
+  { q: "Which step does generalizing further across multiple tests refer to?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 3, exp: "Further generalizing across tests is Cross test generalize." },
+  { q: "Which of the following is correct about JUnit?", opts: [
+    "It provides test runners to run tests",
+    "JUnit tests can be run automatically and they check their own test results and provide immediate feedback of failing or passing",
+    "Both A and B",
+    "Neither A nor B"
+  ], ans: 2, exp: "Both statements are correct." },
+  { q: "True or False: Testing can be used in the process of checking the functionalities of a software application to whether it is working correctly as per its functional requirements.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Testing checks whether functionality meets requirements." },
+  { q: "True or False: Annotating a public void method with @AfterEach causes that method to be run before each test method (i.e., a method annotated with @Test).", opts: [
+    "True",
+    "False"
+  ], ans: 1, exp: "@AfterEach runs after each test, not before." },
+  { q: "What will be the results of the above two assertions after the two test methods are run?", code: "public class A {\n    private int i;\n    public A(int i) { this.i = i; }\n\n    @Override\n    public boolean equals(Object o){\n        if (this == o) { return true; }\n        else if (o == null) { return false; }\n        else if (getClass() != o.getClass()) { return false; }\n        else {\n            final A a = (A) o;\n            if (this.i == a.i)\n                return true;\n            else\n                return Objects.equals(a, a);\n        }\n    }\n}\n\npublic class TestA {\n    final A a1 = new A(0);\n    final A a2 = new A(0);\n\n    @Test\n    public void assertsame_tTestAssertSame(){\n        assertSame(a1, a2);\n    }\n\n    @Test\n    public void assertsame_tTestAssertEquals(){\n        assertEquals(a1, a2);\n    }\n}", opts: [
+    "Pass, Pass",
+    "Pass, Fail",
+    "Fail, Pass",
+    "Fail, Fail"
+  ], ans: 2, exp: "assertSame fails because the references differ, while assertEquals passes because equals compares state." },
+  { q: "True or False: The above two unit tests have exactly the same effect at runtime.", code: "public void shouldTellIfPrime(){\n    Assertions.assertAll(\n        () -> assertTrue(isPrime(2)),\n        () -> assertFalse(isPrime(4))\n    );\n}\n\npublic void shouldTellIfPrime(){\n    Assertions.assertTrue(isPrime(2));\n    Assertions.assertFalse(isPrime(4));\n}", opts: [
+    "True",
+    "False"
+  ], ans: 1, exp: "assertAll continues grouping checks; sequential asserts stop at the first failure." },
+  { q: "Will the line annotated with comment of \"line*\" get executed in a Windows operating system?", code: "public class ExampleUnitTest {\n    @Test\n    public void addition_isCorrect() throws Exception {\n        Assume.assumeFalse(System.getProperty(\"os.name\").contains(\"Windows\"));\n        assertEquals(4, 2 + 2);    // line*\n    }\n}", opts: [
+    "Yes",
+    "No"
+  ], ans: 1, exp: "On Windows the assumption fails, so line* is skipped." },
+  { q: "If a test method is a parameterized test, then the method should use the tag of ________ to provide arguments for each invocation of the parameterized test, that is, to specify the source of its arguments.", opts: [
+    "@Test",
+    "@ValueSource",
+    "@ParameterizedTest",
+    "@Class"
+  ], ans: 1, exp: "@ValueSource is the source annotation used here." },
+  { q: "True or False: We can pass CSV values to test methods. We can specify the delimiter for multiple arguments in the test method.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "CSV-based sources allow multiple arguments and delimiters." },
+  { q: "True or False: We can use @MethodSource to specify a parameterized factory method. Then the return type of this factory method can be Stream, Iterator, Iterable, or array of element sets.", opts: [
+    "True",
+    "False"
+  ], ans: 0, exp: "Those are accepted return types for @MethodSource." },
+  { q: "Which of the followings refers to the line annotated with comment \"line1\"?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);   // line1\n    int oldSize = stk.size();\n    stk.push(elem);\n    assertEquals(oldSize + 1, stk.size());\n}", opts: [
+    "Assume",
+    "Arrange",
+    "Act",
+    "Assert"
+  ], ans: 0, exp: "The line is the Assume step." },
+  { q: "We specifically listed, formulated, and tested all possible returns of observers. What guideline is this?", opts: [
+    "Assumption first guideline",
+    "Property first guideline"
+  ], ans: 1, exp: "That wording refers to the Property first guideline." },
+  { q: "Which test generalization step uses AssumeTrue or AssumeFalse?", opts: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], ans: 2, exp: "AssumeTrue/AssumeFalse belong to Add assumptions." },
+  { q: "Which of the following is NOT a purpose of testing?", opts: [
+    "To improve code quality",
+    "To spot code faults",
+    "To document code",
+    "To guarantee code is fully correct"
+  ], ans: 3, exp: "Testing cannot guarantee a program is fully correct." },
+  { q: "Which of the following do NOT belong to the types of test activities?", opts: [
+    "Test Design",
+    "Test Automation",
+    "Test Implementation",
+    "Test Evaluation"
+  ], ans: 2, exp: "Test implementation is not one of the four named test activities here." },
+  { q: "Which of the following test activities embeds test values into executable scripts?", opts: [
+    "Test Design",
+    "Test Automation",
+    "Test Implementation",
+    "Test Execution"
+  ], ans: 1, exp: "Test automation turns test values into executable scripts." },
+  { q: "Which of the following statements about testing activities is correct?", opts: [
+    "Designing tests requires relatively little knowledge about the domain and programs.",
+    "In order to embed test values into executable scripts, one needs to understand the theory very well.",
+    "It is always efficient to assign the same person for all testing activities.",
+    "Test automation is useful to have but could also be boring to construct."
+  ], ans: 3, exp: "The final statement is the correct one." },
+  { q: "Which of the following statements about test cases is correct?", opts: [
+    "Test cases cannot be used as documents as they are considered as two very different categories.",
+    "Only developers can construct test case for their programs.",
+    "The process of developing test cases can also help developers to understand the requirements."
+  ], ans: 2, exp: "Developing test cases can help clarify and understand requirements." }
 ];
 
 // Shuffle helper
@@ -550,6 +1667,236 @@ const questions = allRaw.map(function (rq, idx) {
 <script src="../js/quiz-pane.js?v=20260419"></script>
 <script>
 QuizPane.mount({ questions: questions });
+
+var NOTE_TO_QUIZ = {
+  'summary': 'summary',
+  '8-2': 'q82',
+  '8-3': 'q83',
+  '8-4': 'q84',
+  '8-5': 'q85',
+  '8-6': 'q86',
+  '8-7': 'q87',
+  '8-8': 'q88'
+};
+window.switchTab = function (id, btn) {
+  if (!btn) return;
+  var notesPane = btn.closest('.notes-pane');
+  if (!notesPane) return;
+  notesPane.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+  notesPane.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+  var panel = document.getElementById('tab-' + id);
+  if (panel) panel.classList.add('active');
+  btn.classList.add('active');
+  var qzId = NOTE_TO_QUIZ[id];
+  document.querySelectorAll('.quiz-pane .qz-tab-panel').forEach(function (p) { p.classList.remove('active'); });
+  var qzPanel = qzId ? document.getElementById('qz-panel-' + qzId) : null;
+  if (!qzPanel) qzPanel = document.getElementById('qz-panel-summary');
+  if (qzPanel) qzPanel.classList.add('active');
+};
+
+const questions82 = [
+  { num: 1, text: "Which of the following is a JUnit feature?", options: [
+    "Assertion",
+    "Assumption",
+    "Annotation",
+    "All of the above"
+  ], correct: 3, exp: "Assertion, Assumption, and Annotation are all JUnit features." },
+  { num: 2, text: "True or False: Annotating a public void method with @BeforeEach causes that method to be run before each test method.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — @BeforeEach annotated methods run before each @Test method." },
+  { num: 3, text: "True or False: A test method annotated with @Ignore will not be executed.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — @Ignore causes the test method to be skipped." },
+  { num: 4, text: "True or False: We use @DisplayName to specify a custom name that is easy to read and provides information about the annotated test class or method.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — @DisplayName provides a human-readable label for the test." },
+  { num: 5, text: "True or False: A big test is better than several small tests.", options: [
+    "True",
+    "False"
+  ], correct: 1, exp: "False — if an earlier assertion fails, later ones never run. Several small tests are preferred." }
+];
+QuizPane.mount({ questions: questions82, containerId: 'questions-container-82', scoreId: 'score-display-82', idPrefix: 'q82-', resetGlobalName: 'resetQuiz82' });
+
+const questions83 = [
+  { num: 1, text: "Which of the following is a valid method signature in JUnit API?", options: [
+    "static void assertEquals(byte expected, byte actual, double delta)",
+    "static void assertEquals(double expected, double actual, double delta)"
+  ], correct: 1, exp: "Only double (and float) have the delta overload. byte has no delta overload." },
+  { num: 2, text: "True or False: If the equals method doesn't get overridden, assertSame and assertEquals work in the same way.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — without an override, equals() defaults to reference equality, same as assertSame." },
+  { num: 3, text: "True or False: assertSame asserts that the expected and actual objects refer to the same object.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — assertSame checks reference identity, not value equality." },
+  { num: 4, text: "True or False: assertAll won't continue checks if one of the assertions does not pass.", options: [
+    "True",
+    "False"
+  ], correct: 1, exp: "False — assertAll executes all supplied executables and reports all failures together." },
+  { num: 5, text: "True or False: assertThrows asserts that execution of the supplied executable throws an exception of the expectedType and returns the exception.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — assertThrows validates the exception type and returns it for further inspection." }
+];
+QuizPane.mount({ questions: questions83, containerId: 'questions-container-83', scoreId: 'score-display-83', idPrefix: 'q83-', resetGlobalName: 'resetQuiz83' });
+
+const questions84 = [
+  { num: 1, text: "assumingThat method has two arguments, they should be ordered by:", options: [
+    "The first one as Boolean assumption, second one being Executable",
+    "The first one as Executable, second one being Boolean assumption"
+  ], correct: 0, exp: "assumingThat(boolean assumption, Executable executable) — Boolean comes first." },
+  { num: 2, text: "True or False: In JUnit 5, if the condition passed to 'assumingThat' evaluates to false, only the code inside the 'assumingThat' block is skipped, while the rest of the test method continues to execute.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — assumingThat only guards its own executable block; the code after it always runs." },
+  { num: 3, text: "Will \"1\" get printed?", code: `assumingThat(false, () -> { System.out.print("1"); });
+System.out.print("2");`, options: [
+    "Yes",
+    "No"
+  ], correct: 1, exp: "The assumption is false, so the executable block is skipped and \"1\" is never printed." },
+  { num: 4, text: "Will \"2\" get printed?", code: `assumingThat(false, () -> { System.out.print("1"); });
+System.out.print("2");`, options: [
+    "Yes",
+    "No"
+  ], correct: 0, exp: "Code after assumingThat always executes regardless of the assumption result." }
+];
+QuizPane.mount({ questions: questions84, containerId: 'questions-container-84', scoreId: 'score-display-84', idPrefix: 'q84-', resetGlobalName: 'resetQuiz84' });
+
+const questions85 = [
+  { num: 1, text: "What are parameterized tests used for in JUnit?", options: [
+    "Run a test many times with different sets of parameters",
+    "Run a test with no parameters",
+    "Run a test with only String parameters",
+    "Run a test once with a fixed set of parameters"
+  ], correct: 0, exp: "Parameterized tests invoke the same test method multiple times, each with a different argument value." },
+  { num: 2, text: "Which annotation must a parameterized test method carry?", options: [
+    "@Test",
+    "@ParameterisedClass",
+    "@ParameterizedTest",
+    "@Class"
+  ], correct: 2, exp: "@ParameterizedTest marks a method as a parameterized test in JUnit 5." },
+  { num: 3, text: "Which annotation allows you to supply a simple array of literal values (e.g., int, String, double) directly to a parameterized test?", options: [
+    "@CsvSource",
+    "@EnumSource",
+    "@ValueSource",
+    "@ArgumentsSource"
+  ], correct: 2, exp: "@ValueSource is designed for simple single-argument literal arrays (primitives, String, Class)." },
+  { num: 4, text: "True or False: If we want only specific values from an Enum, we can do that using @EnumSource names parameter.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — @EnumSource has a names parameter to filter specific enum constants." },
+  { num: 5, text: "True or False: We can use @MethodSource to specify a factory method for test arguments. The factory method should be static.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "True — by default @MethodSource factory methods must be static (unless @TestInstance(PER_CLASS) is used)." }
+];
+QuizPane.mount({ questions: questions85, containerId: 'questions-container-85', scoreId: 'score-display-85', idPrefix: 'q85-', resetGlobalName: 'resetQuiz85' });
+
+const questions86 = [
+  { num: 1, text: "True or False: To support the @CsvSource, JUnit provides conversions to convert String to target types.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "JUnit applies implicit conversion from each CSV cell (as String) to the declared parameter types." },
+  { num: 2, text: "Which of the following types can be converted by implicit conversion?", options: [
+    "Float",
+    "Short",
+    "Enum subclass",
+    "All"
+  ], correct: 3, exp: "JUnit's implicit conversion can target these kinds of types (among others), depending on context." },
+  { num: 3, text: "Consider @ValueSource(strings = \"42 Cats\") with parameter type Student. What type of conversion is used?", code: `@ValueSource(strings = \"42 Cats\")
+void test(Student s) { ... }`, options: [
+    "Implicit Conversion",
+    "Explicit Conversion"
+  ], correct: 0, exp: "The engine uses built-in / fallback implicit conversion from the string literal to the target type unless you supply @ConvertWith." },
+  { num: 4, text: "True or False: Explicit conversion should be used within @ConvertWith.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "@ConvertWith points to a custom converter — that is explicit conversion." },
+  { num: 5, text: "True or False: We can use @AggregateWith to specify a custom aggregator.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "@AggregateWith selects a class that aggregates multiple argument values into one parameter object." }
+];
+QuizPane.mount({ questions: questions86, containerId: 'questions-container-86', scoreId: 'score-display-86', idPrefix: 'q86-', resetGlobalName: 'resetQuiz86' });
+
+const questions87 = [
+  { num: 1, text: "True or False: One can use an automatic test generation tool to construct a small test suite with high coverage.", options: [
+    "True",
+    "False"
+  ], correct: 0, exp: "Such tools aim for high coverage without manually listing every argument source (see lecture examples: AgitarOne, Jtest, IntelliTest)." },
+  { num: 2, text: "Which phase does this line belong to? assumeTrue(stk != null);", code: `@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack<Integer> stk) {
+    assumeTrue(stk != null);
+    int oldSize = stk.size();
+    stk.push(elem);
+    assertEquals(oldSize + 1, stk.size());
+}`, options: [
+    "Assume",
+    "Arrange",
+    "Act",
+    "Assert"
+  ], correct: 0, exp: "Assumptions express preconditions; failure skips the test." },
+  { num: 3, text: "Which phase does this line belong to? stk.push(elem);", code: `@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack<Integer> stk) {
+    assumeTrue(stk != null);
+    int oldSize = stk.size();
+    stk.push(elem);
+    assertEquals(oldSize + 1, stk.size());
+}`, options: [
+    "Assume",
+    "Arrange",
+    "Act",
+    "Assert"
+  ], correct: 2, exp: "Arrange caches oldSize; push is the action under test." },
+  { num: 4, text: "Which of the following does NOT belong to the Property-First Guideline?", options: [
+    "Classify methods into modifiers vs observers",
+    "Pairwise-combine methods to formulate properties",
+    "Formulate properties specific to each feasible combination of observers' returns as assumptions",
+    "Add proper assumptions so the stated properties hold"
+  ], correct: 2, exp: "Enumerating every observer-return combination is the Assumption-first style, not Property-first." }
+];
+QuizPane.mount({ questions: questions87, containerId: 'questions-container-87', scoreId: 'score-display-87', idPrefix: 'q87-', resetGlobalName: 'resetQuiz87' });
+
+const questions88 = [
+  { num: 1, text: "Which of the following is NOT a test generalization step?", options: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Classify methods"
+  ], correct: 3, exp: "Classify methods belongs to the Property-first guideline, not test generalization. The four steps are: Parameterize, Generalize test oracle, Add assumptions, Cross test generalize." },
+  { num: 2, text: "Which step does 'promoting all primitive values as arguments' refer to?", options: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], correct: 0, exp: "Parameterize: promote primitive values (and non-primitive objects) from the test body to parameters of the parameterized test." },
+  { num: 3, text: "Which step does 'replacing constant values in assertions with some generalized expressions' refer to?", options: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], correct: 1, exp: "Generalize test oracle: replace constants (e.g. 1) in assertions with expressions that remain valid for any parameter value (e.g. oldSize + 1)." },
+  { num: 4, text: "Which step does 'adding assumptions to prevent illegal values for the parameters' refer to?", options: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], correct: 2, exp: "Add assumptions: use assumeTrue / assumeFalse to filter out invalid inputs (e.g. null references) at the start of the test." },
+  { num: 5, text: "Which step does 'generalizing further across multiple tests' refer to?", options: [
+    "Parameterize",
+    "Generalize test oracle",
+    "Add assumptions",
+    "Cross test generalize"
+  ], correct: 3, exp: "Cross test generalize: merge or unify multiple parameterized tests into a single, more general test." }
+];
+QuizPane.mount({ questions: questions88, containerId: 'questions-container-88', scoreId: 'score-display-88', idPrefix: 'q88-', resetGlobalName: 'resetQuiz88' });
+
 </script>
 <script src="../js/study-weeks-config.js?v=20260419"></script>
 <script src="../js/study-lang.js?v=20260419"></script>
