@@ -1509,12 +1509,12 @@ const rawQuestions = [
     "False"
   ], ans: 0, exp: "Automatic generation tools can build compact high-coverage suites." },
     {
-        q: "Which of the following refers to line4 \"assumeTrue(stk != null);\" ?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
+        q: "Which of the following refers to line4 \"assertEquals(oldSize + 1, stk.size());\" ?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
     "Assume",
     "Arrange",
     "Act",
     "Assert"
-  ], ans: 0, exp: "The precondition check is the Assume step." },
+        ], ans: 3, exp: "The precondition check is the Assert step." },
     {
         q: "Which of the following refers to line6?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
     "Assume",
