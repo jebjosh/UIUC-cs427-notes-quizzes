@@ -1508,13 +1508,15 @@ const rawQuestions = [
     "True",
     "False"
   ], ans: 0, exp: "Automatic generation tools can build compact high-coverage suites." },
-  { q: "Which of the following refers to line4 \"assumeTrue(stk != null);\" ?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);\n    int oldSize = stk.size();\n    stk.push(elem);\n    assertEquals(oldSize + 1, stk.size());\n}", opts: [
+    {
+        q: "Which of the following refers to line4 \"assumeTrue(stk != null);\" ?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
     "Assume",
     "Arrange",
     "Act",
     "Assert"
   ], ans: 0, exp: "The precondition check is the Assume step." },
-  { q: "Which of the following refers to line6?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);\n    int oldSize = stk.size();\n    stk.push(elem);\n    assertEquals(oldSize + 1, stk.size());\n}", opts: [
+    {
+        q: "Which of the following refers to line6?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
     "Assume",
     "Arrange",
     "Act",
@@ -1598,7 +1600,8 @@ const rawQuestions = [
     "True",
     "False"
   ], ans: 0, exp: "Those are accepted return types for @MethodSource." },
-  { q: "Which of the followings refers to the line annotated with comment \"line1\"?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);   // line1\n    int oldSize = stk.size();\n    stk.push(elem);\n    assertEquals(oldSize + 1, stk.size());\n}", opts: [
+    {
+        q: "Which of the followings refers to the line annotated with comment \"line1\"?", code: "@ParameterizedTest\n@ValueSource(...)\nvoid PT1(int elem, Stack<Integer> stk) {\n    assumeTrue(stk != null);              // line1\n    int oldSize = stk.size();             // line2\n    stk.push(elem);                       // line3\n    assertEquals(oldSize + 1, stk.size());// line4\n}", opts: [
     "Assume",
     "Arrange",
     "Act",
@@ -1666,169 +1669,235 @@ const questions = allRaw.map(function (rq, idx) {
 </script>
 <script src="../js/quiz-pane.js?v=20260419"></script>
 <script>
-QuizPane.mount({ questions: questions });
+    QuizPane.mount({ questions: questions });
 
-var NOTE_TO_QUIZ = {
-  'summary': 'summary',
-  '8-2': 'q82',
-  '8-3': 'q83',
-  '8-4': 'q84',
-  '8-5': 'q85',
-  '8-6': 'q86',
-  '8-7': 'q87',
-  '8-8': 'q88'
-};
-window.switchTab = function (id, btn) {
-  if (!btn) return;
-  var notesPane = btn.closest('.notes-pane');
-  if (!notesPane) return;
-  notesPane.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
-  notesPane.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
-  var panel = document.getElementById('tab-' + id);
-  if (panel) panel.classList.add('active');
-  btn.classList.add('active');
-  var qzId = NOTE_TO_QUIZ[id];
-  document.querySelectorAll('.quiz-pane .qz-tab-panel').forEach(function (p) { p.classList.remove('active'); });
-  var qzPanel = qzId ? document.getElementById('qz-panel-' + qzId) : null;
-  if (!qzPanel) qzPanel = document.getElementById('qz-panel-summary');
-  if (qzPanel) qzPanel.classList.add('active');
-};
+    var NOTE_TO_QUIZ = {
+        'summary': 'summary',
+        '8-2': 'q82',
+        '8-3': 'q83',
+        '8-4': 'q84',
+        '8-5': 'q85',
+        '8-6': 'q86',
+        '8-7': 'q87',
+        '8-8': 'q88'
+    };
+    window.switchTab = function (id, btn) {
+        if (!btn) return;
+        var notesPane = btn.closest('.notes-pane');
+        if (!notesPane) return;
+        notesPane.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+        notesPane.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+        var panel = document.getElementById('tab-' + id);
+        if (panel) panel.classList.add('active');
+        btn.classList.add('active');
+        var qzId = NOTE_TO_QUIZ[id];
+        document.querySelectorAll('.quiz-pane .qz-tab-panel').forEach(function (p) { p.classList.remove('active'); });
+        var qzPanel = qzId ? document.getElementById('qz-panel-' + qzId) : null;
+        if (!qzPanel) qzPanel = document.getElementById('qz-panel-summary');
+        if (qzPanel) qzPanel.classList.add('active');
+    };
 
-const questions82 = [
-  { num: 1, text: "Which of the following is a JUnit feature?", options: [
-    "Assertion",
-    "Assumption",
-    "Annotation",
-    "All of the above"
-  ], correct: 3, exp: "Assertion, Assumption, and Annotation are all JUnit features." },
-  { num: 2, text: "True or False: Annotating a public void method with @BeforeEach causes that method to be run before each test method.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — @BeforeEach annotated methods run before each @Test method." },
-  { num: 3, text: "True or False: A test method annotated with @Ignore will not be executed.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — @Ignore causes the test method to be skipped." },
-  { num: 4, text: "True or False: We use @DisplayName to specify a custom name that is easy to read and provides information about the annotated test class or method.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — @DisplayName provides a human-readable label for the test." },
-  { num: 5, text: "True or False: A big test is better than several small tests.", options: [
-    "True",
-    "False"
-  ], correct: 1, exp: "False — if an earlier assertion fails, later ones never run. Several small tests are preferred." }
-];
-QuizPane.mount({ questions: questions82, containerId: 'questions-container-82', scoreId: 'score-display-82', idPrefix: 'q82-', resetGlobalName: 'resetQuiz82' });
+    const questions82 = [
+        {
+            num: 1, text: "Which of the following is a JUnit feature?", options: [
+                "Assertion",
+                "Assumption",
+                "Annotation",
+                "All of the above"
+            ], correct: 3, exp: "Assertion, Assumption, and Annotation are all JUnit features."
+        },
+        {
+            num: 2, text: "True or False: Annotating a public void method with @BeforeEach causes that method to be run before each test method.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — @BeforeEach annotated methods run before each @Test method."
+        },
+        {
+            num: 3, text: "True or False: A test method annotated with @Ignore will not be executed.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — @Ignore causes the test method to be skipped."
+        },
+        {
+            num: 4, text: "True or False: We use @DisplayName to specify a custom name that is easy to read and provides information about the annotated test class or method.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — @DisplayName provides a human-readable label for the test."
+        },
+        {
+            num: 5, text: "True or False: A big test is better than several small tests.", options: [
+                "True",
+                "False"
+            ], correct: 1, exp: "False — if an earlier assertion fails, later ones never run. Several small tests are preferred."
+        }
+    ];
+    QuizPane.mount({ questions: questions82, containerId: 'questions-container-82', scoreId: 'score-display-82', idPrefix: 'q82-', resetGlobalName: 'resetQuiz82' });
 
-const questions83 = [
-  { num: 1, text: "Which of the following is a valid method signature in JUnit API?", options: [
-    "static void assertEquals(byte expected, byte actual, double delta)",
-    "static void assertEquals(double expected, double actual, double delta)"
-  ], correct: 1, exp: "Only double (and float) have the delta overload. byte has no delta overload." },
-  { num: 2, text: "True or False: If the equals method doesn't get overridden, assertSame and assertEquals work in the same way.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — without an override, equals() defaults to reference equality, same as assertSame." },
-  { num: 3, text: "True or False: assertSame asserts that the expected and actual objects refer to the same object.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — assertSame checks reference identity, not value equality." },
-  { num: 4, text: "True or False: assertAll won't continue checks if one of the assertions does not pass.", options: [
-    "True",
-    "False"
-  ], correct: 1, exp: "False — assertAll executes all supplied executables and reports all failures together." },
-  { num: 5, text: "True or False: assertThrows asserts that execution of the supplied executable throws an exception of the expectedType and returns the exception.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — assertThrows validates the exception type and returns it for further inspection." }
-];
-QuizPane.mount({ questions: questions83, containerId: 'questions-container-83', scoreId: 'score-display-83', idPrefix: 'q83-', resetGlobalName: 'resetQuiz83' });
+    const questions83 = [
+        {
+            num: 1, text: "Which of the following is a valid method signature in JUnit API?", options: [
+                "static void assertEquals(byte expected, byte actual, double delta)",
+                "static void assertEquals(double expected, double actual, double delta)"
+            ], correct: 1, exp: "Only double (and float) have the delta overload. byte has no delta overload."
+        },
+        {
+            num: 2, text: "True or False: If the equals method doesn't get overridden, assertSame and assertEquals work in the same way.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — without an override, equals() defaults to reference equality, same as assertSame."
+        },
+        {
+            num: 3, text: "True or False: assertSame asserts that the expected and actual objects refer to the same object.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — assertSame checks reference identity, not value equality."
+        },
+        {
+            num: 4, text: "True or False: assertAll won't continue checks if one of the assertions does not pass.", options: [
+                "True",
+                "False"
+            ], correct: 1, exp: "False — assertAll executes all supplied executables and reports all failures together."
+        },
+        {
+            num: 5, text: "True or False: assertThrows asserts that execution of the supplied executable throws an exception of the expectedType and returns the exception.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — assertThrows validates the exception type and returns it for further inspection."
+        }
+    ];
+    QuizPane.mount({ questions: questions83, containerId: 'questions-container-83', scoreId: 'score-display-83', idPrefix: 'q83-', resetGlobalName: 'resetQuiz83' });
 
-const questions84 = [
-  { num: 1, text: "assumingThat method has two arguments, they should be ordered by:", options: [
-    "The first one as Boolean assumption, second one being Executable",
-    "The first one as Executable, second one being Boolean assumption"
-  ], correct: 0, exp: "assumingThat(boolean assumption, Executable executable) — Boolean comes first." },
-  { num: 2, text: "True or False: In JUnit 5, if the condition passed to 'assumingThat' evaluates to false, only the code inside the 'assumingThat' block is skipped, while the rest of the test method continues to execute.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — assumingThat only guards its own executable block; the code after it always runs." },
-  { num: 3, text: "Will \"1\" get printed?", code: `assumingThat(false, () -> { System.out.print("1"); });
+    const questions84 = [
+        {
+            num: 1, text: "assumingThat method has two arguments, they should be ordered by:", options: [
+                "The first one as Boolean assumption, second one being Executable",
+                "The first one as Executable, second one being Boolean assumption"
+            ], correct: 0, exp: "assumingThat(boolean assumption, Executable executable) — Boolean comes first."
+        },
+        {
+            num: 2, text: "True or False: In JUnit 5, if the condition passed to 'assumingThat' evaluates to false, only the code inside the 'assumingThat' block is skipped, while the rest of the test method continues to execute.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — assumingThat only guards its own executable block; the code after it always runs."
+        },
+        {
+            num: 3, text: "Will \"1\" get printed?", code: `assumingThat(false, () -> { System.out.print("1"); });
 System.out.print("2");`, options: [
-    "Yes",
-    "No"
-  ], correct: 1, exp: "The assumption is false, so the executable block is skipped and \"1\" is never printed." },
-  { num: 4, text: "Will \"2\" get printed?", code: `assumingThat(false, () -> { System.out.print("1"); });
+                "Yes",
+                "No"
+            ], correct: 1, exp: "The assumption is false, so the executable block is skipped and \"1\" is never printed."
+        },
+        {
+            num: 4, text: "Will \"2\" get printed?", code: `assumingThat(false, () -> { System.out.print("1"); });
 System.out.print("2");`, options: [
-    "Yes",
-    "No"
-  ], correct: 0, exp: "Code after assumingThat always executes regardless of the assumption result." }
-];
-QuizPane.mount({ questions: questions84, containerId: 'questions-container-84', scoreId: 'score-display-84', idPrefix: 'q84-', resetGlobalName: 'resetQuiz84' });
+                "Yes",
+                "No"
+            ], correct: 0, exp: "Code after assumingThat always executes regardless of the assumption result."
+        }
+    ];
+    QuizPane.mount({ questions: questions84, containerId: 'questions-container-84', scoreId: 'score-display-84', idPrefix: 'q84-', resetGlobalName: 'resetQuiz84' });
 
-const questions85 = [
-  { num: 1, text: "What are parameterized tests used for in JUnit?", options: [
-    "Run a test many times with different sets of parameters",
-    "Run a test with no parameters",
-    "Run a test with only String parameters",
-    "Run a test once with a fixed set of parameters"
-  ], correct: 0, exp: "Parameterized tests invoke the same test method multiple times, each with a different argument value." },
-  { num: 2, text: "Which annotation must a parameterized test method carry?", options: [
-    "@Test",
-    "@ParameterisedClass",
-    "@ParameterizedTest",
-    "@Class"
-  ], correct: 2, exp: "@ParameterizedTest marks a method as a parameterized test in JUnit 5." },
-  { num: 3, text: "Which annotation allows you to supply a simple array of literal values (e.g., int, String, double) directly to a parameterized test?", options: [
-    "@CsvSource",
-    "@EnumSource",
-    "@ValueSource",
-    "@ArgumentsSource"
-  ], correct: 2, exp: "@ValueSource is designed for simple single-argument literal arrays (primitives, String, Class)." },
-  { num: 4, text: "True or False: If we want only specific values from an Enum, we can do that using @EnumSource names parameter.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — @EnumSource has a names parameter to filter specific enum constants." },
-  { num: 5, text: "True or False: We can use @MethodSource to specify a factory method for test arguments. The factory method should be static.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "True — by default @MethodSource factory methods must be static (unless @TestInstance(PER_CLASS) is used)." }
-];
-QuizPane.mount({ questions: questions85, containerId: 'questions-container-85', scoreId: 'score-display-85', idPrefix: 'q85-', resetGlobalName: 'resetQuiz85' });
+    const questions85 = [
+        {
+            num: 1, text: "What are parameterized tests used for in JUnit?", options: [
+                "Run a test many times with different sets of parameters",
+                "Run a test with no parameters",
+                "Run a test with only String parameters",
+                "Run a test once with a fixed set of parameters"
+            ], correct: 0, exp: "Parameterized tests invoke the same test method multiple times, each with a different argument value."
+        },
+        {
+            num: 2, text: "Which annotation must a parameterized test method carry?", options: [
+                "@Test",
+                "@ParameterisedClass",
+                "@ParameterizedTest",
+                "@Class"
+            ], correct: 2, exp: "@ParameterizedTest marks a method as a parameterized test in JUnit 5."
+        },
+        {
+            num: 3, text: "Which annotation allows you to supply a simple array of literal values (e.g., int, String, double) directly to a parameterized test?", options: [
+                "@CsvSource",
+                "@EnumSource",
+                "@ValueSource",
+                "@ArgumentsSource"
+            ], correct: 2, exp: "@ValueSource is designed for simple single-argument literal arrays (primitives, String, Class)."
+        },
+        {
+            num: 4, text: "True or False: If we want only specific values from an Enum, we can do that using @EnumSource names parameter.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — @EnumSource has a names parameter to filter specific enum constants."
+        },
+        {
+            num: 5, text: "True or False: We can use @MethodSource to specify a factory method for test arguments. The factory method should be static.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "True — by default @MethodSource factory methods must be static (unless @TestInstance(PER_CLASS) is used)."
+        }
+    ];
+    QuizPane.mount({ questions: questions85, containerId: 'questions-container-85', scoreId: 'score-display-85', idPrefix: 'q85-', resetGlobalName: 'resetQuiz85' });
 
-const questions86 = [
-  { num: 1, text: "True or False: To support the @CsvSource, JUnit provides conversions to convert String to target types.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "JUnit applies implicit conversion from each CSV cell (as String) to the declared parameter types." },
-  { num: 2, text: "Which of the following types can be converted by implicit conversion?", options: [
-    "Float",
-    "Short",
-    "Enum subclass",
-    "All"
-  ], correct: 3, exp: "JUnit's implicit conversion can target these kinds of types (among others), depending on context." },
-  { num: 3, text: "Consider @ValueSource(strings = \"42 Cats\") with parameter type Student. What type of conversion is used?", code: `@ValueSource(strings = \"42 Cats\")
+    const questions86 = [
+        {
+            num: 1, text: "True or False: To support the @CsvSource, JUnit provides conversions to convert String to target types.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "JUnit applies implicit conversion from each CSV cell (as String) to the declared parameter types."
+        },
+        {
+            num: 2, text: "Which of the following types can be converted by implicit conversion?", options: [
+                "Float",
+                "Short",
+                "Enum subclass",
+                "All"
+            ], correct: 3, exp: "JUnit's implicit conversion can target these kinds of types (among others), depending on context."
+        },
+        {
+            num: 3, text: "Consider @ValueSource(strings = \"42 Cats\") with parameter type Student. What type of conversion is used?", code: `@ValueSource(strings = \"42 Cats\")
 void test(Student s) { ... }`, options: [
-    "Implicit Conversion",
-    "Explicit Conversion"
-  ], correct: 0, exp: "The engine uses built-in / fallback implicit conversion from the string literal to the target type unless you supply @ConvertWith." },
-  { num: 4, text: "True or False: Explicit conversion should be used within @ConvertWith.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "@ConvertWith points to a custom converter — that is explicit conversion." },
-  { num: 5, text: "True or False: We can use @AggregateWith to specify a custom aggregator.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "@AggregateWith selects a class that aggregates multiple argument values into one parameter object." }
-];
-QuizPane.mount({ questions: questions86, containerId: 'questions-container-86', scoreId: 'score-display-86', idPrefix: 'q86-', resetGlobalName: 'resetQuiz86' });
+                "Implicit Conversion",
+                "Explicit Conversion"
+            ], correct: 0, exp: "The engine uses built-in / fallback implicit conversion from the string literal to the target type unless you supply @ConvertWith."
+        },
+        {
+            num: 4, text: "True or False: Explicit conversion should be used within @ConvertWith.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "@ConvertWith points to a custom converter — that is explicit conversion."
+        },
+        {
+            num: 5, text: "True or False: We can use @AggregateWith to specify a custom aggregator.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "@AggregateWith selects a class that aggregates multiple argument values into one parameter object."
+        }
+    ];
+    QuizPane.mount({ questions: questions86, containerId: 'questions-container-86', scoreId: 'score-display-86', idPrefix: 'q86-', resetGlobalName: 'resetQuiz86' });
 
-const questions87 = [
-  { num: 1, text: "True or False: One can use an automatic test generation tool to construct a small test suite with high coverage.", options: [
-    "True",
-    "False"
-  ], correct: 0, exp: "Such tools aim for high coverage without manually listing every argument source (see lecture examples: AgitarOne, Jtest, IntelliTest)." },
-  { num: 2, text: "Which phase does this line belong to? assumeTrue(stk != null);", code: `@ParameterizedTest
+    const questions87 = [
+        {
+            num: 1, text: "True or False: One can use an automatic test generation tool to construct a small test suite with high coverage.", options: [
+                "True",
+                "False"
+            ], correct: 0, exp: "Such tools aim for high coverage without manually listing every argument source (see lecture examples: AgitarOne, Jtest, IntelliTest)."
+        },
+        {
+            num: 2, text: "Which phase does this line belong to? assumeTrue(stk != null);", code: `@ParameterizedTest
+@ValueSource(...)
+void PT1(int elem, Stack<Integer> stk) {
+    assumeTrue(stk != null);  //line1
+    int oldSize = stk.size(); //line2
+    stk.push(elem); //line3
+    assertEquals(oldSize + 1, stk.size()); //line4
+}`, options: [
+                "Assume",
+                "Arrange",
+                "Act",
+                "Assert"
+            ], correct: 0, exp: "Assumptions express preconditions; failure skips the test."
+        },
+        {
+            num: 3, text: "Which phase does this line belong to? stk.push(elem);", code: `@ParameterizedTest
 @ValueSource(...)
 void PT1(int elem, Stack<Integer> stk) {
     assumeTrue(stk != null);
@@ -1836,66 +1905,66 @@ void PT1(int elem, Stack<Integer> stk) {
     stk.push(elem);
     assertEquals(oldSize + 1, stk.size());
 }`, options: [
-    "Assume",
-    "Arrange",
-    "Act",
-    "Assert"
-  ], correct: 0, exp: "Assumptions express preconditions; failure skips the test." },
-  { num: 3, text: "Which phase does this line belong to? stk.push(elem);", code: `@ParameterizedTest
-@ValueSource(...)
-void PT1(int elem, Stack<Integer> stk) {
-    assumeTrue(stk != null);
-    int oldSize = stk.size();
-    stk.push(elem);
-    assertEquals(oldSize + 1, stk.size());
-}`, options: [
-    "Assume",
-    "Arrange",
-    "Act",
-    "Assert"
-  ], correct: 2, exp: "Arrange caches oldSize; push is the action under test." },
-  { num: 4, text: "Which of the following does NOT belong to the Property-First Guideline?", options: [
-    "Classify methods into modifiers vs observers",
-    "Pairwise-combine methods to formulate properties",
-    "Formulate properties specific to each feasible combination of observers' returns as assumptions",
-    "Add proper assumptions so the stated properties hold"
-  ], correct: 2, exp: "Enumerating every observer-return combination is the Assumption-first style, not Property-first." }
-];
-QuizPane.mount({ questions: questions87, containerId: 'questions-container-87', scoreId: 'score-display-87', idPrefix: 'q87-', resetGlobalName: 'resetQuiz87' });
+                "Assume",
+                "Arrange",
+                "Act",
+                "Assert"
+            ], correct: 2, exp: "Arrange caches oldSize; push is the action under test."
+        },
+        {
+            num: 4, text: "Which of the following does NOT belong to the Property-First Guideline?", options: [
+                "Classify methods into modifiers vs observers",
+                "Pairwise-combine methods to formulate properties",
+                "Formulate properties specific to each feasible combination of observers' returns as assumptions",
+                "Add proper assumptions so the stated properties hold"
+            ], correct: 2, exp: "Enumerating every observer-return combination is the Assumption-first style, not Property-first."
+        }
+    ];
+    QuizPane.mount({ questions: questions87, containerId: 'questions-container-87', scoreId: 'score-display-87', idPrefix: 'q87-', resetGlobalName: 'resetQuiz87' });
 
-const questions88 = [
-  { num: 1, text: "Which of the following is NOT a test generalization step?", options: [
-    "Parameterize",
-    "Generalize test oracle",
-    "Add assumptions",
-    "Classify methods"
-  ], correct: 3, exp: "Classify methods belongs to the Property-first guideline, not test generalization. The four steps are: Parameterize, Generalize test oracle, Add assumptions, Cross test generalize." },
-  { num: 2, text: "Which step does 'promoting all primitive values as arguments' refer to?", options: [
-    "Parameterize",
-    "Generalize test oracle",
-    "Add assumptions",
-    "Cross test generalize"
-  ], correct: 0, exp: "Parameterize: promote primitive values (and non-primitive objects) from the test body to parameters of the parameterized test." },
-  { num: 3, text: "Which step does 'replacing constant values in assertions with some generalized expressions' refer to?", options: [
-    "Parameterize",
-    "Generalize test oracle",
-    "Add assumptions",
-    "Cross test generalize"
-  ], correct: 1, exp: "Generalize test oracle: replace constants (e.g. 1) in assertions with expressions that remain valid for any parameter value (e.g. oldSize + 1)." },
-  { num: 4, text: "Which step does 'adding assumptions to prevent illegal values for the parameters' refer to?", options: [
-    "Parameterize",
-    "Generalize test oracle",
-    "Add assumptions",
-    "Cross test generalize"
-  ], correct: 2, exp: "Add assumptions: use assumeTrue / assumeFalse to filter out invalid inputs (e.g. null references) at the start of the test." },
-  { num: 5, text: "Which step does 'generalizing further across multiple tests' refer to?", options: [
-    "Parameterize",
-    "Generalize test oracle",
-    "Add assumptions",
-    "Cross test generalize"
-  ], correct: 3, exp: "Cross test generalize: merge or unify multiple parameterized tests into a single, more general test." }
-];
-QuizPane.mount({ questions: questions88, containerId: 'questions-container-88', scoreId: 'score-display-88', idPrefix: 'q88-', resetGlobalName: 'resetQuiz88' });
+    const questions88 = [
+        {
+            num: 1, text: "Which of the following is NOT a test generalization step?", options: [
+                "Parameterize",
+                "Generalize test oracle",
+                "Add assumptions",
+                "Classify methods"
+            ], correct: 3, exp: "Classify methods belongs to the Property-first guideline, not test generalization. The four steps are: Parameterize, Generalize test oracle, Add assumptions, Cross test generalize."
+        },
+        {
+            num: 2, text: "Which step does 'promoting all primitive values as arguments' refer to?", options: [
+                "Parameterize",
+                "Generalize test oracle",
+                "Add assumptions",
+                "Cross test generalize"
+            ], correct: 0, exp: "Parameterize: promote primitive values (and non-primitive objects) from the test body to parameters of the parameterized test."
+        },
+        {
+            num: 3, text: "Which step does 'replacing constant values in assertions with some generalized expressions' refer to?", options: [
+                "Parameterize",
+                "Generalize test oracle",
+                "Add assumptions",
+                "Cross test generalize"
+            ], correct: 1, exp: "Generalize test oracle: replace constants (e.g. 1) in assertions with expressions that remain valid for any parameter value (e.g. oldSize + 1)."
+        },
+        {
+            num: 4, text: "Which step does 'adding assumptions to prevent illegal values for the parameters' refer to?", options: [
+                "Parameterize",
+                "Generalize test oracle",
+                "Add assumptions",
+                "Cross test generalize"
+            ], correct: 2, exp: "Add assumptions: use assumeTrue / assumeFalse to filter out invalid inputs (e.g. null references) at the start of the test."
+        },
+        {
+            num: 5, text: "Which step does 'generalizing further across multiple tests' refer to?", options: [
+                "Parameterize",
+                "Generalize test oracle",
+                "Add assumptions",
+                "Cross test generalize"
+            ], correct: 3, exp: "Cross test generalize: merge or unify multiple parameterized tests into a single, more general test."
+        }
+    ];
+    QuizPane.mount({ questions: questions88, containerId: 'questions-container-88', scoreId: 'score-display-88', idPrefix: 'q88-', resetGlobalName: 'resetQuiz88' });
 
 </script>
 <script src="../js/study-weeks-config.js?v=20260419"></script>
